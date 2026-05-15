@@ -1,0 +1,6 @@
+{
+  "name": "Onvivo",
+  "description": "Premium digital service for configuring Stremio-like streaming platforms via automated Telegram Bot.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
