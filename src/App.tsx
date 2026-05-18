@@ -8,6 +8,7 @@ import { motion, useScroll, useSpring } from "motion/react";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Features from "./components/Features";
+import Pricing from "./components/Pricing";
 import HowItWorks from "./components/HowItWorks";
 import FAQ from "./components/FAQ";
 import FinalCTA from "./components/FinalCTA";
@@ -42,6 +43,7 @@ export default function App() {
       <main aria-label="Contenido principal de Onvivo">
         <Hero onOpenWizard={handleOpenWizard} />
         <Features />
+        <Pricing onOpenWizard={handleOpenWizard} />
         <HowItWorks />
         <FAQ />
         <FinalCTA onOpenWizard={handleOpenWizard} />

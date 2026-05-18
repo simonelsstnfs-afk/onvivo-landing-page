@@ -39,9 +39,9 @@ export default function Footer() {
           <div className="text-left">
             <h5 className="text-[10px] font-bold text-[#AD00FF] uppercase tracking-[0.3em] mb-8 font-mono">Seguridad</h5>
             <div className="flex flex-col gap-4 text-white/50 text-[10px] uppercase tracking-widest font-bold font-mono">
-              <a href="#" className="hover:text-[#AD00FF] transition-colors duration-300 w-fit">Términos</a>
-              <a href="#" className="hover:text-[#AD00FF] transition-colors duration-300 w-fit">Privacidad</a>
-              <a href="#" className="hover:text-[#AD00FF] transition-colors duration-300 w-fit">SLA</a>
+              <a href="/terminos.html" className="hover:text-[#AD00FF] transition-colors duration-300 w-fit">Términos</a>
+              <a href="/privacidad.html" className="hover:text-[#AD00FF] transition-colors duration-300 w-fit">Privacidad</a>
+              <a href="#precio" className="hover:text-[#AD00FF] transition-colors duration-300 w-fit">Precio</a>
             </div>
           </div>
         </div>

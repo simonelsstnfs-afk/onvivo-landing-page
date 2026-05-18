@@ -143,7 +143,8 @@ html {
     radial-gradient(circle at 50% 50%, rgba(255, 0, 122, 0.14) 0%, transparent 50%),
     radial-gradient(circle at 15% 80%, rgba(112, 0, 255, 0.16) 0%, transparent 45%),
     radial-gradient(circle at 80% 85%, rgba(0, 240, 255, 0.18) 0%, transparent 40%);
-  background-attachment: fixed;
+  /* No usar background-attachment: fixed — el elemento padre ya es position: fixed.
+     Esto garantiza compatibilidad con iOS Safari que no soporta bg-attachment: fixed. */
   background-size: cover;
 }
 

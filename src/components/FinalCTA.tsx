@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { Sparkles, ArrowRight } from "lucide-react";
+import { Sparkles, ArrowRight, Users, Shield, Star } from "lucide-react";
 
 interface FinalCTAProps {
   onOpenWizard?: () => void;
@@ -37,9 +37,45 @@ export default function FinalCTA({ onOpenWizard }: FinalCTAProps) {
             </h2>
             
             {/* Descripción */}
-            <p className="text-white/45 text-sm md:text-lg max-w-2xl mx-auto mb-12 leading-relaxed">
-              Únete a miles de amantes del cine que ya disfrutan de su centro multimedia premium optimizado con velocidad ilimitada. Configúralo en segundos.
+            <p className="text-white/50 text-sm md:text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
+              Únete a los usuarios que ya disfrutan de su centro multimedia premium configurado de forma automática y optimizada.
             </p>
+
+            {/* Prueba Social */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3, duration: 0.6 }}
+              className="flex flex-wrap items-center justify-center gap-6 md:gap-10 mb-10 w-full"
+            >
+              {/* Contador de configuraciones */}
+              <div className="flex items-center gap-3 bg-white/[0.03] border border-white/5 rounded-xl px-5 py-3 backdrop-blur-md">
+                <Users className="w-5 h-5 text-[#00F0FF]" />
+                <div className="text-left">
+                  <div className="text-white font-black text-lg tracking-tight">+500</div>
+                  <div className="text-[9px] font-mono text-white/35 tracking-widest uppercase">Configuraciones</div>
+                </div>
+              </div>
+
+              {/* Valoración */}
+              <div className="flex items-center gap-3 bg-white/[0.03] border border-white/5 rounded-xl px-5 py-3 backdrop-blur-md">
+                <Star className="w-5 h-5 text-[#FFD700]" />
+                <div className="text-left">
+                  <div className="text-white font-black text-lg tracking-tight">4.9/5</div>
+                  <div className="text-[9px] font-mono text-white/35 tracking-widest uppercase">Satisfacción</div>
+                </div>
+              </div>
+
+              {/* Seguridad */}
+              <div className="flex items-center gap-3 bg-white/[0.03] border border-white/5 rounded-xl px-5 py-3 backdrop-blur-md">
+                <Shield className="w-5 h-5 text-[#00FF85]" />
+                <div className="text-left">
+                  <div className="text-white font-black text-lg tracking-tight">100%</div>
+                  <div className="text-[9px] font-mono text-white/35 tracking-widest uppercase">Pago Seguro</div>
+                </div>
+              </div>
+            </motion.div>
 
             {/* Acciones de Conversión */}
             <div className="flex items-center justify-center mb-6 w-full">
@@ -61,7 +97,7 @@ export default function FinalCTA({ onOpenWizard }: FinalCTAProps) {
             {/* Informaciones de Confianza */}
             <div className="flex justify-center border-t border-white/5 pt-8 w-full max-w-md">
               <div className="flex flex-col items-center gap-1.5">
-                <span className="text-[9px] uppercase tracking-[0.3em] text-white/30 font-bold">PAGO ÚNICO SEGURO // ACCESO DE POR VIDA</span>
+                <span className="text-[9px] uppercase tracking-[0.3em] text-white/30 font-bold">PAGO ÚNICO 50€ // ACCESO DE POR VIDA</span>
               </div>
             </div>
 
