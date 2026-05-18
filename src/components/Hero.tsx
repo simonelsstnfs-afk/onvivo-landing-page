@@ -10,28 +10,28 @@ const featuredMovies = [
   {
     title: "Project Hail Mary",
     tag: "CIENCIA FICCIÓN // ESTRENO 2026",
-    image: "https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?auto=format&fit=crop&q=80&w=600",
+    image: "/peliculas 2026/hail_mary.jpg",
     glowColor: "rgba(0, 240, 255, 0.65)", // Cian
     croMessage: "🛰️ ESTRENO MAYO 2026 // ¿Vas a pagar otra suscripción mensual de 19,99€ solo para ver este estreno espacial, o prefieres configurar tu Stremio en 30 segundos con un único pago para toda la vida?",
   },
   {
     title: "The Boys: Season 5",
     tag: "ACCIÓN // SÁTIRA (2026)",
-    image: "https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&q=80&w=600",
+    image: "/peliculas 2026/the_boys.jpg",
     glowColor: "rgba(173, 0, 255, 0.65)", // Morado
     croMessage: "🩸 TEMPORADA FINAL // Olvídate de los anuncios obligatorios y el buffering molesto. Optimiza tu Stremio hoy y disfruta el estreno sin límites de ancho de banda y en Full HD real.",
   },
   {
     title: "Avatar: Fuego y Ceniza",
     tag: "AVENTURA // SCI-FI (2026)",
-    image: "https://images.unsplash.com/photo-1508873696983-2df519f0397e?auto=format&fit=crop&q=80&w=600",
+    image: "/peliculas 2026/avatar.jpg",
     glowColor: "rgba(255, 85, 0, 0.65)", // Volcanic Orange
     croMessage: "🔥 AVATAR: FUEGO Y CENIZA // ¿Seguirás pagando suscripciones caras de streaming solo para ver los últimos estrenos en 1080p falso? Configura tu Stremio hoy y vívelo en calidad cinematográfica real sin límites.",
   },
   {
     title: "Nemesis",
     tag: "ACCIÓN // CYBERPUNK (2026)",
-    image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=600",
+    image: "/peliculas 2026/nemesis.jpg",
     glowColor: "rgba(220, 20, 60, 0.65)", // Rojo
     croMessage: "⚔️ ESTRENO EXCLUSIVO // Deja de alquilar películas individuales o esperar meses a que lleguen a tu país. Configura tu biblioteca unificada ahora mismo.",
   },
