@@ -16,6 +16,12 @@ import CheckoutWizard from "./components/CheckoutWizard";
 
 export default function App() {
   const [isWizardOpen, setIsWizardOpen] = useState(false);
+  const [selectedMovie, setSelectedMovie] = useState<string | undefined>(undefined);
+
+  const handleOpenWizard = (movieTitle?: string) => {
+    setSelectedMovie(movieTitle);
+    setIsWizardOpen(true);
+  };
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -31,14 +37,14 @@ export default function App() {
         style={{ scaleX }}
       />
 
-      <Navbar onOpenWizard={() => setIsWizardOpen(true)} />
+      <Navbar />
       
       <main>
-        <Hero onOpenWizard={() => setIsWizardOpen(true)} />
-        <Features onOpenWizard={() => setIsWizardOpen(true)} />
+        <Hero onOpenWizard={handleOpenWizard} />
+        <Features />
         <HowItWorks />
         <FAQ />
-        <FinalCTA onOpenWizard={() => setIsWizardOpen(true)} />
+        <FinalCTA onOpenWizard={handleOpenWizard} />
       </main>
 
       <Footer />
@@ -46,6 +52,7 @@ export default function App() {
       <CheckoutWizard 
         isOpen={isWizardOpen} 
         onClose={() => setIsWizardOpen(false)} 
+        preSelectedMovie={selectedMovie}
       />
 
       {/* Sistema de Fondo Cósmico Espacial de Élite (Unificado & Multicapa) */}

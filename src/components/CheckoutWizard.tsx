@@ -8,6 +8,7 @@ import {
 interface CheckoutWizardProps {
   isOpen: boolean;
   onClose: () => void;
+  preSelectedMovie?: string;
 }
 
 const LANGUAGE_OPTIONS = ['Inglés', 'Español', 'Francés', 'Italiano', 'Otro'];
@@ -72,7 +73,7 @@ const STEP_THEMES = [
   }
 ];
 
-export default function CheckoutWizard({ isOpen, onClose }: CheckoutWizardProps) {
+export default function CheckoutWizard({ isOpen, onClose, preSelectedMovie }: CheckoutWizardProps) {
   const [step, setStep] = useState(0);
   const [preferences, setPreferences] = useState({
     language: '',
@@ -691,6 +692,11 @@ export default function CheckoutWizard({ isOpen, onClose }: CheckoutWizardProps)
                       <span>onvivo-system-payload.json</span>
                       <span className="text-[8px] bg-brand-primary/10 text-brand-primary px-1.5 py-0.5 rounded tracking-widest font-bold">LOCAL_MOCK</span>
                     </div>
+                    {preSelectedMovie && (
+                      <div className="text-[#00F0FF] mb-2 animate-pulse font-bold">
+                        {`[OK] INJECTING PROFILES FOR '${preSelectedMovie.toUpperCase()}'... CACHE SYNC: 100% OK`}
+                      </div>
+                    )}
                     <pre className="leading-tight">{JSON.stringify({
                       email: preferences.email,
                       language: preferences.language,
@@ -701,6 +707,7 @@ export default function CheckoutWizard({ isOpen, onClose }: CheckoutWizardProps)
                       channel: "web_checkout_direct",
                       createdAt: new Date().toISOString(),
                       metadata: {
+                        injectedTitle: preSelectedMovie || null,
                         userAgent: typeof navigator !== 'undefined' ? navigator.userAgent.substring(0, 30) : 'unknown',
                         environment: 'development'
                       }

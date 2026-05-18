@@ -1,164 +1,147 @@
 import { useState, useEffect } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
-import { Sparkles, Tv, Shield, Zap } from "lucide-react";
+import { motion, useMotionValue, useSpring, useTransform, animate } from "motion/react";
+import { Sparkles, PlayCircle, Zap } from "lucide-react";
 
 interface HeroProps {
-  onOpenWizard?: () => void;
+  onOpenWizard?: (movieTitle?: string) => void;
 }
 
 const featuredMovies = [
   {
-    title: "Dune: Part Two",
-    tag: "SCI-FI // AVENTURA",
-    image: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&q=80&w=400",
-    glowColor: "rgba(235, 140, 20, 0.65)",
+    title: "Project Hail Mary",
+    tag: "CIENCIA FICCIÓN // ESTRENO 2026",
+    image: "https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?auto=format&fit=crop&q=80&w=600",
+    glowColor: "rgba(0, 240, 255, 0.65)", // Cian
+    croMessage: "🛰️ ESTRENO MAYO 2026 // ¿Vas a pagar otra suscripción mensual de 19,99€ solo para ver este estreno espacial, o prefieres configurar tu Stremio en 30 segundos con un único pago para toda la vida?",
   },
   {
-    title: "Spider-Man: Beyond the Spider-Verse",
-    tag: "ANIMACIÓN // ACCIÓN",
-    image: "https://images.unsplash.com/photo-1608889175123-8ec330b86f84?auto=format&fit=crop&q=80&w=400",
-    glowColor: "rgba(255, 0, 110, 0.65)",
+    title: "The Boys: Season 5",
+    tag: "ACCIÓN // SÁTIRA (2026)",
+    image: "https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&q=80&w=600",
+    glowColor: "rgba(173, 0, 255, 0.65)", // Morado
+    croMessage: "🩸 TEMPORADA FINAL // Olvídate de los anuncios obligatorios y el buffering molesto. Optimiza tu Stremio hoy y disfruta el estreno sin límites de ancho de banda y en Full HD real.",
   },
   {
-    title: "Fallout: Season 2",
-    tag: "SCI-FI // ACCIÓN (2026)",
-    image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=400",
-    glowColor: "rgba(0, 240, 255, 0.65)",
+    title: "Avatar: Fuego y Ceniza",
+    tag: "AVENTURA // SCI-FI (2026)",
+    image: "https://images.unsplash.com/photo-1508873696983-2df519f0397e?auto=format&fit=crop&q=80&w=600",
+    glowColor: "rgba(255, 85, 0, 0.65)", // Volcanic Orange
+    croMessage: "🔥 AVATAR: FUEGO Y CENIZA // ¿Seguirás pagando suscripciones caras de streaming solo para ver los últimos estrenos en 1080p falso? Configura tu Stremio hoy y vívelo en calidad cinematográfica real sin límites.",
   },
   {
-    title: "Shōgun: Season 2",
-    tag: "DRAMA ÉPICO // ACCIÓN (2026)",
-    image: "https://images.unsplash.com/photo-1528164344705-47542687000d?auto=format&fit=crop&q=80&w=400",
-    glowColor: "rgba(220, 20, 60, 0.65)",
+    title: "Nemesis",
+    tag: "ACCIÓN // CYBERPUNK (2026)",
+    image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=600",
+    glowColor: "rgba(220, 20, 60, 0.65)", // Rojo
+    croMessage: "⚔️ ESTRENO EXCLUSIVO // Deja de alquilar películas individuales o esperar meses a que lleguen a tu país. Configura tu biblioteca unificada ahora mismo.",
   },
 ];
 
 export default function Hero({ onOpenWizard }: HeroProps) {
   const [isMobile, setIsMobile] = useState(true);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isHoveringCarousel, setIsHoveringCarousel] = useState(false);
 
-  // Lógica de Motion para el tilt 3D a 60fps estables en GPU
+  // Valores base para el carrusel rotativo
+  const rotationY = useMotionValue(0);
+  const dragX = useMotionValue(0);
+  
+  // Físicas muy suaves para el arrastre y giro del cilindro 3D
+  const springConfig = { damping: 20, stiffness: 100, mass: 0.8 };
+  const smoothRotation = useSpring(rotationY, springConfig);
+
+  // Valores para fondo ambiental
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-
-  // Valores amortiguados (spring) para una suavidad exquisita
-  const springConfig = { damping: 25, stiffness: 120, mass: 0.5 };
-  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [12, -12]), springConfig);
-  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-12, 12]), springConfig);
-  
-  // Desplazamiento inverso del gradiente ambiental de fondo para el paralaje
   const glowX = useSpring(useTransform(mouseX, [-0.5, 0.5], [50, -50]), springConfig);
   const glowY = useSpring(useTransform(mouseY, [-0.5, 0.5], [50, -50]), springConfig);
 
-  // Elementos flotantes holográficos con ligeras desviaciones de físicas (Nivel Superior)
-  const floatX = useSpring(useTransform(mouseX, [-0.5, 0.5], [-20, 20]), springConfig);
-  const floatY = useSpring(useTransform(mouseY, [-0.5, 0.5], [-20, 20]), springConfig);
-
-  // Springs dedicados para evitar llamadas condicionales en el renderizado JSX
-  const floatY_IA = useSpring(useTransform(mouseY, [-0.5, 0.5], [20, -20]), springConfig);
-  const floatX_Speed = useSpring(useTransform(mouseX, [-0.5, 0.5], [20, -20]), springConfig);
-
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 1024);
-    };
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
+  // Animación infinita base si no está en hover
+  useEffect(() => {
+    if (isMobile) return;
+    
+    let animation: any;
+    if (!isHoveringCarousel) {
+      animation = animate(rotationY, rotationY.get() - 360, {
+        duration: 35,
+        ease: "linear",
+        repeat: Infinity,
+      });
+    }
+    
+    return () => animation?.stop();
+  }, [isHoveringCarousel, rotationY, isMobile]);
+
+  // Actualizar el Active Index para el CRO Message
+  useEffect(() => {
+    if (isMobile) return;
+    
+    const unsubscribe = smoothRotation.on("change", (latestRotation) => {
+      // Normalizar rotación para encontrar el índice frontal (-180 a 180)
+      const normalizedRot = ((latestRotation % 360) + 360) % 360;
+      
+      // Como las tarjetas están en 0, 90, 180, 270... la que esté mirando al frente 
+      // tiene su rotación local opuesta a la rotación del contenedor.
+      // Contenedor rotando en X grados, la tarjeta en -X grados se ve de frente.
+      let index = Math.round((360 - normalizedRot) / 90) % 4;
+      if (index < 0) index += 4;
+      
+      setActiveIndex(index);
+    });
+    
+    return () => unsubscribe();
+  }, [smoothRotation, isMobile]);
+
+
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (isMobile) return;
     const rect = e.currentTarget.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const x = (e.clientX - rect.left) / width - 0.5;
-    const y = (e.clientY - rect.top) / height - 0.5;
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
     mouseX.set(x);
     mouseY.set(y);
   };
 
-  const handleMouseLeave = () => {
-    mouseX.set(0);
-    mouseY.set(0);
+  const handleDrag = (e: any, info: any) => {
+    // Sumar el delta del arrastre al rotationY actual
+    rotationY.set(rotationY.get() + info.delta.x * 0.5);
   };
 
+  const activeMovie = featuredMovies[activeIndex];
+
   return (
-    <section id="inicio" className="relative min-h-screen flex flex-col items-center justify-center px-6 pt-36 pb-24 overflow-hidden">
-      {/* 🌌 FONDO DE ESPACIO PROFUNDO Y NEÓN DINÁMICO */}
+    <section id="inicio" className="relative min-h-screen flex flex-col items-center justify-center px-6 pt-32 pb-16 overflow-hidden">
+      {/* 🌌 FONDO DE ESPACIO PROFUNDO */}
       <div className="absolute inset-0 bg-transparent -z-30" />
       
-      {/* Auroras Ambientales Animadas de Fondo */}
+      {/* Auroras Ambientales */}
       <motion.div 
-        animate={{
-          x: [0, 30, -30, 0],
-          y: [0, -50, 30, 0],
-          scale: [1, 1.1, 0.9, 1],
-        }}
-        transition={{
-          duration: 18,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
+        animate={{ x: [0, 30, -30, 0], y: [0, -50, 30, 0], scale: [1, 1.1, 0.9, 1] }}
+        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
         className="absolute top-10 left-10 w-[550px] h-[550px] bg-cyan-500/10 rounded-full blur-[140px] pointer-events-none -z-20"
       />
       <motion.div 
-        animate={{
-          x: [0, -40, 20, 0],
-          y: [0, 40, -30, 0],
-          scale: [1, 0.95, 1.05, 1],
-        }}
-        transition={{
-          duration: 22,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
+        animate={{ x: [0, -40, 20, 0], y: [0, 40, -30, 0], scale: [1, 0.95, 1.05, 1] }}
+        transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
         className="absolute bottom-10 right-10 w-[600px] h-[600px] bg-pink-500/10 rounded-full blur-[150px] pointer-events-none -z-20"
       />
-      <motion.div 
-        animate={{
-          x: [0, 20, -20, 0],
-          y: [0, 30, 40, 0],
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-        className="absolute top-1/2 left-1/3 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[160px] pointer-events-none -z-20"
-      />
-
-      {/* Rejilla Cibernética 3D (Tron Grid Plane) */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
-        <div 
-          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[250%] h-[75%] opacity-35"
-          style={{
-            backgroundImage: `
-              linear-gradient(to right, rgba(0, 240, 255, 0.15) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(0, 240, 255, 0.15) 1px, transparent 1px)
-            `,
-            backgroundSize: "50px 50px",
-            transform: "perspective(400px) rotateX(75deg) translateY(120px)",
-            maskImage: "linear-gradient(to top, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 80%)",
-            WebkitMaskImage: "linear-gradient(to top, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 80%)",
-          }}
-        />
-      </div>
-
-      {/* Side Meta Text */}
-      <div className="absolute left-6 top-1/2 -translate-y-1/2 hidden xl:flex flex-col space-y-24 opacity-20 z-20">
-        <span className="text-[10px] rotate-90 uppercase tracking-[0.5em] origin-left whitespace-nowrap">Digital Services</span>
-        <span className="text-[10px] rotate-90 uppercase tracking-[0.5em] origin-left whitespace-nowrap">V 2.5.0</span>
-      </div>
 
       <div className="container mx-auto relative z-10 flex flex-col items-center justify-center text-center">
         <motion.div
           initial={{ opacity: 0, y: 35 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="max-w-4xl flex flex-col items-center"
+          className="max-w-4xl flex flex-col items-center mb-10"
         >
-          {/* Badge Contextual de Cristal Premium con Shimmer */}
-          <div className="flex items-center gap-2 mb-8 px-4.5 py-2.5 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-md relative overflow-hidden group shadow-[0_0_30px_rgba(0,240,255,0.06)]">
+          {/* Badge Contextual */}
+          <div className="flex items-center gap-2 mb-6 px-4 py-2 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-md relative overflow-hidden shadow-[0_0_30px_rgba(0,240,255,0.06)]">
             <span className="w-2 h-2 rounded-full bg-[#00F0FF] animate-ping" />
             <span className="w-2 h-2 rounded-full bg-[#00F0FF] absolute" />
             <span className="text-[#00F0FF] text-[10px] md:text-xs font-black tracking-[0.25em] uppercase font-mono">
@@ -166,181 +149,141 @@ export default function Hero({ onOpenWizard }: HeroProps) {
             </span>
           </div>
           
-          {/* Título Monumental con Gradiente Neón Multicapa y Drop-Shadow de Brillo */}
-          <h1 className="text-5xl md:text-8xl font-extrabold tracking-tight mb-8 leading-[0.92] uppercase">
+          {/* Título Monumental */}
+          <h1 className="text-4xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-6 leading-[0.92] uppercase">
             <span className="text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.18)] block mb-1">CINE PERSONAL</span>
             <span className="bg-gradient-to-r from-[#00F0FF] via-[#AD00FF] to-[#FF007A] text-transparent bg-clip-text drop-shadow-[0_0_35px_rgba(0,240,255,0.32)] block">
               SIN COMPLICACIONES
             </span>
           </h1>
           
-          {/* Subtítulo de Alta Legibilidad */}
-          <p className="max-w-2xl text-white/70 text-sm md:text-base lg:text-lg mb-12 leading-relaxed font-normal">
-            Configuramos tu entorno Stremio de manera profesional en segundos. Accede a todo el contenido global en un solo lugar, optimizado y en calidad máxima, sin necesidad de tutoriales complejos.
+          <p className="max-w-2xl text-white/70 text-sm md:text-base mb-6 leading-relaxed font-normal">
+            Configuramos tu entorno Stremio de manera profesional en segundos. Accede a los estrenos mundiales de 2026 en Full HD nativo y sin geobloqueos.
           </p>
-
-          {/* Acciones de Conversión Shimmer & Glowing (Enfoque de Botón Único Web) */}
-          <div className="flex items-center justify-center mb-20 w-full">
-            <motion.button
-              onClick={onOpenWizard}
-              whileHover={{ scale: 1.04, boxShadow: "0 0 45px rgba(0, 240, 255, 0.6)" }}
-              whileTap={{ scale: 0.96 }}
-              className="w-full sm:w-auto group relative inline-flex items-center justify-center px-12 py-5 bg-gradient-to-r from-[#00F0FF] via-[#7000FF] to-[#FF007A] text-white font-extrabold uppercase text-xs tracking-widest overflow-hidden transition-all shadow-[0_0_35px_rgba(0,240,255,0.45)] cursor-pointer rounded-xl font-mono"
-            >
-              <span className="relative z-10 flex items-center gap-2">
-                ¡OBTENER ACCESO INMEDIATO! <Sparkles className="w-4 h-4 text-white animate-spin-slow" />
-              </span>
-              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-            </motion.button>
-          </div>
         </motion.div>
 
-        {/* Mockup Monumental de la Smart TV con perspectiva e interactividad */}
-        <motion.div
-          initial={{ opacity: 0, y: 80 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.3 }}
-          className="w-full max-w-5xl mx-auto relative cursor-pointer"
-          style={{
-            perspective: 1200,
-          }}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-        >
-          {/* ⚡ BADGES HOLOGRÁFICOS FLOTANTES CON FISICAS REVERSAS (Efecto WOW) */}
-          {!isMobile && (
-            <>
-              {/* Badge 1: 1080p Full HD (Arriba Izquierda) */}
-              <motion.div 
-                style={{ x: floatX, y: floatY }}
-                className="absolute -top-8 -left-12 z-30 px-4 py-2 rounded-xl bg-slate-900/60 border border-cyan-500/20 backdrop-blur-md flex items-center gap-2 shadow-[0_10px_30px_rgba(0,240,255,0.15)]"
-              >
-                <Tv className="w-4 h-4 text-cyan-400" />
-                <span className="text-[10px] font-mono font-bold text-white tracking-wider">1080p FULL HD OPTIMIZED</span>
-              </motion.div>
-              
-              {/* Badge 2: IA Activada (Abajo Izquierda) */}
-              <motion.div 
-                style={{ x: floatX, y: floatY_IA }}
-                className="absolute -bottom-8 -left-6 z-30 px-4 py-2 rounded-xl bg-slate-900/60 border border-purple-500/20 backdrop-blur-md flex items-center gap-2 shadow-[0_10px_30px_rgba(112,0,255,0.15)]"
-              >
-                <Shield className="w-4 h-4 text-purple-400" />
-                <span className="text-[10px] font-mono font-bold text-white tracking-wider">AI AUTOMATED SETUP</span>
-              </motion.div>
-
-              {/* Badge 3: Descarga ⚡ (Derecha) */}
-              <motion.div 
-                style={{ x: floatX_Speed, y: floatY }}
-                className="absolute top-1/4 -right-12 z-30 px-4 py-2 rounded-xl bg-slate-900/60 border border-pink-500/20 backdrop-blur-md flex items-center gap-2 shadow-[0_10px_30px_rgba(255,0,120,0.15)]"
-              >
-                <Zap className="w-4 h-4 text-pink-400 animate-pulse" />
-                <span className="text-[10px] font-mono font-bold text-white tracking-wider">MAX SPEED STREAMING</span>
-              </motion.div>
-            </>
-          )}
-
-          {/* Gradiente Radial de Iluminación Ambiental Trasero con Paralaje de Fondo */}
-          <motion.div 
-            className="absolute inset-0 -z-10 blur-[130px] pointer-events-none rounded-full"
-            style={{
-              x: isMobile ? 0 : glowX,
-              y: isMobile ? 0 : glowY,
-              background: "radial-gradient(circle, rgba(0, 240, 255, 0.28) 0%, rgba(173, 0, 255, 0.25) 50%, transparent 80%)",
-              transform: "scale(1.25)",
-            }}
-          />
-
-          {/* Contorno de Neón Reactivo Pulsante Perimetral (Mística Extrema) */}
-          <div className="absolute -inset-[2px] bg-gradient-to-r from-[#00F0FF]/30 via-[#AD00FF]/30 to-[#FF007A]/30 rounded-[28px] -z-20 blur-[3px] opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
-          <div className="absolute -inset-[8px] bg-gradient-to-r from-[#00F0FF]/15 via-[#AD00FF]/15 to-[#FF007A]/15 rounded-[34px] -z-20 blur-[15px] opacity-60 group-hover:opacity-100 transition-opacity duration-500 animate-pulse" />
-
-          {/* Marco Físico 3D de la Smart TV (Cristal Esmerilado Premium) */}
-          <motion.div
-            style={{
-              rotateX: isMobile ? 0 : rotateX,
-              rotateY: isMobile ? 0 : rotateY,
-              transformStyle: "preserve-3d",
-            }}
-            className="glass rounded-3xl p-2.5 md:p-3 aspect-video overflow-hidden shadow-[0_45px_130px_rgba(0,0,0,0.95)] border border-white/10 relative group transition-all duration-300"
-          >
-            {/* Simulador Stremio "Onvivo Custom" */}
-            <div className="w-full h-full bg-[#030306]/95 rounded-2xl overflow-hidden relative flex flex-col border border-white/5">
-              
-              {/* Reflejo satinado de cristal (Diagonal) */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.04] to-transparent pointer-events-none -z-10 group-hover:translate-x-full transition-transform duration-1000 ease-out" />
-              
-              {/* Efecto de escaneo analógico CRT de televisión activa (Mística visual retro-futurista) */}
-              <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(0,240,255,0.04)_0%,transparent_80%)] mix-blend-overlay -z-10" />
-              <div className="absolute inset-0 pointer-events-none opacity-[0.03] bg-[linear-gradient(to_bottom,rgba(255,255,255,1)_50%,transparent_50%)] bg-[length:100%_4px] -z-10" />
-              
-              {/* Barra de Navegación del Simulador */}
-              <div className="flex items-center justify-between px-6 py-4 bg-black/60 border-b border-white/5 z-20">
-                <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#00F0FF] animate-ping" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#00F0FF] absolute" />
-                  <span className="text-[10px] md:text-xs font-black font-mono tracking-widest text-[#00F0FF] uppercase">ONVIVO ACTIVE // SETUP 100% OK</span>
-                </div>
-                <div className="flex items-center gap-4 text-white/40 text-[10px] font-mono tracking-wider">
-                  <span className="text-[#00F0FF] font-bold">1080p Full HD</span>
-                  <span>●</span>
-                  <span className="text-[#AD00FF] font-bold">OPTIMIZED STREAMING</span>
-                </div>
+        {/* ------------------------------------------------------------- */}
+        {/* 🔥 CILINDRO HOLOGRÁFICO 3D (Desktop) o Lista Normal (Mobile) */}
+        {/* ------------------------------------------------------------- */}
+        
+        {isMobile ? (
+          /* Vista Mobile Plana */
+          <div className="w-full flex flex-col gap-6">
+            {featuredMovies.map((movie, idx) => (
+              <div key={idx} className="bg-white/[0.03] border border-white/10 rounded-2xl p-4 flex flex-col gap-4">
+                <img src={movie.image} alt={movie.title} className="w-full h-48 object-cover rounded-xl" />
+                <h3 className="text-white font-bold text-xl">{movie.title}</h3>
+                <p className="text-white/60 text-xs italic">"{movie.croMessage}"</p>
+                <button 
+                  onClick={() => onOpenWizard?.(movie.title)}
+                  className="w-full mt-2 py-3 bg-gradient-to-r from-[#00F0FF]/20 to-[#AD00FF]/20 border border-[#00F0FF]/30 text-[#00F0FF] font-mono text-xs font-bold rounded-lg"
+                >
+                  CONFIGURAR STREAMING ➔
+                </button>
               </div>
-              
-              {/* Cuadrícula de Pósteres de Películas */}
-              <div className="flex-1 p-6 md:p-8 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 overflow-hidden z-10" style={{ transformStyle: "preserve-3d" }}>
-                {featuredMovies.map((movie, idx) => (
+            ))}
+          </div>
+        ) : (
+          /* Vista Desktop: Carrusel Cilíndrico 3D + CRO Panel */
+          <div 
+            className="w-full max-w-4xl relative h-[450px] flex items-center justify-center perspective-[1500px]"
+            onMouseMove={handleMouseMove}
+            onMouseEnter={() => setIsHoveringCarousel(true)}
+            onMouseLeave={() => {
+              setIsHoveringCarousel(false);
+              mouseX.set(0); mouseY.set(0);
+            }}
+          >
+            {/* Contenedor del Carrusel Orbital */}
+            <motion.div
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.1}
+              onDrag={handleDrag}
+              style={{
+                rotateY: smoothRotation,
+                transformStyle: "preserve-3d"
+              }}
+              className="relative w-[260px] h-[380px] cursor-grab active:cursor-grabbing z-20"
+            >
+              {featuredMovies.map((movie, idx) => {
+                // Rotación Y de la tarjeta dentro del círculo
+                const cardAngle = idx * (360 / featuredMovies.length);
+                const isActive = activeIndex === idx;
+
+                return (
                   <motion.div
                     key={idx}
-                    whileHover={{ 
-                      y: -18, 
-                      scale: 1.16,
-                      rotateY: idx % 2 === 0 ? 6 : -6,
-                      rotateX: 4,
-                      z: 40,
-                      boxShadow: `0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 25px ${movie.glowColor}`
-                    }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 350,
-                      damping: 18
-                    }}
-                    className="relative aspect-[2/3] rounded-xl overflow-hidden group cursor-pointer border border-white/5 transition-all duration-300"
+                    className="absolute inset-0 rounded-2xl overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.8)] transition-all duration-500"
                     style={{
-                      boxShadow: "0 8px 32px rgba(0, 0, 0, 0.6)",
-                      transformStyle: "preserve-3d"
+                      transform: `rotateY(${cardAngle}deg) translateZ(300px)`,
+                      boxShadow: isActive ? `0 0 40px ${movie.glowColor}` : '0 20px 50px rgba(0,0,0,0.8)',
+                      borderColor: isActive ? movie.glowColor : 'rgba(255,255,255,0.1)',
+                      opacity: isActive ? 1 : 0.6,
+                      transformStyle: "preserve-3d",
                     }}
+                    whileHover={{ scale: 1.05 }}
                   >
-                    {/* Imagen de Fondo del Póster */}
                     <img 
                       src={movie.image} 
                       alt={movie.title}
-                      className="w-full h-full object-cover opacity-70 group-hover:opacity-95 group-hover:scale-105 transition-all duration-500"
-                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-cover"
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
                     
-                    {/* Degradado Translúcido de Pie */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/25 to-transparent opacity-90 group-hover:opacity-95 transition-opacity duration-300" />
-                    
-                    {/* Brillo Ambiental Radial en Hover */}
-                    <div 
-                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl pointer-events-none"
-                      style={{
-                        background: `radial-gradient(circle, ${movie.glowColor} 0%, transparent 70%)`,
-                      }}
-                    />
-
-                    {/* Contenido / Texto del Póster */}
-                    <div className="absolute bottom-4 left-4 right-4 text-left z-10">
-                      <span className="text-[9px] font-mono tracking-widest text-[#00F0FF] uppercase block mb-1">{movie.tag}</span>
-                      <h3 className="text-white text-xs md:text-sm font-bold tracking-tight line-clamp-1 leading-snug group-hover:text-[#00F0FF] transition-colors duration-300">{movie.title}</h3>
+                    <div className="absolute bottom-5 left-5 right-5 text-left">
+                      <span className="text-[10px] font-mono tracking-widest text-[#00F0FF] uppercase block mb-1">{movie.tag}</span>
+                      <h3 className="text-white text-xl font-bold tracking-tight">{movie.title}</h3>
                     </div>
                   </motion.div>
-                ))}
+                );
+              })}
+            </motion.div>
+          </div>
+        )}
+
+        {/* ------------------------------------------------------------- */}
+        {/* 🔥 PANEL DE NEUROMARKETING CRO (Solo Desktop) */}
+        {/* ------------------------------------------------------------- */}
+        {!isMobile && activeMovie && (
+          <motion.div 
+            key={activeIndex}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="w-full max-w-3xl mt-8 mx-auto p-6 rounded-2xl border bg-black/40 backdrop-blur-2xl shadow-[0_20px_40px_rgba(0,0,0,0.5)] z-30 flex flex-col md:flex-row items-center gap-6"
+            style={{
+              borderColor: activeMovie.glowColor.replace('0.65', '0.3'),
+              boxShadow: `0 20px 40px rgba(0,0,0,0.5), inset 0 0 20px ${activeMovie.glowColor.replace('0.65', '0.1')}`
+            }}
+          >
+            <div className="flex-1 text-left">
+              <div className="flex items-center gap-2 mb-2 opacity-60">
+                <Zap className="w-3.5 h-3.5 text-[#00F0FF]" />
+                <span className="text-[10px] font-mono uppercase tracking-widest text-[#00F0FF]">SYSTEM DIAGNOSTIC</span>
               </div>
+              <p className="text-white/80 text-sm leading-relaxed font-light italic">
+                "{activeMovie.croMessage}"
+              </p>
+            </div>
+            
+            <div className="shrink-0 w-full md:w-auto">
+              <motion.button
+                onClick={() => onOpenWizard?.(activeMovie.title)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="w-full group relative inline-flex items-center justify-center px-6 py-4 bg-gradient-to-r text-white font-bold uppercase text-xs tracking-[0.1em] rounded-xl overflow-hidden transition-all shadow-lg font-mono cursor-pointer"
+                style={{
+                  backgroundImage: `linear-gradient(to right, ${activeMovie.glowColor}, #AD00FF)`
+                }}
+              >
+                <span className="relative z-10 flex items-center gap-2">
+                  <PlayCircle className="w-4 h-4" /> CONFIGURAR AHORA
+                </span>
+                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+              </motion.button>
             </div>
           </motion.div>
-        </motion.div>
+        )}
       </div>
     </section>
   );

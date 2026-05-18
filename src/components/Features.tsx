@@ -46,11 +46,7 @@ const features = [
   }
 ];
 
-interface FeaturesProps {
-  onOpenWizard?: () => void;
-}
-
-export default function Features({ onOpenWizard }: FeaturesProps) {
+export default function Features() {
   return (
     <section id="servicios" className="py-32 relative overflow-hidden border-t border-white/5 bg-transparent">
       {/* Glows de fondo decorativos */}
@@ -86,8 +82,7 @@ export default function Features({ onOpenWizard }: FeaturesProps) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ delay: i * 0.08, duration: 0.6 }}
-              onClick={onOpenWizard}
-              className="group relative p-8 md:p-10 rounded-2xl bg-white/[0.01] hover:bg-white/[0.03] border border-white/5 hover:border-white/10 transition-all duration-500 overflow-hidden cursor-pointer shadow-[0_4px_30px_rgba(0,0,0,0.4)] hover:shadow-[0_20px_50px_rgba(0,0,0,0.65)] hover:-translate-y-2 flex flex-col justify-between"
+              className="group relative p-8 md:p-10 rounded-2xl bg-white/[0.01] hover:bg-white/[0.03] border border-white/5 hover:border-white/10 transition-all duration-500 overflow-hidden shadow-[0_4px_30px_rgba(0,0,0,0.4)] hover:shadow-[0_20px_50px_rgba(0,0,0,0.65)] hover:-translate-y-2 flex flex-col justify-between"
             >
               {/* Resplandor Ambiental Interno de Hover (Color del Icono) */}
               <div 
@@ -122,11 +117,6 @@ export default function Features({ onOpenWizard }: FeaturesProps) {
                 </p>
               </div>
 
-              {/* Indicador de Acción Holográfico en Hover */}
-              <div className="mt-8 pt-4 border-t border-white/5 flex items-center justify-between text-[10px] font-mono font-bold tracking-widest text-[#00F0FF] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <span>PERSONALIZAR PLAN</span>
-                <span className="text-xs">➔</span>
-              </div>
             </motion.div>
           ))}
         </div>
