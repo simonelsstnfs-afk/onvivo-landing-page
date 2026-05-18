@@ -1,5 +1,4 @@
-import { motion } from "motion/react";
-import { Send, Twitter, Instagram, Github } from "lucide-react";
+import { Send } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -16,7 +15,7 @@ export default function Footer() {
               <img 
                 src="/logo.png" 
                 alt="onvivo logo" 
-                className="w-10 h-10 object-contain drop-shadow-[0_0_15px_rgba(0,240,255,0.4)] animate-pulse"
+                className="w-10 h-10 object-contain drop-shadow-[0_0_15px_rgba(0,240,255,0.4)]"
               />
               <span className="text-xl font-black text-white tracking-tighter uppercase font-mono">onvivo</span>
             </div>
@@ -59,27 +58,10 @@ export default function Footer() {
               href="https://t.me/onvivo_bot" 
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white/40 hover:text-[#00F0FF] hover:drop-shadow-[0_0_8px_rgba(0,240,255,0.8)] hover:scale-115 transition-all duration-300"
+              aria-label="Contactar por Telegram"
+              className="text-white/40 hover:text-[#00F0FF] hover:drop-shadow-[0_0_8px_rgba(0,240,255,0.8)] hover:scale-110 transition-all duration-300"
             >
               <Send size={18} />
-            </a>
-            <a 
-              href="#" 
-              className="text-white/40 hover:text-[#AD00FF] hover:drop-shadow-[0_0_8px_rgba(173,0,255,0.8)] hover:scale-115 transition-all duration-300"
-            >
-              <Twitter size={18} />
-            </a>
-            <a 
-              href="#" 
-              className="text-white/40 hover:text-[#FF007A] hover:drop-shadow-[0_0_8px_rgba(255,0,122,0.8)] hover:scale-115 transition-all duration-300"
-            >
-              <Instagram size={18} />
-            </a>
-            <a 
-              href="#" 
-              className="text-white/40 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)] hover:scale-115 transition-all duration-300"
-            >
-              <Github size={18} />
             </a>
           </div>
         </div>

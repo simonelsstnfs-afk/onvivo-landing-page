@@ -39,7 +39,7 @@ export default function App() {
 
       <Navbar />
       
-      <main>
+      <main aria-label="Contenido principal de Onvivo">
         <Hero onOpenWizard={handleOpenWizard} />
         <Features />
         <HowItWorks />

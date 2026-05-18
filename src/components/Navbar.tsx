@@ -42,6 +42,8 @@ export default function Navbar() {
         <button 
           className="md:hidden text-[#00F0FF] hover:text-white transition-colors p-2"
           onClick={() => setIsOpen(!isOpen)}
+          aria-label={isOpen ? "Cerrar menú de navegación" : "Abrir menú de navegación"}
+          aria-expanded={isOpen}
         >
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>

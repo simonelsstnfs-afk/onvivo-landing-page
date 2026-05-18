@@ -57,7 +57,7 @@ export default function HowItWorks() {
             <div className="space-y-4 max-w-md">
               {[
                 { text: "Automatización total de plugins", color: "text-[#00F0FF]" },
-                { text: "Soporte interactivo 24/7 vía Telegram", color: "text-[#AD00FF]" },
+                { text: "Soporte técnico de activación incluido", color: "text-[#AD00FF]" },
                 { text: "Actualizaciones de contenido automáticas", color: "text-[#FF007A]" }
               ].map((item, idx) => (
                 <motion.div 

@@ -80,6 +80,9 @@ export default function FAQ() {
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : i)}
                   className="w-full flex items-center justify-between p-6 md:p-8 text-left transition-colors cursor-pointer"
+                  aria-expanded={isOpen}
+                  aria-controls={`faq-answer-${i}`}
+                  id={`faq-question-${i}`}
                 >
                   <span className={`text-base md:text-lg font-bold tracking-tight pr-4 transition-colors duration-300 ${
                     isOpen ? "text-[#00F0FF]" : "text-white/90 group-hover:text-white"
@@ -100,6 +103,9 @@ export default function FAQ() {
                 <AnimatePresence>
                   {isOpen && (
                     <motion.div
+                      id={`faq-answer-${i}`}
+                      role="region"
+                      aria-labelledby={`faq-question-${i}`}
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
