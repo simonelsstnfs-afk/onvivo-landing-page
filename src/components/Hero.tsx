@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, useMotionValue, useSpring, useTransform, animate } from "motion/react";
-import { Sparkles, PlayCircle, Zap } from "lucide-react";
+import { Sparkles, PlayCircle, Zap, RefreshCw, Pause } from "lucide-react";
 
 interface HeroProps {
   onOpenWizard?: (movieTitle?: string) => void;
@@ -40,21 +40,18 @@ const featuredMovies = [
 export default function Hero({ onOpenWizard }: HeroProps) {
   const [isMobile, setIsMobile] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isHoveringCarousel, setIsHoveringCarousel] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
 
   // Valores base para el carrusel rotativo
   const rotationY = useMotionValue(0);
-  const dragX = useMotionValue(0);
   
   // Físicas muy suaves para el arrastre y giro del cilindro 3D
-  const springConfig = { damping: 20, stiffness: 100, mass: 0.8 };
+  const springConfig = { damping: 22, stiffness: 90, mass: 0.8 };
   const smoothRotation = useSpring(rotationY, springConfig);
 
   // Valores para fondo ambiental
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  const glowX = useSpring(useTransform(mouseX, [-0.5, 0.5], [50, -50]), springConfig);
-  const glowY = useSpring(useTransform(mouseY, [-0.5, 0.5], [50, -50]), springConfig);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 1024);
@@ -63,42 +60,34 @@ export default function Hero({ onOpenWizard }: HeroProps) {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Animación infinita base si no está en hover
+  // Animación infinita continua si NO está pausada por click
   useEffect(() => {
-    if (isMobile) return;
+    if (isMobile || isPaused) return;
     
-    let animation: any;
-    if (!isHoveringCarousel) {
-      animation = animate(rotationY, rotationY.get() - 360, {
-        duration: 35,
-        ease: "linear",
-        repeat: Infinity,
-      });
-    }
+    // Iniciar rotación continua lineal
+    const animation = animate(rotationY, rotationY.get() - 360, {
+      duration: 40,
+      ease: "linear",
+      repeat: Infinity,
+    });
     
     return () => animation?.stop();
-  }, [isHoveringCarousel, rotationY, isMobile]);
+  }, [isPaused, rotationY, isMobile]);
 
   // Actualizar el Active Index para el CRO Message
   useEffect(() => {
     if (isMobile) return;
     
     const unsubscribe = smoothRotation.on("change", (latestRotation) => {
-      // Normalizar rotación para encontrar el índice frontal (-180 a 180)
+      // Normalizar rotación para encontrar el índice frontal (0 a 3)
       const normalizedRot = ((latestRotation % 360) + 360) % 360;
-      
-      // Como las tarjetas están en 0, 90, 180, 270... la que esté mirando al frente 
-      // tiene su rotación local opuesta a la rotación del contenedor.
-      // Contenedor rotando en X grados, la tarjeta en -X grados se ve de frente.
       let index = Math.round((360 - normalizedRot) / 90) % 4;
       if (index < 0) index += 4;
-      
       setActiveIndex(index);
     });
     
     return () => unsubscribe();
   }, [smoothRotation, isMobile]);
-
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (isMobile) return;
@@ -110,8 +99,39 @@ export default function Hero({ onOpenWizard }: HeroProps) {
   };
 
   const handleDrag = (e: any, info: any) => {
-    // Sumar el delta del arrastre al rotationY actual
-    rotationY.set(rotationY.get() + info.delta.x * 0.5);
+    // Si arrastra, pausamos la rotación continua automática
+    setIsPaused(true);
+    rotationY.set(rotationY.get() + info.delta.x * 0.4);
+  };
+
+  const handleCardClick = (idx: number) => {
+    if (isMobile) {
+      onOpenWizard?.(featuredMovies[idx].title);
+      return;
+    }
+
+    // Si ya está pausado y damos click exactamente en la que está activa (al frente), reanudamos rotación
+    if (isPaused && activeIndex === idx) {
+      setIsPaused(false);
+      return;
+    }
+
+    // Pausar y traer esta tarjeta al frente
+    setIsPaused(true);
+    setActiveIndex(idx);
+
+    const currentRot = rotationY.get();
+    const targetAngle = -idx * 90;
+
+    // Encontrar el camino más corto (menor diferencia de ángulos)
+    const difference = ((targetAngle - currentRot + 180) % 360) - 180;
+    const targetRot = currentRot + difference;
+
+    animate(rotationY, targetRot, {
+      type: "spring",
+      stiffness: 90,
+      damping: 20,
+    });
   };
 
   const activeMovie = featuredMovies[activeIndex];
@@ -188,11 +208,6 @@ export default function Hero({ onOpenWizard }: HeroProps) {
           <div 
             className="w-full max-w-4xl relative h-[450px] flex items-center justify-center perspective-[1500px]"
             onMouseMove={handleMouseMove}
-            onMouseEnter={() => setIsHoveringCarousel(true)}
-            onMouseLeave={() => {
-              setIsHoveringCarousel(false);
-              mouseX.set(0); mouseY.set(0);
-            }}
           >
             {/* Contenedor del Carrusel Orbital */}
             <motion.div
@@ -207,35 +222,45 @@ export default function Hero({ onOpenWizard }: HeroProps) {
               className="relative w-[260px] h-[380px] cursor-grab active:cursor-grabbing z-20"
             >
               {featuredMovies.map((movie, idx) => {
-                // Rotación Y de la tarjeta dentro del círculo
                 const cardAngle = idx * (360 / featuredMovies.length);
                 const isActive = activeIndex === idx;
 
                 return (
-                  <motion.div
+                  /* Wrapper Div con Estilo inline 3D Estático para evitar conflicto de transform de Framer Motion */
+                  <div
                     key={idx}
-                    className="absolute inset-0 rounded-2xl overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.8)] transition-all duration-500"
+                    className="absolute inset-0"
                     style={{
-                      transform: `rotateY(${cardAngle}deg) translateZ(300px)`,
-                      boxShadow: isActive ? `0 0 40px ${movie.glowColor}` : '0 20px 50px rgba(0,0,0,0.8)',
-                      borderColor: isActive ? movie.glowColor : 'rgba(255,255,255,0.1)',
-                      opacity: isActive ? 1 : 0.6,
-                      transformStyle: "preserve-3d",
+                      transform: `rotateY(${cardAngle}deg) translateZ(280px)`,
+                      transformStyle: "preserve-3d"
                     }}
-                    whileHover={{ scale: 1.05 }}
                   >
-                    <img 
-                      src={movie.image} 
-                      alt={movie.title}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
-                    
-                    <div className="absolute bottom-5 left-5 right-5 text-left">
-                      <span className="text-[10px] font-mono tracking-widest text-[#00F0FF] uppercase block mb-1">{movie.tag}</span>
-                      <h3 className="text-white text-xl font-bold tracking-tight">{movie.title}</h3>
-                    </div>
-                  </motion.div>
+                    <motion.div
+                      onClick={() => handleCardClick(idx)}
+                      className="w-full h-full rounded-2xl overflow-hidden border cursor-pointer transition-[border-color,opacity,box-shadow] duration-500 bg-[#030306]/95"
+                      style={{
+                        boxShadow: isActive ? `0 0 45px ${movie.glowColor}` : '0 15px 35px rgba(0,0,0,0.6)',
+                        borderColor: isActive ? movie.glowColor : 'rgba(255,255,255,0.1)',
+                        opacity: isActive ? 1 : 0.4,
+                      }}
+                      whileHover={{ scale: 1.04 }}
+                    >
+                      {/* Imagen de Fondo de Póster */}
+                      <img 
+                        src={movie.image} 
+                        alt={movie.title}
+                        className="w-full h-full object-cover select-none pointer-events-none"
+                      />
+                      
+                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/35 to-transparent pointer-events-none" />
+                      
+                      {/* Contenido / Texto del Póster */}
+                      <div className="absolute bottom-5 left-5 right-5 text-left select-none pointer-events-none">
+                        <span className="text-[10px] font-mono tracking-widest text-[#00F0FF] uppercase block mb-1">{movie.tag}</span>
+                        <h3 className="text-white text-xl font-bold tracking-tight">{movie.title}</h3>
+                      </div>
+                    </motion.div>
+                  </div>
                 );
               })}
             </motion.div>
@@ -257,9 +282,26 @@ export default function Hero({ onOpenWizard }: HeroProps) {
             }}
           >
             <div className="flex-1 text-left">
-              <div className="flex items-center gap-2 mb-2 opacity-60">
-                <Zap className="w-3.5 h-3.5 text-[#00F0FF]" />
-                <span className="text-[10px] font-mono uppercase tracking-widest text-[#00F0FF]">SYSTEM DIAGNOSTIC</span>
+              <div className="flex items-center gap-4 mb-2">
+                <div className="flex items-center gap-2 opacity-60">
+                  <Zap className="w-3.5 h-3.5 text-[#00F0FF]" />
+                  <span className="text-[10px] font-mono uppercase tracking-widest text-[#00F0FF]">SYSTEM DIAGNOSTIC</span>
+                </div>
+                
+                {/* Indicador visual de Pausado/Interactividad */}
+                {isPaused ? (
+                  <span 
+                    onClick={() => setIsPaused(false)}
+                    className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[9px] font-mono font-bold tracking-widest uppercase cursor-pointer hover:bg-amber-500/20 transition-all select-none"
+                    title="Haz clic para reanudar el giro automático del carrusel"
+                  >
+                    <Pause className="w-2 h-2" /> Pausado (Click en tarjeta activa para reanudar)
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[9px] font-mono font-bold tracking-widest uppercase select-none animate-pulse">
+                    <RefreshCw className="w-2.5 h-2.5 animate-spin-slow" /> Rotando libremente
+                  </span>
+                )}
               </div>
               <p className="text-white/80 text-sm leading-relaxed font-light italic">
                 "{activeMovie.croMessage}"
