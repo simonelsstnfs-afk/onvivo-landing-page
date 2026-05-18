@@ -55,20 +55,20 @@ html {
   scrollbar-color: #AD00FF #050505;
 }
 
-/* Chrome, Edge, Safari y navegadores Webkit (Global y Contenedores) */
-::-webkit-scrollbar {
+/* Chrome, Edge, Safari y navegadores Webkit (Aplicado de forma universal a todos los contenedores) */
+*::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
 
 /* Canal del scrollbar (Track) */
-::-webkit-scrollbar-track {
+*::-webkit-scrollbar-track {
   background: #050505;
   border-left: 1px solid rgba(255, 255, 255, 0.03);
 }
 
 /* Tirador del scrollbar (Thumb) - Gradiente cromático neón vertical */
-::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
   background: linear-gradient(180deg, #00F0FF 0%, #AD00FF 50%, #FF007A 100%);
   border: 2px solid #050505;
   border-radius: 9999px;
@@ -76,17 +76,21 @@ html {
 }
 
 /* Tirador en Hover - Brillo verdoso-cian interactivo */
-::-webkit-scrollbar-thumb:hover {
+*::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(180deg, #00FF85 0%, #00F0FF 50%, #7000FF 100%);
 }
 
-/* Estilización específica para el scroll interno de cristal del Checkout Wizard */
+/* Estilización específica para scrollbars dentro de modales con fondos de cristal */
+.backdrop-blur-2xl::-webkit-scrollbar-track,
+.backdrop-blur-3xl::-webkit-scrollbar-track,
 .relative.max-h-\[92vh\]::-webkit-scrollbar-track {
-  background: rgba(7, 7, 10, 0.85);
+  background: rgba(7, 7, 10, 0.85) !important;
   border-left: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+.backdrop-blur-2xl::-webkit-scrollbar-thumb,
+.backdrop-blur-3xl::-webkit-scrollbar-thumb,
 .relative.max-h-\[92vh\]::-webkit-scrollbar-thumb {
-  border-color: rgba(7, 7, 10, 0.9);
+  border-color: rgba(7, 7, 10, 0.9) !important;
 }
 
