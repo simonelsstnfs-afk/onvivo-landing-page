@@ -1,7 +1,11 @@
 import { motion } from "motion/react";
 import { Send, Play, Sparkles } from "lucide-react";
 
-export default function Hero() {
+interface HeroProps {
+  onOpenWizard?: () => void;
+}
+
+export default function Hero({ onOpenWizard }: HeroProps) {
   return (
     <section id="inicio" className="relative min-h-screen flex items-center px-6 pt-24 overflow-hidden">
       {/* Side Meta Text */}
@@ -18,7 +22,7 @@ export default function Hero() {
           className="max-w-5xl"
         >
           <div className="flex items-center gap-3 mb-8">
-            <span className="text-brand-primary text-[11px] font-bold tracking-[0.3em] uppercase">● Bot Status: Online</span>
+            <span className="text-brand-primary text-[11px] font-bold tracking-[0.3em] uppercase">● Setup Premium 100% Autónomo</span>
           </div>
           
           <h1 className="text-7xl md:text-[140px] font-black tracking-tighter mb-8 leading-[0.8] uppercase">
@@ -27,31 +31,41 @@ export default function Hero() {
           </h1>
           
           <p className="max-w-xl text-white/50 text-lg md:text-xl mb-12 leading-relaxed">
-            Configuramos tu entorno Stremio a través de nuestra IA en Telegram. Accede a todo el contenido global en un solo lugar, optimizado y profesional.
+            Configuramos tu entorno Stremio a través de nuestra IA o directamente en la web. Accede a todo el contenido global en un solo lugar, optimizado y profesional.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center gap-12">
+          <div className="flex flex-col sm:flex-row items-center gap-6 mb-12">
+            <motion.button
+              onClick={onOpenWizard}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="w-full sm:w-auto group relative inline-flex items-center justify-center px-12 py-6 bg-brand-primary text-background font-black uppercase text-sm tracking-widest overflow-hidden transition-all glow-cyan cursor-pointer"
+            >
+              <span className="relative z-10">COMPRAR AHORA</span>
+              <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+            </motion.button>
+            
             <motion.a
               href="https://t.me/onvivo_bot"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="group relative inline-flex items-center justify-center px-12 py-6 bg-brand-primary text-background font-black uppercase text-sm tracking-widest overflow-hidden transition-all glow-cyan"
+              className="w-full sm:w-auto group relative inline-flex items-center justify-center px-12 py-6 bg-transparent border border-white/20 text-white hover:bg-white/5 font-bold uppercase text-sm tracking-widest overflow-hidden transition-all"
             >
-              <span className="relative z-10">INICIAR EN TELEGRAM</span>
-              <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+              <Send className="w-4 h-4 mr-3" />
+              <span className="relative z-10">Ir a Telegram</span>
             </motion.a>
-            
-            <div className="flex gap-10">
-               <div className="flex flex-col">
-                  <span className="text-3xl font-black">+5k</span>
-                  <span className="text-[10px] uppercase tracking-widest opacity-40">Usuarios</span>
-               </div>
-               <div className="w-[1px] h-12 bg-white/10 hidden sm:block" />
-               <div className="flex flex-col">
-                  <span className="text-3xl font-black">100%</span>
-                  <span className="text-[10px] uppercase tracking-widest opacity-40">Auto</span>
-               </div>
-            </div>
+          </div>
+          
+          <div className="flex gap-10">
+             <div className="flex flex-col">
+                <span className="text-3xl font-black">+5k</span>
+                <span className="text-[10px] uppercase tracking-widest opacity-40">Usuarios</span>
+             </div>
+             <div className="w-[1px] h-12 bg-white/10 hidden sm:block" />
+             <div className="flex flex-col">
+                <span className="text-3xl font-black">100%</span>
+                <span className="text-[10px] uppercase tracking-widest opacity-40">Auto</span>
+             </div>
           </div>
         </motion.div>
 

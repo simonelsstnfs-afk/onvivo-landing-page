@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { useState } from "react";
 import { motion, useScroll, useSpring } from "motion/react";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
@@ -11,8 +12,10 @@ import HowItWorks from "./components/HowItWorks";
 import FAQ from "./components/FAQ";
 import FinalCTA from "./components/FinalCTA";
 import Footer from "./components/Footer";
+import CheckoutWizard from "./components/CheckoutWizard";
 
 export default function App() {
+  const [isWizardOpen, setIsWizardOpen] = useState(false);
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -31,14 +34,19 @@ export default function App() {
       <Navbar />
       
       <main>
-        <Hero />
+        <Hero onOpenWizard={() => setIsWizardOpen(true)} />
         <Features />
         <HowItWorks />
         <FAQ />
-        <FinalCTA />
+        <FinalCTA onOpenWizard={() => setIsWizardOpen(true)} />
       </main>
 
       <Footer />
+
+      <CheckoutWizard 
+        isOpen={isWizardOpen} 
+        onClose={() => setIsWizardOpen(false)} 
+      />
 
       {/* Decorative Grid and Accents */}
       <div className="fixed inset-0 pointer-events-none z-[-1] overflow-hidden">
@@ -49,4 +57,3 @@ export default function App() {
     </div>
   );
 }
-

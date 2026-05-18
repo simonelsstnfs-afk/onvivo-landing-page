@@ -1,7 +1,11 @@
 import { motion } from "motion/react";
 import { Send, ArrowRight } from "lucide-react";
 
-export default function FinalCTA() {
+interface FinalCTAProps {
+  onOpenWizard?: () => void;
+}
+
+export default function FinalCTA({ onOpenWizard }: FinalCTAProps) {
   return (
     <section className="py-24 border-t border-white/10">
       <div className="container mx-auto px-6">
@@ -18,21 +22,33 @@ export default function FinalCTA() {
             </h2>
             
             <p className="text-white/40 text-lg md:text-xl max-w-2xl mx-auto mb-16 leading-relaxed">
-              Únete a miles de usuarios que ya disfrutan de su cine personal automatizado. La configuración te espera en Telegram.
+              Únete a miles de usuarios que ya disfrutan de su cine personal automatizado. Configura todo desde la web o directamente en Telegram.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-12">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-8">
+              <motion.button
+                onClick={onOpenWizard}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="w-full sm:w-auto group relative inline-flex items-center justify-center px-16 py-8 bg-brand-primary text-background font-black uppercase text-xl tracking-[0.2em] overflow-hidden transition-all glow-cyan cursor-pointer"
+              >
+                <span className="relative z-10">COMPRAR AHORA</span>
+                <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+              </motion.button>
+              
               <motion.a
                 href="https://t.me/onvivo_bot"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="group relative inline-flex items-center justify-center px-16 py-8 bg-brand-primary text-background font-black uppercase text-xl tracking-[0.2em] overflow-hidden transition-all glow-cyan"
+                className="w-full sm:w-auto group relative inline-flex items-center justify-center px-16 py-8 bg-transparent border border-white/20 text-white hover:bg-white/5 font-bold uppercase text-xl tracking-[0.2em] overflow-hidden transition-all"
               >
-                <span className="relative z-10">INICIAR BOT</span>
-                <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                <Send className="w-5 h-5 mr-4" />
+                <span className="relative z-10">Telegram Bot</span>
               </motion.a>
-              
-              <div className="flex flex-col items-start gap-1">
+            </div>
+            
+            <div className="flex justify-center">
+              <div className="flex flex-col items-center gap-1">
                 <span className="text-[10px] uppercase tracking-[0.4em] opacity-40 font-bold">Oficial Bot</span>
                 <div className="flex items-center gap-2 text-white font-mono text-sm underline underline-offset-4 decoration-brand-primary">
                   @onvivo_bot
