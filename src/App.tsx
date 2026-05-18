@@ -31,7 +31,7 @@ export default function App() {
         style={{ scaleX }}
       />
 
-      <Navbar />
+      <Navbar onOpenWizard={() => setIsWizardOpen(true)} />
       
       <main>
         <Hero onOpenWizard={() => setIsWizardOpen(true)} />

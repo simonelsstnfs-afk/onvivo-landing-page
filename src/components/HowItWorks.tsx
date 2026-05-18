@@ -4,22 +4,22 @@ import { MessageSquare, Settings, PlayCircle, ChevronRight, HelpCircle, ArrowRig
 const steps = [
   {
     icon: <MessageSquare className="w-7 h-7 text-[#00F0FF]" />,
-    title: "Conecta con el Bot",
-    desc: "Inicia la conversación en Telegram con un solo clic. Nuestro bot de última generación te dará la bienvenida inmediatamente.",
+    title: "Personaliza tu Plan",
+    desc: "Elige tus preferencias de visualización (idioma, audio, subtítulos y tus géneros favoritos) directamente en nuestro intuitivo asistente web en segundos.",
     tag: "PASO 01",
     glowColor: "rgba(0, 240, 255, 0.1)"
   },
   {
     icon: <Settings className="w-7 h-7 text-[#AD00FF]" />,
-    title: "Configura a Tu Medida",
-    desc: "Responde un par de preguntas rápidas en base a tus preferencias y deja que la automatización inteligente prepare tu cuenta.",
+    title: "Activación Automatizada",
+    desc: "Completa la suscripción mediante nuestra pasarela segura Lemon Squeezy y nuestro motor de IA generará tu cuenta Stremio de inmediato.",
     tag: "PASO 02",
     glowColor: "rgba(173, 0, 255, 0.1)"
   },
   {
     icon: <PlayCircle className="w-7 h-7 text-[#FF007A]" />,
     title: "Acceso y Disfrute",
-    desc: "Abre Stremio en tu Smart TV, PC o móvil, inicia sesión y empieza a ver tu contenido favorito con velocidad extrema y resolución 4K.",
+    desc: "Inicia sesión en Stremio en tu Smart TV, PC o móvil y empieza a ver tu contenido favorito con velocidad extrema y resolución 1080p Full HD fluida.",
     tag: "PASO 03",
     glowColor: "rgba(255, 0, 122, 0.1)"
   }

@@ -33,28 +33,12 @@ export default function CheckoutWizard({ isOpen, onClose }: CheckoutWizardProps)
 
   const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-  // Configuración de Lemon Squeezy y estado de pasarela
+  // Configuración de Lemon Squeezy y estado de pasarela (Forzado a activo para compra directa única web)
   const productUrl = import.meta.env.VITE_LEMON_SQUEEZY_PRODUCT_URL || 'https://onvivo.lemonsqueezy.com/buy/tu-producto-id';
-  // Si la URL tiene el ID por defecto o si está explícitamente inactivo, asumimos que no está activo
-  const isLemonActive = import.meta.env.VITE_LEMON_SQUEEZY_ACTIVE === 'true' && !productUrl.includes('tu-producto-id');
+  const isLemonActive = true;
 
   const finalAudio = preferences.audio === 'Otro' ? preferences.audioCustom : preferences.audio;
   const finalSubtitles = preferences.subtitles === 'Otro' ? preferences.subtitlesCustom : preferences.subtitles;
-
-  // Generación de URL de fallback hacia Telegram con Deep Linking de preferencias
-  const getTelegramFallbackUrl = () => {
-    const langCode = preferences.language.substring(0, 3).toLowerCase();
-    const audioCode = finalAudio.substring(0, 3).toLowerCase();
-    const subCode = finalSubtitles.substring(0, 3).toLowerCase();
-    const animeVal = preferences.anime ? '1' : '0';
-    const emailSanitized = encodeURIComponent(preferences.email)
-      .replace(/[@.]/g, '_')
-      .substring(0, 15);
-    
-    // El payload no debe exceder los 64 caracteres permitidos por Telegram para start parameter
-    const startParam = `web_${langCode}_${audioCode}_${subCode}_${animeVal}_${emailSanitized}`;
-    return `https://t.me/onvivo_bot?start=${startParam}`;
-  };
 
   const handleCheckout = () => {
     if (window.LemonSqueezy) {
@@ -400,50 +384,25 @@ export default function CheckoutWizard({ isOpen, onClose }: CheckoutWizardProps)
                     </div>
                   </div>
 
-                  {isLemonActive ? (
+                  <div className="space-y-4">
                     <button
                       onClick={handleCheckout}
                       className="w-full bg-brand-primary text-black font-bold py-4 rounded-xl hover:bg-brand-primary/90 transition-all flex items-center justify-center gap-2 text-lg shadow-[0_0_20px_rgba(0,240,255,0.3)] cursor-pointer"
                     >
                       Finalizar y Pagar
                     </button>
-                  ) : (
-                    <div className="space-y-4">
-                      {/* Banner de Contingencia para Lemon Squeezy Inactivo */}
-                      <div className="p-4 rounded-xl border border-amber-500/30 bg-amber-500/10 backdrop-blur-lg flex gap-3 text-left">
-                        <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
-                        <div>
-                          <h4 className="text-xs font-bold text-amber-400 uppercase tracking-wider mb-1">Mantenimiento de Pasarela Directa</h4>
-                          <p className="text-[11px] text-white/70 leading-normal">
-                            Nuestra pasarela directa de tarjetas web está en mantenimiento por verificación. 
-                            <strong> Puedes completar tu compra inmediatamente vía Telegram y obtener un 10% de descuento directo</strong>, preservando todas tus preferencias seleccionadas.
-                          </p>
-                        </div>
-                      </div>
 
-                      {/* Botón Principal: Fallback a Telegram */}
-                      <a
-                        href={getTelegramFallbackUrl()}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full bg-[#0088cc] hover:bg-[#0077b5] text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2 text-base shadow-[0_0_20px_rgba(0,136,204,0.3)]"
+                    {/* Botón de Simulación para Entorno de Desarrollo */}
+                    {import.meta.env.DEV && (
+                      <button
+                        onClick={() => setStep(6)}
+                        className="w-full bg-transparent hover:bg-brand-primary/10 border border-brand-primary/40 text-brand-primary font-mono text-xs py-2 rounded-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
                       >
-                        Comprar en Telegram con Preferencias
-                        <ArrowUpRight className="w-4 h-4" />
-                      </a>
-
-                      {/* Botón de Simulación para Entorno de Desarrollo */}
-                      {import.meta.env.DEV && (
-                        <button
-                          onClick={() => setStep(6)}
-                          className="w-full bg-transparent hover:bg-brand-primary/10 border border-brand-primary/40 text-brand-primary font-mono text-xs py-2 rounded-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
-                        >
-                          <Terminal className="w-3.5 h-3.5" />
-                          Simular Pago Exitoso (Dev Mode)
-                        </button>
-                      )}
-                    </div>
-                  )}
+                        <Terminal className="w-3.5 h-3.5" />
+                        Simular Pago Exitoso (Dev Mode)
+                      </button>
+                    )}
+                  </div>
                 </motion.div>
               )}
 

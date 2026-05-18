@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
-import { Send, Sparkles, Tv, Shield, Zap } from "lucide-react";
+import { Sparkles, Tv, Shield, Zap } from "lucide-react";
 
 interface HeroProps {
   onOpenWizard?: () => void;
@@ -14,20 +14,20 @@ const featuredMovies = [
     glowColor: "rgba(235, 140, 20, 0.65)",
   },
   {
-    title: "Spider-Verse",
+    title: "Spider-Man: Beyond the Spider-Verse",
     tag: "ANIMACIÓN // ACCIÓN",
     image: "https://images.unsplash.com/photo-1608889175123-8ec330b86f84?auto=format&fit=crop&q=80&w=400",
     glowColor: "rgba(255, 0, 110, 0.65)",
   },
   {
-    title: "Fallout",
-    tag: "SCI-FI // ACCIÓN",
+    title: "Fallout: Season 2",
+    tag: "SCI-FI // ACCIÓN (2026)",
     image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=400",
     glowColor: "rgba(0, 240, 255, 0.65)",
   },
   {
-    title: "Shōgun",
-    tag: "DRAMA ÉPICO // ACCIÓN",
+    title: "Shōgun: Season 2",
+    tag: "DRAMA ÉPICO // ACCIÓN (2026)",
     image: "https://images.unsplash.com/photo-1528164344705-47542687000d?auto=format&fit=crop&q=80&w=400",
     glowColor: "rgba(220, 20, 60, 0.65)",
   },
@@ -179,29 +179,19 @@ export default function Hero({ onOpenWizard }: HeroProps) {
             Configuramos tu entorno Stremio de manera profesional en segundos. Accede a todo el contenido global en un solo lugar, optimizado y en calidad máxima, sin necesidad de tutoriales complejos.
           </p>
 
-          {/* Acciones de Conversión Shimmer & Glowing */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-20 w-full sm:w-auto">
+          {/* Acciones de Conversión Shimmer & Glowing (Enfoque de Botón Único Web) */}
+          <div className="flex items-center justify-center mb-20 w-full">
             <motion.button
               onClick={onOpenWizard}
-              whileHover={{ scale: 1.04 }}
+              whileHover={{ scale: 1.04, boxShadow: "0 0 45px rgba(0, 240, 255, 0.6)" }}
               whileTap={{ scale: 0.96 }}
-              className="w-full sm:w-auto group relative inline-flex items-center justify-center px-10 py-5 bg-gradient-to-r from-[#00F0FF] via-[#7000FF] to-[#FF007A] text-white font-extrabold uppercase text-xs tracking-widest overflow-hidden transition-all shadow-[0_0_35px_rgba(0,240,255,0.45)] cursor-pointer rounded-xl font-mono"
+              className="w-full sm:w-auto group relative inline-flex items-center justify-center px-12 py-5 bg-gradient-to-r from-[#00F0FF] via-[#7000FF] to-[#FF007A] text-white font-extrabold uppercase text-xs tracking-widest overflow-hidden transition-all shadow-[0_0_35px_rgba(0,240,255,0.45)] cursor-pointer rounded-xl font-mono"
             >
               <span className="relative z-10 flex items-center gap-2">
                 ¡OBTENER ACCESO INMEDIATO! <Sparkles className="w-4 h-4 text-white animate-spin-slow" />
               </span>
               <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
             </motion.button>
-            
-            <motion.a
-              href="https://t.me/onvivo_bot"
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.96 }}
-              className="w-full sm:w-auto group relative inline-flex items-center justify-center px-9 py-5 bg-transparent border border-[#00F0FF]/30 hover:border-[#00F0FF]/60 text-[#00F0FF] hover:bg-[#00F0FF]/5 font-extrabold uppercase text-xs tracking-widest overflow-hidden transition-all rounded-xl shadow-[0_0_20px_rgba(0,240,255,0.05)]"
-            >
-              <Send className="w-3.5 h-3.5 mr-2.5" />
-              <span className="relative z-10">Probar en Telegram</span>
-            </motion.a>
           </div>
         </motion.div>
 
@@ -220,13 +210,13 @@ export default function Hero({ onOpenWizard }: HeroProps) {
           {/* ⚡ BADGES HOLOGRÁFICOS FLOTANTES CON FISICAS REVERSAS (Efecto WOW) */}
           {!isMobile && (
             <>
-              {/* Badge 1: 4K Ultra HD (Arriba Izquierda) */}
+              {/* Badge 1: 1080p Full HD (Arriba Izquierda) */}
               <motion.div 
                 style={{ x: floatX, y: floatY }}
                 className="absolute -top-8 -left-12 z-30 px-4 py-2 rounded-xl bg-slate-900/60 border border-cyan-500/20 backdrop-blur-md flex items-center gap-2 shadow-[0_10px_30px_rgba(0,240,255,0.15)]"
               >
                 <Tv className="w-4 h-4 text-cyan-400" />
-                <span className="text-[10px] font-mono font-bold text-white tracking-wider">4K ULTRA HD READY</span>
+                <span className="text-[10px] font-mono font-bold text-white tracking-wider">1080p FULL HD OPTIMIZED</span>
               </motion.div>
               
               {/* Badge 2: IA Activada (Abajo Izquierda) */}
@@ -291,7 +281,7 @@ export default function Hero({ onOpenWizard }: HeroProps) {
                   <span className="text-[10px] md:text-xs font-black font-mono tracking-widest text-[#00F0FF] uppercase">ONVIVO ACTIVE // SETUP 100% OK</span>
                 </div>
                 <div className="flex items-center gap-4 text-white/40 text-[10px] font-mono tracking-wider">
-                  <span className="text-[#00F0FF] font-bold">4K UHD</span>
+                  <span className="text-[#00F0FF] font-bold">1080p Full HD</span>
                   <span>●</span>
                   <span className="text-[#AD00FF] font-bold">OPTIMIZED STREAMING</span>
                 </div>

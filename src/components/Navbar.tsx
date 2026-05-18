@@ -1,9 +1,20 @@
 import { motion } from "motion/react";
-import { Send, Menu } from "lucide-react";
+import { Sparkles, Menu, X } from "lucide-react";
 import { useState } from "react";
 
-export default function Navbar() {
+interface NavbarProps {
+  onOpenWizard?: () => void;
+}
+
+export default function Navbar({ onOpenWizard }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
+
+  const handleContractClick = () => {
+    setIsOpen(false);
+    if (onOpenWizard) {
+      onOpenWizard();
+    }
+  };
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 bg-[#07070a]/75 backdrop-blur-xl border-b border-white/5 px-6 py-4 transition-all shadow-[0_4px_30px_rgba(0,0,0,0.4)]">
@@ -12,6 +23,7 @@ export default function Navbar() {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           className="flex items-center gap-2 cursor-pointer"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         >
           <img 
             src="/logo.png" 
@@ -35,16 +47,14 @@ export default function Navbar() {
               {item}
             </motion.a>
           ))}
-          <motion.a
-            href="https://t.me/onvivo_bot"
-            target="_blank"
-            rel="noopener noreferrer"
+          <motion.button
+            onClick={handleContractClick}
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="text-[10px] font-bold uppercase tracking-[0.25em] px-5 py-2.5 border border-[#00F0FF]/35 text-[#00F0FF] rounded-full hover:bg-[#00F0FF]/5 hover:border-[#00F0FF]/70 hover:shadow-[0_0_15px_rgba(0,240,255,0.25)] transition-all duration-300 font-mono"
+            className="text-[10px] cursor-pointer font-bold uppercase tracking-[0.25em] px-6 py-2.5 border border-[#00F0FF]/35 text-[#00F0FF] rounded-full hover:bg-[#00F0FF]/5 hover:border-[#00F0FF]/70 hover:shadow-[0_0_15px_rgba(0,240,255,0.25)] transition-all duration-300 font-mono"
           >
-            Acceso Directo
-          </motion.a>
+            Contratar
+          </motion.button>
         </div>
 
         {/* Mobile Toggle */}
@@ -52,7 +62,7 @@ export default function Navbar() {
           className="md:hidden text-[#00F0FF] hover:text-white transition-colors p-2"
           onClick={() => setIsOpen(!isOpen)}
         >
-          <Menu size={24} />
+          {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
@@ -73,15 +83,13 @@ export default function Navbar() {
               {item}
             </a>
           ))}
-          <a
-            href="https://t.me/onvivo_bot"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 bg-gradient-to-r from-[#00F0FF] via-[#7000FF] to-[#FF007A] text-white px-5 py-3.5 rounded-xl font-mono text-[10px] font-bold uppercase tracking-[0.2em] shadow-[0_0_20px_rgba(0,240,255,0.3)] transition-transform duration-300 active:scale-95"
+          <button
+            onClick={handleContractClick}
+            className="flex items-center justify-center gap-2 bg-gradient-to-r from-[#00F0FF] via-[#7000FF] to-[#FF007A] text-white px-5 py-3.5 rounded-xl font-mono text-[10px] font-bold uppercase tracking-[0.2em] shadow-[0_0_20px_rgba(0,240,255,0.3)] transition-transform duration-300 active:scale-95 cursor-pointer"
           >
-            <Send size={14} />
-            Telegram Directo
-          </a>
+            <Sparkles size={14} className="animate-pulse" />
+            Contratar Ahora
+          </button>
         </motion.div>
       )}
     </nav>

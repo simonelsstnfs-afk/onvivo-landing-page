@@ -21,7 +21,7 @@ export default function Footer() {
               <span className="text-xl font-black text-white tracking-tighter uppercase font-mono">onvivo</span>
             </div>
             <p className="text-white/45 max-w-sm leading-relaxed text-sm">
-              Transformando la manera en que configuras y consumes contenido digital mediante automatización inteligente de máxima fidelidad en Telegram.
+              Transformando la manera en que configuras y consumes tu contenido digital mediante automatización inteligente de máxima fidelidad y configuraciones optimizadas a tu medida.
             </p>
           </div>
 

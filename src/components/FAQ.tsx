@@ -5,11 +5,11 @@ import { Plus, Minus, HelpCircle, HelpCircle as HelpIcon } from "lucide-react";
 const faqs = [
   {
     q: "¿Qué es exactamente Onvivo?",
-    a: "Onvivo es un servicio de configuración asistida de élite. Te ayudamos a configurar tu plataforma de streaming (Stremio) de manera profesional, ultra-optimizada y en resolución máxima (4K) a través de nuestro bot interactivo en Telegram."
+    a: "Onvivo es un servicio de configuración asistida de élite. Te ayudamos a configurar tu plataforma de streaming (Stremio) de manera profesional, ultra-optimizada y en resolución óptima (1080p Full HD para la fluidez máxima sin buffering) directamente desde nuestro asistente interactivo web."
   },
   {
     q: "¿Necesito tener conocimientos técnicos?",
-    a: "Para nada. La automatización de Onvivo está diseñada para guiarte de forma visual paso a paso. Si eres capaz de enviar un mensaje por Telegram, tienes toda la capacidad para configurar y usar la plataforma en minutos."
+    a: "Para nada. La automatización de Onvivo está diseñada para guiarte de forma visual paso a paso mediante nuestro asistente web intuitivo. Una vez completado el pago, tu cuenta de Stremio se configura e inicializa de forma 100% automatizada e instantánea."
   },
   {
     q: "¿Tengo que pagar una suscripción mensual?",
