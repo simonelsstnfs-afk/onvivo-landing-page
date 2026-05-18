@@ -49,9 +49,13 @@ export default function Hero({ onOpenWizard }: HeroProps) {
   const glowX = useSpring(useTransform(mouseX, [-0.5, 0.5], [50, -50]), springConfig);
   const glowY = useSpring(useTransform(mouseY, [-0.5, 0.5], [50, -50]), springConfig);
 
-  // Elementos flotantes holográficos con ligeras desviaciones de físicas
+  // Elementos flotantes holográficos con ligeras desviaciones de físicas (Nivel Superior)
   const floatX = useSpring(useTransform(mouseX, [-0.5, 0.5], [-20, 20]), springConfig);
   const floatY = useSpring(useTransform(mouseY, [-0.5, 0.5], [-20, 20]), springConfig);
+
+  // Springs dedicados para evitar llamadas condicionales en el renderizado JSX
+  const floatY_IA = useSpring(useTransform(mouseY, [-0.5, 0.5], [20, -20]), springConfig);
+  const floatX_Speed = useSpring(useTransform(mouseX, [-0.5, 0.5], [20, -20]), springConfig);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -227,7 +231,7 @@ export default function Hero({ onOpenWizard }: HeroProps) {
               
               {/* Badge 2: IA Activada (Abajo Izquierda) */}
               <motion.div 
-                style={{ x: floatX, y: useSpring(useTransform(mouseY, [-0.5, 0.5], [20, -20]), springConfig) }}
+                style={{ x: floatX, y: floatY_IA }}
                 className="absolute -bottom-8 -left-6 z-30 px-4 py-2 rounded-xl bg-slate-900/60 border border-purple-500/20 backdrop-blur-md flex items-center gap-2 shadow-[0_10px_30px_rgba(112,0,255,0.15)]"
               >
                 <Shield className="w-4 h-4 text-purple-400" />
@@ -236,7 +240,7 @@ export default function Hero({ onOpenWizard }: HeroProps) {
 
               {/* Badge 3: Descarga ⚡ (Derecha) */}
               <motion.div 
-                style={{ x: useSpring(useTransform(mouseX, [-0.5, 0.5], [20, -20]), springConfig), y: floatY }}
+                style={{ x: floatX_Speed, y: floatY }}
                 className="absolute top-1/4 -right-12 z-30 px-4 py-2 rounded-xl bg-slate-900/60 border border-pink-500/20 backdrop-blur-md flex items-center gap-2 shadow-[0_10px_30px_rgba(255,0,120,0.15)]"
               >
                 <Zap className="w-4 h-4 text-pink-400 animate-pulse" />
