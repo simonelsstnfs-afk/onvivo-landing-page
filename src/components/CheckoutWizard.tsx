@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Globe, Mic, Tv, Mail, CheckCircle, ArrowRight, ArrowLeft, Type } from 'lucide-react';
+import { 
+  X, Globe, Mic, Tv, Mail, CheckCircle, ArrowRight, ArrowLeft, Type, 
+  AlertTriangle, Terminal, ArrowUpRight, ShieldCheck 
+} from 'lucide-react';
 
 interface CheckoutWizardProps {
   isOpen: boolean;
@@ -25,18 +28,35 @@ export default function CheckoutWizard({ isOpen, onClose }: CheckoutWizardProps)
     setPreferences((prev) => ({ ...prev, [key]: value }));
   };
 
-  const nextStep = () => setStep((s) => Math.min(s + 1, 5));
+  const nextStep = () => setStep((s) => Math.min(s + 1, 6));
   const prevStep = () => setStep((s) => Math.max(s - 1, 0));
 
-  const handleCheckout = () => {
-    // URL placeholder para Lemon Squeezy
-    const productUrl = 'https://onvivo.lemonsqueezy.com/buy/tu-producto-id';
-    
-    // Resolve final values
-    const finalAudio = preferences.audio === 'Otro' ? preferences.audioCustom : preferences.audio;
-    const finalSubtitles = preferences.subtitles === 'Otro' ? preferences.subtitlesCustom : preferences.subtitles;
+  const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-    // Configurar custom data de Lemon Squeezy
+  // Configuración de Lemon Squeezy y estado de pasarela
+  const productUrl = import.meta.env.VITE_LEMON_SQUEEZY_PRODUCT_URL || 'https://onvivo.lemonsqueezy.com/buy/tu-producto-id';
+  // Si la URL tiene el ID por defecto o si está explícitamente inactivo, asumimos que no está activo
+  const isLemonActive = import.meta.env.VITE_LEMON_SQUEEZY_ACTIVE === 'true' && !productUrl.includes('tu-producto-id');
+
+  const finalAudio = preferences.audio === 'Otro' ? preferences.audioCustom : preferences.audio;
+  const finalSubtitles = preferences.subtitles === 'Otro' ? preferences.subtitlesCustom : preferences.subtitles;
+
+  // Generación de URL de fallback hacia Telegram con Deep Linking de preferencias
+  const getTelegramFallbackUrl = () => {
+    const langCode = preferences.language.substring(0, 3).toLowerCase();
+    const audioCode = finalAudio.substring(0, 3).toLowerCase();
+    const subCode = finalSubtitles.substring(0, 3).toLowerCase();
+    const animeVal = preferences.anime ? '1' : '0';
+    const emailSanitized = encodeURIComponent(preferences.email)
+      .replace(/[@.]/g, '_')
+      .substring(0, 15);
+    
+    // El payload no debe exceder los 64 caracteres permitidos por Telegram para start parameter
+    const startParam = `web_${langCode}_${audioCode}_${subCode}_${animeVal}_${emailSanitized}`;
+    return `https://t.me/onvivo_bot?start=${startParam}`;
+  };
+
+  const handleCheckout = () => {
     if (window.LemonSqueezy) {
       window.LemonSqueezy.Setup({
         checkoutData: {
@@ -51,7 +71,6 @@ export default function CheckoutWizard({ isOpen, onClose }: CheckoutWizardProps)
       });
       window.LemonSqueezy.Url.Open(productUrl);
     } else {
-      // Fallback if SDK failed to load
       window.open(productUrl, '_blank');
     }
   };
@@ -64,20 +83,20 @@ export default function CheckoutWizard({ isOpen, onClose }: CheckoutWizardProps)
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-xl"
+        className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70 backdrop-blur-xl"
       >
         <motion.div
           initial={{ scale: 0.95, opacity: 0, y: 20 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.95, opacity: 0, y: 20 }}
-          className="relative w-full max-w-lg bg-[#0a0a0a] border border-white/10 rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto"
+          className="relative w-full max-w-lg bg-[#07070a] border border-white/10 rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto"
         >
           {/* Progress Bar */}
           <div className="absolute top-0 left-0 right-0 h-1 bg-white/5">
             <motion.div
               className="h-full bg-brand-primary"
               initial={{ width: '0%' }}
-              animate={{ width: `${((step + 1) / 6) * 100}%` }}
+              animate={{ width: `${((step + 1) / 7) * 100}%` }}
               transition={{ ease: 'easeInOut' }}
             />
           </div>
@@ -85,7 +104,7 @@ export default function CheckoutWizard({ isOpen, onClose }: CheckoutWizardProps)
           {/* Close Button */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 p-2 text-white/50 hover:text-white bg-white/5 hover:bg-white/10 rounded-full transition-colors z-10"
+            className="absolute top-4 right-4 p-2 text-white/50 hover:text-white bg-white/5 hover:bg-white/10 rounded-full transition-colors z-10 cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -114,7 +133,7 @@ export default function CheckoutWizard({ isOpen, onClose }: CheckoutWizardProps)
                           updatePreference('language', lang);
                           nextStep();
                         }}
-                        className={`p-4 rounded-xl border transition-all ${
+                        className={`p-4 rounded-xl border transition-all cursor-pointer ${
                           preferences.language === lang
                             ? 'bg-brand-primary/20 border-brand-primary text-brand-primary'
                             : 'bg-white/5 border-white/10 text-white hover:bg-white/10'
@@ -152,7 +171,7 @@ export default function CheckoutWizard({ isOpen, onClose }: CheckoutWizardProps)
                             nextStep();
                           }
                         }}
-                        className={`p-4 rounded-xl border transition-all ${
+                        className={`p-4 rounded-xl border transition-all cursor-pointer ${
                           preferences.audio === lang
                             ? 'bg-brand-primary/20 border-brand-primary text-brand-primary'
                             : 'bg-white/5 border-white/10 text-white hover:bg-white/10'
@@ -173,13 +192,19 @@ export default function CheckoutWizard({ isOpen, onClose }: CheckoutWizardProps)
                         type="text"
                         value={preferences.audioCustom}
                         onChange={(e) => updatePreference('audioCustom', e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' && preferences.audioCustom.trim() !== '') {
+                            nextStep();
+                          }
+                        }}
                         placeholder="Escribe el idioma..."
                         className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-brand-primary/50 transition-all"
+                        autoFocus
                       />
                       <button
                         onClick={nextStep}
                         disabled={preferences.audioCustom.trim() === ''}
-                        className="w-full bg-brand-primary/20 text-brand-primary border border-brand-primary/50 font-semibold py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:bg-brand-primary hover:text-black transition-all"
+                        className="w-full bg-brand-primary/20 text-brand-primary border border-brand-primary/50 font-semibold py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:bg-brand-primary hover:text-black transition-all cursor-pointer"
                       >
                         Confirmar
                       </button>
@@ -213,7 +238,7 @@ export default function CheckoutWizard({ isOpen, onClose }: CheckoutWizardProps)
                             nextStep();
                           }
                         }}
-                        className={`p-4 rounded-xl border transition-all ${
+                        className={`p-4 rounded-xl border transition-all cursor-pointer ${
                           preferences.subtitles === lang
                             ? 'bg-brand-primary/20 border-brand-primary text-brand-primary'
                             : 'bg-white/5 border-white/10 text-white hover:bg-white/10'
@@ -234,13 +259,19 @@ export default function CheckoutWizard({ isOpen, onClose }: CheckoutWizardProps)
                         type="text"
                         value={preferences.subtitlesCustom}
                         onChange={(e) => updatePreference('subtitlesCustom', e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' && preferences.subtitlesCustom.trim() !== '') {
+                            nextStep();
+                          }
+                        }}
                         placeholder="Escribe el idioma..."
                         className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-brand-primary/50 transition-all"
+                        autoFocus
                       />
                       <button
                         onClick={nextStep}
                         disabled={preferences.subtitlesCustom.trim() === ''}
-                        className="w-full bg-brand-primary/20 text-brand-primary border border-brand-primary/50 font-semibold py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:bg-brand-primary hover:text-black transition-all"
+                        className="w-full bg-brand-primary/20 text-brand-primary border border-brand-primary/50 font-semibold py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:bg-brand-primary hover:text-black transition-all cursor-pointer"
                       >
                         Confirmar
                       </button>
@@ -269,7 +300,7 @@ export default function CheckoutWizard({ isOpen, onClose }: CheckoutWizardProps)
                         updatePreference('anime', true);
                         nextStep();
                       }}
-                      className="p-4 rounded-xl border bg-white/5 border-white/10 text-white hover:bg-brand-primary/20 hover:border-brand-primary transition-all text-left"
+                      className="p-4 rounded-xl border bg-white/5 border-white/10 text-white hover:bg-brand-primary/20 hover:border-brand-primary transition-all text-left cursor-pointer"
                     >
                       <div className="font-medium">Sí, incluir Anime</div>
                       <div className="text-sm text-white/50">Series, películas y novedades</div>
@@ -279,7 +310,7 @@ export default function CheckoutWizard({ isOpen, onClose }: CheckoutWizardProps)
                         updatePreference('anime', false);
                         nextStep();
                       }}
-                      className="p-4 rounded-xl border bg-white/5 border-white/10 text-white hover:bg-white/10 transition-all text-left"
+                      className="p-4 rounded-xl border bg-white/5 border-white/10 text-white hover:bg-white/10 transition-all text-left cursor-pointer"
                     >
                       <div className="font-medium">No, gracias</div>
                       <div className="text-sm text-white/50">Solo cine y series estándar</div>
@@ -307,13 +338,19 @@ export default function CheckoutWizard({ isOpen, onClose }: CheckoutWizardProps)
                       type="email"
                       value={preferences.email}
                       onChange={(e) => updatePreference('email', e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && isValidEmail(preferences.email)) {
+                          nextStep();
+                        }
+                      }}
                       placeholder="tu@email.com"
                       className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-brand-primary/50 transition-all"
+                      autoFocus
                     />
                     <button
                       onClick={nextStep}
-                      disabled={!preferences.email.includes('@')}
-                      className="w-full bg-brand-primary text-black font-semibold py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:bg-brand-primary/90 transition-all flex items-center justify-center gap-2"
+                      disabled={!isValidEmail(preferences.email)}
+                      className="w-full bg-brand-primary text-black font-semibold py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:bg-brand-primary/90 transition-all flex items-center justify-center gap-2 cursor-pointer"
                     >
                       Continuar <ArrowRight className="w-4 h-4" />
                     </button>
@@ -344,13 +381,13 @@ export default function CheckoutWizard({ isOpen, onClose }: CheckoutWizardProps)
                     <div className="flex justify-between text-sm">
                       <span className="text-white/50">Audio:</span>
                       <span className="text-white font-medium">
-                        {preferences.audio === 'Otro' ? preferences.audioCustom : preferences.audio || '-'}
+                        {finalAudio || '-'}
                       </span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-white/50">Subtítulos:</span>
                       <span className="text-white font-medium">
-                        {preferences.subtitles === 'Otro' ? preferences.subtitlesCustom : preferences.subtitles || '-'}
+                        {finalSubtitles || '-'}
                       </span>
                     </div>
                     <div className="flex justify-between text-sm">
@@ -363,11 +400,104 @@ export default function CheckoutWizard({ isOpen, onClose }: CheckoutWizardProps)
                     </div>
                   </div>
 
+                  {isLemonActive ? (
+                    <button
+                      onClick={handleCheckout}
+                      className="w-full bg-brand-primary text-black font-bold py-4 rounded-xl hover:bg-brand-primary/90 transition-all flex items-center justify-center gap-2 text-lg shadow-[0_0_20px_rgba(0,240,255,0.3)] cursor-pointer"
+                    >
+                      Finalizar y Pagar
+                    </button>
+                  ) : (
+                    <div className="space-y-4">
+                      {/* Banner de Contingencia para Lemon Squeezy Inactivo */}
+                      <div className="p-4 rounded-xl border border-amber-500/30 bg-amber-500/10 backdrop-blur-lg flex gap-3 text-left">
+                        <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+                        <div>
+                          <h4 className="text-xs font-bold text-amber-400 uppercase tracking-wider mb-1">Mantenimiento de Pasarela Directa</h4>
+                          <p className="text-[11px] text-white/70 leading-normal">
+                            Nuestra pasarela directa de tarjetas web está en mantenimiento por verificación. 
+                            <strong> Puedes completar tu compra inmediatamente vía Telegram y obtener un 10% de descuento directo</strong>, preservando todas tus preferencias seleccionadas.
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Botón Principal: Fallback a Telegram */}
+                      <a
+                        href={getTelegramFallbackUrl()}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full bg-[#0088cc] hover:bg-[#0077b5] text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2 text-base shadow-[0_0_20px_rgba(0,136,204,0.3)]"
+                      >
+                        Comprar en Telegram con Preferencias
+                        <ArrowUpRight className="w-4 h-4" />
+                      </a>
+
+                      {/* Botón de Simulación para Entorno de Desarrollo */}
+                      {import.meta.env.DEV && (
+                        <button
+                          onClick={() => setStep(6)}
+                          className="w-full bg-transparent hover:bg-brand-primary/10 border border-brand-primary/40 text-brand-primary font-mono text-xs py-2 rounded-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
+                        >
+                          <Terminal className="w-3.5 h-3.5" />
+                          Simular Pago Exitoso (Dev Mode)
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </motion.div>
+              )}
+
+              {/* STEP 6: SIMULATED SUCCESS (Dev Mode Only) */}
+              {step === 6 && (
+                <motion.div
+                  key="step6"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  className="space-y-6 text-center"
+                >
+                  <div className="w-16 h-16 bg-brand-primary/20 text-brand-primary rounded-full flex items-center justify-center mx-auto animate-pulse">
+                    <ShieldCheck className="w-10 h-10" />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <h2 className="text-2xl font-black text-brand-primary uppercase tracking-wider">¡Simulación Exitosa!</h2>
+                    <p className="text-white/60 text-sm max-w-sm mx-auto">
+                      Has completado el flujo de configuración. A continuación se detalla el payload que sería procesado por el webhook en producción:
+                    </p>
+                  </div>
+
+                  {/* Terminal de visualización de datos */}
+                  <div className="bg-black/80 border border-white/10 rounded-xl p-4 font-mono text-[11px] text-left text-cyan-400 overflow-x-auto max-h-48">
+                    <div className="text-white/30 border-b border-white/5 pb-2 mb-2 flex justify-between items-center">
+                      <span>onvivo-system-payload.json</span>
+                      <span className="text-[9px] bg-brand-primary/10 text-brand-primary px-1.5 py-0.5 rounded">LOCAL_MOCK</span>
+                    </div>
+                    <pre>{JSON.stringify({
+                      email: preferences.email,
+                      language: preferences.language,
+                      audio: finalAudio,
+                      subtitles: finalSubtitles,
+                      anime: preferences.anime ? "yes" : "no",
+                      status: "PAID",
+                      channel: "web_checkout_fallback",
+                      createdAt: new Date().toISOString(),
+                      metadata: {
+                        userAgent: typeof navigator !== 'undefined' ? navigator.userAgent.substring(0, 30) : 'unknown',
+                        environment: 'development'
+                      }
+                    }, null, 2)}</pre>
+                  </div>
+
+                  <div className="p-3 bg-white/5 rounded-xl text-[10px] text-white/50 leading-relaxed text-left border border-white/5">
+                    💡 **Próximo Paso Backend:** En producción, el webhook de Lemon Squeezy captura el evento `order_created` y escribe este JSON en la colección `orders` de Firestore, lo que activa el *Engineer Agent* de manera autónoma.
+                  </div>
+
                   <button
-                    onClick={handleCheckout}
-                    className="w-full bg-brand-primary text-black font-bold py-4 rounded-xl hover:bg-brand-primary/90 transition-all flex items-center justify-center gap-2 text-lg shadow-[0_0_20px_rgba(var(--brand-primary-rgb),0.3)]"
+                    onClick={onClose}
+                    className="w-full bg-brand-primary text-black font-bold py-3 rounded-xl hover:bg-brand-primary/90 transition-all cursor-pointer"
                   >
-                    Finalizar y Pagar
+                    Cerrar y Volver a la Landing
                   </button>
                 </motion.div>
               )}
@@ -375,11 +505,11 @@ export default function CheckoutWizard({ isOpen, onClose }: CheckoutWizardProps)
           </div>
 
           {/* Bottom Navigation */}
-          {step > 0 && (
+          {step > 0 && step < 6 && (
             <div className="px-8 pb-8 pt-4 border-t border-white/5">
               <button
                 onClick={prevStep}
-                className="flex items-center gap-2 text-white/50 hover:text-white transition-colors text-sm"
+                className="flex items-center gap-2 text-white/50 hover:text-white transition-colors text-sm cursor-pointer"
               >
                 <ArrowLeft className="w-4 h-4" /> Volver atrás
               </button>

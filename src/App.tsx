@@ -35,7 +35,7 @@ export default function App() {
       
       <main>
         <Hero onOpenWizard={() => setIsWizardOpen(true)} />
-        <Features />
+        <Features onOpenWizard={() => setIsWizardOpen(true)} />
         <HowItWorks />
         <FAQ />
         <FinalCTA onOpenWizard={() => setIsWizardOpen(true)} />
