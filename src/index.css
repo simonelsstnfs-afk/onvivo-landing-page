@@ -44,3 +44,49 @@
 .animate-float {
   animation: float 5s ease-in-out infinite;
 }
+
+/* ==========================================================================
+   ESTILIZACIÓN DE BARRAS DE SCROLL PREMIUM (Cromático & Cinematic)
+   ========================================================================== */
+
+/* Firefox */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #AD00FF #050505;
+}
+
+/* Chrome, Edge, Safari y navegadores Webkit (Global y Contenedores) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+/* Canal del scrollbar (Track) */
+::-webkit-scrollbar-track {
+  background: #050505;
+  border-left: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+/* Tirador del scrollbar (Thumb) - Gradiente cromático neón vertical */
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #00F0FF 0%, #AD00FF 50%, #FF007A 100%);
+  border: 2px solid #050505;
+  border-radius: 9999px;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Tirador en Hover - Brillo verdoso-cian interactivo */
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #00FF85 0%, #00F0FF 50%, #7000FF 100%);
+}
+
+/* Estilización específica para el scroll interno de cristal del Checkout Wizard */
+.relative.max-h-\[92vh\]::-webkit-scrollbar-track {
+  background: rgba(7, 7, 10, 0.85);
+  border-left: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.relative.max-h-\[92vh\]::-webkit-scrollbar-thumb {
+  border-color: rgba(7, 7, 10, 0.9);
+}
+
