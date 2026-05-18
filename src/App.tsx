@@ -24,7 +24,7 @@ export default function App() {
   });
 
   return (
-    <div className="relative min-h-screen cosmic-background">
+    <div className="relative min-h-screen">
       {/* Scroll Progress Bar */}
       <motion.div
         className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#00F0FF] via-[#AD00FF] to-[#FF007A] z-[60] origin-left shadow-[0_0_15px_rgba(0,240,255,0.4)]"
@@ -49,7 +49,7 @@ export default function App() {
       />
 
       {/* Sistema de Fondo Cósmico Espacial de Élite (Unificado & Multicapa) */}
-      <div className="fixed inset-0 pointer-events-none z-[-1] overflow-hidden">
+      <div className="fixed inset-0 pointer-events-none z-[-20] overflow-hidden cosmic-background">
         {/* Auroras y Nebulosas Flotantes Dinámicas en Capas (Profundidad Cinemática Vibrante) */}
         <div className="absolute top-[-10%] right-[-5%] w-[800px] h-[800px] bg-cyan-500/15 rounded-full blur-[110px] animate-pulse-slow" />
         <div className="absolute top-[25%] left-[-15%] w-[900px] h-[900px] bg-[#AD00FF]/12 rounded-full blur-[130px] animate-pulse-medium" />
