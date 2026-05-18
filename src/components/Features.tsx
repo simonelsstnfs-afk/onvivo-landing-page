@@ -4,17 +4,17 @@ import { Zap, Shield, Smartphone, Bot, Layers, FastForward, Sparkles } from "luc
 const features = [
   {
     icon: <Zap className="w-6 h-6 text-cyan-400" />,
-    title: "Setup Instantáneo",
-    desc: "Olvida los tutoriales de 30 minutos. Nuestro bot hace el trabajo pesado por ti en segundos.",
+    title: "Setup Automatizado",
+    desc: "Olvida los tutoriales complejos. Nuestro motor inteligente procesa tus preferencias y activa tu servicio en segundos de forma 100% autónoma.",
     glowColor: "rgba(6, 182, 212, 0.15)", // Cian glow
-    tag: "AUTOMATIZACIÓN",
+    tag: "EFICIENCIA",
   },
   {
-    icon: <Bot className="w-6 h-6 text-purple-400" />,
-    title: "Guía Inteligente",
-    desc: "Un bot de Telegram dedicado que te lleva de la mano durante todo el proceso de configuración.",
+    icon: <Sparkles className="w-6 h-6 text-purple-400" />,
+    title: "Wizard Interactivo",
+    desc: "Configura tus preferencias de audio, subtítulos, anime e idiomas en tiempo real mediante nuestro asistente web inteligente integrado.",
     glowColor: "rgba(168, 85, 247, 0.15)", // Violeta glow
-    tag: "AI ASSISTANT",
+    tag: "PERSONALIZACIÓN",
   },
   {
     icon: <Shield className="w-6 h-6 text-emerald-400" />,
@@ -124,7 +124,7 @@ export default function Features({ onOpenWizard }: FeaturesProps) {
 
               {/* Indicador de Acción Holográfico en Hover */}
               <div className="mt-8 pt-4 border-t border-white/5 flex items-center justify-between text-[10px] font-mono font-bold tracking-widest text-[#00F0FF] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <span>INICIAR INSTALACIÓN</span>
+                <span>PERSONALIZAR PLAN</span>
                 <span className="text-xs">➔</span>
               </div>
             </motion.div>
