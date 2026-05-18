@@ -50,7 +50,7 @@ export default function Features({ onOpenWizard }: FeaturesProps) {
             viewport={{ once: true }}
             transition={{ delay: i * 0.1 }}
             onClick={onOpenWizard}
-            className="group p-12 border-b border-white/10 lg:border-r last:border-r-0 hover:bg-white/[0.02] transition-colors relative overflow-hidden cursor-pointer"
+            className="group p-8 md:p-10 border-b border-white/10 lg:border-r last:border-r-0 hover:bg-white/[0.02] transition-colors relative overflow-hidden cursor-pointer"
           >
             <span className="text-[10px] font-mono text-brand-primary mb-6 block tracking-widest uppercase">
               {i < 9 ? `0${i+1}` : i+1} // Sistema

@@ -25,12 +25,12 @@ export default function Hero({ onOpenWizard }: HeroProps) {
             <span className="text-brand-primary text-[11px] font-bold tracking-[0.3em] uppercase">● Setup Premium 100% Autónomo</span>
           </div>
           
-          <h1 className="text-7xl md:text-[140px] font-black tracking-tighter mb-8 leading-[0.8] uppercase">
+          <h1 className="text-5xl md:text-[96px] font-black tracking-tighter mb-8 leading-[0.95] uppercase">
             TU STREAMING <br />
             <span className="text-stroke text-transparent opacity-80">SIN LIMITES</span>
           </h1>
           
-          <p className="max-w-xl text-white/50 text-lg md:text-xl mb-12 leading-relaxed">
+          <p className="max-w-xl text-white/50 text-base md:text-lg mb-12 leading-relaxed">
             Configuramos tu entorno Stremio a través de nuestra IA o directamente en la web. Accede a todo el contenido global en un solo lugar, optimizado y profesional.
           </p>
 
@@ -39,7 +39,7 @@ export default function Hero({ onOpenWizard }: HeroProps) {
               onClick={onOpenWizard}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="w-full sm:w-auto group relative inline-flex items-center justify-center px-12 py-6 bg-brand-primary text-background font-black uppercase text-sm tracking-widest overflow-hidden transition-all glow-cyan cursor-pointer"
+              className="w-full sm:w-auto group relative inline-flex items-center justify-center px-8 py-4 bg-brand-primary text-background font-bold uppercase text-xs md:text-sm tracking-widest overflow-hidden transition-all glow-cyan cursor-pointer"
             >
               <span className="relative z-10">COMPRAR AHORA</span>
               <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
@@ -49,7 +49,7 @@ export default function Hero({ onOpenWizard }: HeroProps) {
               href="https://t.me/onvivo_bot"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="w-full sm:w-auto group relative inline-flex items-center justify-center px-12 py-6 bg-transparent border border-white/20 text-white hover:bg-white/5 font-bold uppercase text-sm tracking-widest overflow-hidden transition-all"
+              className="w-full sm:w-auto group relative inline-flex items-center justify-center px-8 py-4 bg-transparent border border-white/20 text-white hover:bg-white/5 font-bold uppercase text-xs md:text-sm tracking-widest overflow-hidden transition-all"
             >
               <Send className="w-4 h-4 mr-3" />
               <span className="relative z-10">Ir a Telegram</span>

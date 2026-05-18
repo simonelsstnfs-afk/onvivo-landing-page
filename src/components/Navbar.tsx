@@ -6,7 +6,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 px-6 py-6 transition-all">
+    <nav className="fixed top-0 left-0 w-full z-50 bg-[#07070a]/75 backdrop-blur-xl border-b border-white/5 px-6 py-4 transition-all shadow-[0_4px_30px_rgba(0,0,0,0.4)]">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <motion.div 
           initial={{ opacity: 0, x: -20 }}
@@ -42,7 +42,7 @@ export default function Navbar() {
             rel="noopener noreferrer"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="text-[11px] font-bold uppercase tracking-[0.2em] px-6 py-2.5 border border-white/20 rounded-full hover:bg-white hover:text-background transition-all"
+            className="text-[10px] font-bold uppercase tracking-[0.2em] px-5 py-2 border border-white/20 rounded-full hover:bg-white hover:text-background transition-all"
           >
             Acceso Directo
           </motion.a>

@@ -33,7 +33,7 @@ export default function FAQ() {
       <div className="container mx-auto px-6 max-w-3xl">
         <div className="text-center mb-16">
           <h2 className="text-sm font-bold text-brand-primary uppercase tracking-[0.3em] mb-4">Preguntas Frecuentes</h2>
-          <h3 className="text-4xl font-black mb-4">DESPEJA TUS DUDAS</h3>
+          <h3 className="text-3xl md:text-[44px] font-black mb-4 tracking-tight uppercase">DESPEJA TUS DUDAS</h3>
         </div>
 
         <div className="space-y-4">
@@ -41,9 +41,9 @@ export default function FAQ() {
             <div key={i} className="border-b border-white/10 last:border-b-0 overflow-hidden">
               <button
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                className="w-full flex items-center justify-between py-8 text-left hover:text-brand-primary transition-colors group"
+                className="w-full flex items-center justify-between py-8 text-left hover:text-brand-primary transition-colors group cursor-pointer"
               >
-                <span className="font-black text-xl uppercase tracking-tighter">{faq.q}</span>
+                <span className="text-base md:text-lg font-bold text-white/95 group-hover:text-white transition-colors">{faq.q}</span>
                 <div className="shrink-0 ml-4 text-white/20 group-hover:text-brand-primary">
                   {openIndex === i ? <Minus size={24} /> : <Plus size={24} />}
                 </div>
