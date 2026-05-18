@@ -85,7 +85,7 @@ export default function Hero({ onOpenWizard }: HeroProps) {
   return (
     <section id="inicio" className="relative min-h-screen flex flex-col items-center justify-center px-6 pt-36 pb-24 overflow-hidden">
       {/* 🌌 FONDO DE ESPACIO PROFUNDO Y NEÓN DINÁMICO */}
-      <div className="absolute inset-0 bg-[#020204] -z-30" />
+      <div className="absolute inset-0 bg-transparent -z-30" />
       
       {/* Auroras Ambientales Animadas de Fondo */}
       <motion.div 

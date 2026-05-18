@@ -7,7 +7,7 @@ interface FinalCTAProps {
 
 export default function FinalCTA({ onOpenWizard }: FinalCTAProps) {
   return (
-    <section className="py-36 relative overflow-hidden bg-[#020204] border-t border-white/5">
+    <section className="py-36 relative overflow-hidden bg-transparent border-t border-white/5">
       {/* Luces Ambientales Galácticas de Fondo */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-[#00F0FF]/5 via-[#AD00FF]/5 to-[#FF007A]/5 rounded-full blur-[140px] pointer-events-none -z-10" />
 

@@ -3,7 +3,7 @@ import { Send, Twitter, Instagram, Github } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="py-24 border-t border-white/5 bg-[#020203] relative overflow-hidden">
+    <footer className="py-24 border-t border-white/5 bg-transparent relative overflow-hidden">
       {/* Sutil resplandor de fondo */}
       <div className="absolute bottom-0 right-0 w-[300px] h-[300px] bg-[#00F0FF]/2 rounded-full blur-[100px] pointer-events-none -z-10" />
 

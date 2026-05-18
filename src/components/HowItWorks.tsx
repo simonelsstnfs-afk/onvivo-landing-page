@@ -27,7 +27,7 @@ const steps = [
 
 export default function HowItWorks() {
   return (
-    <section id="proceso" className="py-32 relative overflow-hidden bg-[#040407] border-t border-white/5">
+    <section id="proceso" className="py-32 relative overflow-hidden bg-transparent border-t border-white/5">
       {/* Esferas de luz sutiles de fondo */}
       <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-[#AD00FF]/2 rounded-full blur-[150px] pointer-events-none -z-10" />
       <div className="absolute top-1/3 right-0 w-[450px] h-[450px] bg-[#00F0FF]/2 rounded-full blur-[130px] pointer-events-none -z-10" />

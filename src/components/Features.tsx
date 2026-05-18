@@ -52,7 +52,7 @@ interface FeaturesProps {
 
 export default function Features({ onOpenWizard }: FeaturesProps) {
   return (
-    <section id="servicios" className="py-32 relative overflow-hidden border-t border-white/5 bg-[#030305]">
+    <section id="servicios" className="py-32 relative overflow-hidden border-t border-white/5 bg-transparent">
       {/* Glows de fondo decorativos */}
       <div className="absolute top-1/4 left-1/4 w-[350px] h-[350px] bg-[#00F0FF]/3 rounded-full blur-[100px] pointer-events-none -z-10" />
       <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-[#FF007A]/3 rounded-full blur-[120px] pointer-events-none -z-10" />

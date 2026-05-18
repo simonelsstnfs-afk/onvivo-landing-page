@@ -29,7 +29,7 @@ export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section id="faq" className="py-32 relative overflow-hidden bg-[#030306] border-t border-white/5">
+    <section id="faq" className="py-32 relative overflow-hidden bg-transparent border-t border-white/5">
       {/* Luces sutiles en los costados */}
       <div className="absolute top-1/3 left-[-15%] w-[400px] h-[400px] bg-[#00F0FF]/2 rounded-full blur-[120px] pointer-events-none -z-10" />
       <div className="absolute bottom-1/3 right-[-15%] w-[400px] h-[400px] bg-[#FF007A]/2 rounded-full blur-[120px] pointer-events-none -z-10" />

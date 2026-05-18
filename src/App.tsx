@@ -48,11 +48,26 @@ export default function App() {
         onClose={() => setIsWizardOpen(false)} 
       />
 
-      {/* Decorative Grid and Accents */}
-      <div className="fixed inset-0 pointer-events-none z-[-1] overflow-hidden">
-        <div className="absolute inset-0 dot-grid opacity-[0.03]" />
-        <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-brand-primary/10 blur-[120px] rounded-full" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] bg-brand-secondary/15 blur-[100px] rounded-full" />
+      {/* Sistema de Fondo Cósmico Espacial de Élite (Unificado & Multicapa) */}
+      <div className="fixed inset-0 pointer-events-none z-[-1] overflow-hidden bg-[#020204]">
+        {/* Nebulosa Superior Derecha (Cian/Azul) */}
+        <div className="absolute top-[-20%] right-[-10%] w-[900px] h-[900px] bg-gradient-to-br from-[#00F0FF]/12 via-[#7000FF]/4 to-transparent rounded-full blur-[140px] animate-pulse-slow" />
+        
+        {/* Nebulosa Central Izquierda (Morado/Magenta) */}
+        <div className="absolute top-[35%] left-[-20%] w-[1000px] h-[1000px] bg-gradient-to-br from-[#AD00FF]/8 via-[#FF007A]/2 to-transparent rounded-full blur-[160px] animate-pulse-medium" />
+        
+        {/* Nebulosa Inferior Derecha (Rosa/Violeta) */}
+        <div className="absolute bottom-[-10%] right-[-15%] w-[800px] h-[800px] bg-gradient-to-br from-[#FF007A]/10 via-[#7000FF]/3 to-transparent rounded-full blur-[130px] animate-pulse-slow" />
+
+        {/* Polvo Estelar y Constelaciones (Patrón de Estrellas en Múltiples Planos) */}
+        <div className="absolute inset-0 opacity-[0.35] bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:24px_24px] [mask-image:radial-gradient(ellipse_at_center,black_60%,transparent_100%)]" />
+        <div className="absolute inset-0 opacity-[0.2] bg-[radial-gradient(#ffffff_1.5px,transparent_1.5px)] [background-size:48px_48px] [mask-image:radial-gradient(ellipse_at_center,black_70%,transparent_100%)]" />
+        
+        {/* Rejilla de Datos Holográfica (Sutil) */}
+        <div className="absolute inset-0 dot-grid opacity-[0.02]" />
+
+        {/* Capa de Brillo de Interferencia Atmosférica (Gradiente Lineal Continuo) */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#050508]/40 to-[#020204]" />
       </div>
     </div>
   );
