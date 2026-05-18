@@ -8,28 +8,28 @@ interface HeroProps {
 
 const featuredMovies = [
   {
-    title: "Cyberpunk: Edgerunners",
-    tag: "Anime // Sci-Fi",
-    image: "https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&q=80&w=400",
-    glowColor: "rgba(0, 240, 255, 0.55)",
+    title: "Dune: Part Two",
+    tag: "SCI-FI // AVENTURA",
+    image: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&q=80&w=400",
+    glowColor: "rgba(235, 140, 20, 0.65)",
   },
   {
-    title: "Interstellar",
-    tag: "Drama // Sci-Fi",
-    image: "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&q=80&w=400",
-    glowColor: "rgba(112, 0, 255, 0.55)",
+    title: "Spider-Verse",
+    tag: "ANIMACIÓN // ACCIÓN",
+    image: "https://images.unsplash.com/photo-1608889175123-8ec330b86f84?auto=format&fit=crop&q=80&w=400",
+    glowColor: "rgba(255, 0, 110, 0.65)",
   },
   {
-    title: "Demon Slayer",
-    tag: "Anime // Acción",
-    image: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&q=80&w=400",
-    glowColor: "rgba(255, 0, 128, 0.55)",
+    title: "Fallout",
+    tag: "SCI-FI // ACCIÓN",
+    image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=400",
+    glowColor: "rgba(0, 240, 255, 0.65)",
   },
   {
-    title: "Blade Runner 2049",
-    tag: "Neo-Noir // Sci-Fi",
-    image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=400",
-    glowColor: "rgba(255, 128, 0, 0.55)",
+    title: "Shōgun",
+    tag: "DRAMA ÉPICO // ACCIÓN",
+    image: "https://images.unsplash.com/photo-1528164344705-47542687000d?auto=format&fit=crop&q=80&w=400",
+    glowColor: "rgba(220, 20, 60, 0.65)",
   },
 ];
 
@@ -260,6 +260,10 @@ export default function Hero({ onOpenWizard }: HeroProps) {
             }}
           />
 
+          {/* Contorno de Neón Reactivo Pulsante Perimetral (Mística Extrema) */}
+          <div className="absolute -inset-[2px] bg-gradient-to-r from-[#00F0FF]/30 via-[#AD00FF]/30 to-[#FF007A]/30 rounded-[28px] -z-20 blur-[3px] opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
+          <div className="absolute -inset-[8px] bg-gradient-to-r from-[#00F0FF]/15 via-[#AD00FF]/15 to-[#FF007A]/15 rounded-[34px] -z-20 blur-[15px] opacity-60 group-hover:opacity-100 transition-opacity duration-500 animate-pulse" />
+
           {/* Marco Físico 3D de la Smart TV (Cristal Esmerilado Premium) */}
           <motion.div
             style={{
@@ -267,44 +271,66 @@ export default function Hero({ onOpenWizard }: HeroProps) {
               rotateY: isMobile ? 0 : rotateY,
               transformStyle: "preserve-3d",
             }}
-            className="glass rounded-3xl p-2.5 md:p-3 aspect-video overflow-hidden shadow-[0_40px_120px_rgba(0,0,0,0.85)] border border-white/10 relative group transition-all duration-300"
+            className="glass rounded-3xl p-2.5 md:p-3 aspect-video overflow-hidden shadow-[0_45px_130px_rgba(0,0,0,0.95)] border border-white/10 relative group transition-all duration-300"
           >
             {/* Simulador Stremio "Onvivo Custom" */}
-            <div className="w-full h-full bg-[#040407]/90 rounded-2xl overflow-hidden relative flex flex-col border border-white/5">
+            <div className="w-full h-full bg-[#030306]/95 rounded-2xl overflow-hidden relative flex flex-col border border-white/5">
+              
+              {/* Reflejo satinado de cristal (Diagonal) */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.04] to-transparent pointer-events-none -z-10 group-hover:translate-x-full transition-transform duration-1000 ease-out" />
+              
+              {/* Efecto de escaneo analógico CRT de televisión activa (Mística visual retro-futurista) */}
+              <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(0,240,255,0.04)_0%,transparent_80%)] mix-blend-overlay -z-10" />
+              <div className="absolute inset-0 pointer-events-none opacity-[0.03] bg-[linear-gradient(to_bottom,rgba(255,255,255,1)_50%,transparent_50%)] bg-[length:100%_4px] -z-10" />
+              
               {/* Barra de Navegación del Simulador */}
-              <div className="flex items-center justify-between px-6 py-4 bg-black/50 border-b border-white/5">
+              <div className="flex items-center justify-between px-6 py-4 bg-black/60 border-b border-white/5 z-20">
                 <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#00F0FF] animate-pulse" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#00F0FF] animate-ping" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#00F0FF] absolute" />
                   <span className="text-[10px] md:text-xs font-black font-mono tracking-widest text-[#00F0FF] uppercase">ONVIVO ACTIVE // SETUP 100% OK</span>
                 </div>
                 <div className="flex items-center gap-4 text-white/40 text-[10px] font-mono tracking-wider">
                   <span className="text-[#00F0FF] font-bold">4K UHD</span>
                   <span>●</span>
-                  <span className="text-emerald-400 font-bold">OPTIMIZED STREAMING</span>
+                  <span className="text-[#AD00FF] font-bold">OPTIMIZED STREAMING</span>
                 </div>
               </div>
               
               {/* Cuadrícula de Pósteres de Películas */}
-              <div className="flex-1 p-6 md:p-8 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 overflow-hidden">
+              <div className="flex-1 p-6 md:p-8 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 overflow-hidden z-10" style={{ transformStyle: "preserve-3d" }}>
                 {featuredMovies.map((movie, idx) => (
                   <motion.div
                     key={idx}
-                    whileHover={{ y: -10, scale: 1.04 }}
-                    className="relative aspect-[2/3] rounded-xl overflow-hidden group cursor-pointer border border-white/5"
+                    whileHover={{ 
+                      y: -18, 
+                      scale: 1.16,
+                      rotateY: idx % 2 === 0 ? 6 : -6,
+                      rotateX: 4,
+                      z: 40,
+                      boxShadow: `0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 25px ${movie.glowColor}`
+                    }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 350,
+                      damping: 18
+                    }}
+                    className="relative aspect-[2/3] rounded-xl overflow-hidden group cursor-pointer border border-white/5 transition-all duration-300"
                     style={{
-                      boxShadow: "0 4px 30px rgba(0, 0, 0, 0.6)",
+                      boxShadow: "0 8px 32px rgba(0, 0, 0, 0.6)",
+                      transformStyle: "preserve-3d"
                     }}
                   >
                     {/* Imagen de Fondo del Póster */}
                     <img 
                       src={movie.image} 
                       alt={movie.title}
-                      className="w-full h-full object-cover opacity-75 group-hover:opacity-95 group-hover:scale-105 transition-all duration-500"
+                      className="w-full h-full object-cover opacity-70 group-hover:opacity-95 group-hover:scale-105 transition-all duration-500"
                       referrerPolicy="no-referrer"
                     />
                     
                     {/* Degradado Translúcido de Pie */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/35 to-transparent opacity-90 group-hover:opacity-95 transition-opacity duration-300" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/25 to-transparent opacity-90 group-hover:opacity-95 transition-opacity duration-300" />
                     
                     {/* Brillo Ambiental Radial en Hover */}
                     <div 
