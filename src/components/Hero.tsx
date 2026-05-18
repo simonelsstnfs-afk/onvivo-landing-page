@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { motion, useMotionValue, useSpring, animate } from "motion/react";
+import { motion, useMotionValue, useSpring, animate, useAnimationFrame } from "motion/react";
 import { Zap, PlayCircle, RefreshCw, Pause } from "lucide-react";
 
 interface HeroProps {
@@ -12,28 +12,32 @@ const featuredMovies = [
     tag: "CIENCIA FICCIÓN // ESTRENO 2026",
     image: "/peliculas 2026/hail_mary.jpg",
     glowColor: "rgba(0, 240, 255, 0.65)", // Cian
-    croMessage: "🛰️ ESTRENO MAYO 2026 // ¿Vas a pagar otra suscripción mensual de 19,99€ solo para ver este estreno espacial, o prefieres configurar tu Stremio en 30 segundos con un único pago para toda la vida?",
+    problem: "Pagando 5 suscripciones distintas al mes. Fuga de capital.",
+    solution: "Catálogo global unificado. Un solo pago de 50€. Para siempre.",
   },
   {
     title: "The Boys: Season 5",
     tag: "ACCIÓN // SÁTIRA (2026)",
     image: "/peliculas 2026/the_boys.jpg",
     glowColor: "rgba(173, 0, 255, 0.65)", // Morado
-    croMessage: "🩸 TEMPORADA FINAL // Olvídate de los anuncios obligatorios y el buffering molesto. Optimiza tu Stremio hoy y disfruta el estreno sin límites de ancho de banda y en Full HD real.",
+    problem: "Links rotos, servidores caídos y buffering constante.",
+    solution: "Servidores Premium integrados. 1080p Full HD optimizado. Sin cortes.",
   },
   {
     title: "Avatar: Fuego y Ceniza",
     tag: "AVENTURA // SCI-FI (2026)",
     image: "/peliculas 2026/avatar.jpg",
     glowColor: "rgba(255, 85, 0, 0.65)", // Volcanic Orange
-    croMessage: "🔥 AVATAR: FUEGO Y CENIZA // ¿Seguirás pagando suscripciones caras de streaming solo para ver los últimos estrenos en 1080p falso? Configura tu Stremio hoy y vívelo en calidad cinematográfica real sin límites.",
+    problem: "Horas perdidas en tutoriales técnicos pesados de YouTube.",
+    solution: "Setup 100% Autónomo. Tu cine en casa listo en 5 minutos.",
   },
   {
     title: "Nemesis",
     tag: "ACCIÓN // CYBERPUNK (2026)",
     image: "/peliculas 2026/nemesis.jpg",
     glowColor: "rgba(220, 20, 60, 0.65)", // Rojo
-    croMessage: "⚔️ ESTRENO EXCLUSIVO // Deja de alquilar películas individuales o esperar meses a que lleguen a tu país. Configura tu biblioteca unificada ahora mismo.",
+    problem: "Rastreo de datos y algoritmos manipulando lo que ves.",
+    solution: "Privacidad total. Sin registro de actividad ni recolección de datos.",
   },
 ];
 
@@ -60,19 +64,13 @@ export default function Hero({ onOpenWizard }: HeroProps) {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Animación infinita continua si NO está pausada por click (aplica a Móvil y Desktop)
-  useEffect(() => {
-    if (isPaused) return;
-    
-    // Iniciar rotación continua lineal
-    const animation = animate(rotationY, rotationY.get() - 360, {
-      duration: 40,
-      ease: "linear",
-      repeat: Infinity,
-    });
-    
-    return () => animation?.stop();
-  }, [isPaused, rotationY]);
+  // Animación infinita continua matemática (Sin "rebobinados" bruscos)
+  useAnimationFrame((_, delta) => {
+    if (!isPaused) {
+      // Girar 360 grados cada 40 segundos = 9 grados / seg = 0.009 grados / ms
+      rotationY.set(rotationY.get() - (0.009 * delta));
+    }
+  });
 
   // Actualizar el Active Index para el CRO Message (aplica a Móvil y Desktop)
   useEffect(() => {
@@ -251,7 +249,7 @@ export default function Hero({ onOpenWizard }: HeroProps) {
         </div>
 
         {/* ------------------------------------------------------------- */}
-        {/* 🔥 PANEL DE NEUROMARKETING CRO (Unificado) */}
+        {/* 🔥 PANEL DE NEUROMARKETING CRO */}
         {/* ------------------------------------------------------------- */}
         {activeMovie && (
           <motion.div 
@@ -268,44 +266,63 @@ export default function Hero({ onOpenWizard }: HeroProps) {
               <div className="flex items-center justify-between md:justify-start gap-4 mb-2 md:mb-3">
                 <div className="flex items-center gap-1.5 md:gap-2 opacity-60">
                   <Zap className="w-3 h-3 md:w-3.5 md:h-3.5 text-[#00F0FF]" />
-                  <span className="text-[8px] md:text-[10px] font-mono uppercase tracking-widest text-[#00F0FF]">DIAGNOSTIC</span>
+                  <span className="text-[8px] md:text-[10px] font-sans uppercase tracking-widest text-[#00F0FF] font-bold">ANÁLISIS DE SISTEMA</span>
                 </div>
                 
                 {/* Indicador visual de Pausado/Interactividad */}
                 {isPaused ? (
                   <span 
                     onClick={() => setIsPaused(false)}
-                    className="flex items-center gap-1 md:gap-1.5 px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[8px] md:text-[9px] font-mono font-bold tracking-wider md:tracking-widest uppercase cursor-pointer hover:bg-amber-500/20 transition-all select-none"
+                    className="flex items-center gap-1 md:gap-1.5 px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[8px] md:text-[9px] font-sans font-bold tracking-wider uppercase cursor-pointer hover:bg-amber-500/20 transition-all select-none"
                     title="Haz clic para reanudar el giro automático del carrusel"
                   >
-                    <Pause className="w-2 h-2" /> Pausado (Clic en tarjeta activa)
+                    <Pause className="w-2 h-2" /> PAUSADO
                   </span>
                 ) : (
-                  <span className="flex items-center gap-1 md:gap-1.5 px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[8px] md:text-[9px] font-mono font-bold tracking-wider md:tracking-widest uppercase select-none animate-pulse">
-                    <RefreshCw className="w-2 h-2 md:w-2.5 md:h-2.5 animate-spin-slow" /> Rotando
+                  <span className="flex items-center gap-1 md:gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[8px] md:text-[9px] font-sans font-bold tracking-wider uppercase select-none animate-pulse">
+                    <RefreshCw className="w-2 h-2 md:w-2.5 md:h-2.5 animate-spin-slow" /> ROTANDO
                   </span>
                 )}
               </div>
-              <p className="text-white/80 text-xs md:text-sm leading-relaxed font-light italic">
-                "{activeMovie.croMessage}"
-              </p>
+              <div className="flex flex-col gap-3 md:gap-4 mt-2">
+                {/* Problema */}
+                <div className="flex items-start gap-2 md:gap-3 bg-red-500/5 border border-red-500/10 rounded-lg p-2.5 md:p-3">
+                  <div className="mt-1 md:mt-1.5 shrink-0 w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse shadow-[0_0_8px_rgba(239,68,68,0.8)]" />
+                  <p className="text-white/70 text-xs md:text-sm font-light leading-snug">
+                    <span className="text-red-400 font-bold mr-1.5 tracking-wide text-[10px] md:text-[11px] block md:inline mb-0.5 md:mb-0">Problema detectado:</span>
+                    {activeMovie.problem}
+                  </p>
+                </div>
+                
+                {/* Solución */}
+                <div className="flex items-start gap-2 md:gap-3 bg-emerald-500/5 border border-emerald-500/10 rounded-lg p-2.5 md:p-3">
+                  <div className="mt-1 md:mt-1.5 shrink-0 w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+                  <p className="text-white text-sm md:text-base font-medium leading-snug drop-shadow-sm">
+                    <span className="text-emerald-400 font-bold mr-1.5 tracking-wide text-[10px] md:text-[11px] block md:inline mb-0.5 md:mb-0">Solución Onvivo:</span>
+                    {activeMovie.solution}
+                  </p>
+                </div>
+              </div>
             </div>
             
-            <div className="shrink-0 w-full md:w-auto">
-              <motion.button
-                onClick={() => onOpenWizard?.(activeMovie.title)}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="w-full group relative inline-flex items-center justify-center px-4 md:px-6 py-3 md:py-4 bg-gradient-to-r text-white font-bold uppercase text-[10px] md:text-xs tracking-[0.1em] rounded-xl overflow-hidden transition-all shadow-lg font-mono cursor-pointer"
+            <div className="shrink-0 w-full md:w-auto mt-2 md:mt-0">
+              <motion.a
+                href="#precio"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="w-full group relative flex flex-col items-center justify-center px-6 md:px-8 py-3.5 md:py-4 bg-gradient-to-r text-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.5)] font-sans cursor-pointer text-center border border-white/10"
                 style={{
-                  backgroundImage: `linear-gradient(to right, ${activeMovie.glowColor}, #AD00FF)`
+                  backgroundImage: `linear-gradient(135deg, ${activeMovie.glowColor.replace('0.65', '0.8')}, #AD00FF)`
                 }}
               >
-                <span className="relative z-10 flex items-center gap-2">
-                  <PlayCircle className="w-3.5 h-3.5 md:w-4 md:h-4" /> CONFIGURAR AHORA
+                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+                <span className="relative z-10 flex items-center gap-2 font-black uppercase text-[11px] md:text-[13px] tracking-[0.12em] drop-shadow-md mb-1 md:mb-1.5">
+                  <PlayCircle className="w-4 h-4 md:w-5 md:h-5" /> CONFIGURAR MI CINE AHORA
                 </span>
-                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-              </motion.button>
+                <span className="relative z-10 text-[9px] md:text-[10px] font-medium text-white/80 tracking-wide uppercase drop-shadow-sm">
+                  Desbloquea tu ecosistema. Pago único 50€
+                </span>
+              </motion.a>
             </div>
           </motion.div>
         )}
