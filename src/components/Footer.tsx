@@ -8,10 +8,18 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-20 mb-20 relative z-10">
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center gap-3 mb-8">
-              <div className="w-8 h-8 bg-white flex items-center justify-center rounded-sm">
-                <div className="w-4 h-4 bg-background rotate-45" />
-              </div>
-              <span className="text-xl font-black text-white tracking-tighter uppercase">Onvivo</span>
+              <svg className="w-8 h-8 drop-shadow-[0_0_8px_rgba(0,240,255,0.3)]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M35 25 L75 50 L35 75 Z" fill="url(#onvivo-footer-grad)" stroke="white" strokeOpacity="0.2" strokeWidth="2" />
+                <path d="M35 25 L55 50 L35 75 Z" fill="#FFFFFF" fillOpacity="0.15" />
+                <circle cx="47" cy="50" r="5" fill="#FFFFFF" />
+                <defs>
+                  <linearGradient id="onvivo-footer-grad" x1="35" y1="25" x2="75" y2="75" gradientUnits="userSpaceOnUse">
+                    <stop stopColor="#00F0FF" />
+                    <stop offset="1" stopColor="#7000FF" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <span className="text-xl font-black text-white tracking-tighter uppercase">onvivo</span>
             </div>
             <p className="text-white/40 max-w-sm leading-relaxed text-sm">
               Transformando la manera en que configuras y consumes contenido digital mediante automatización inteligente en Telegram.
