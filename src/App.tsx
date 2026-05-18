@@ -27,7 +27,7 @@ export default function App() {
     <div className="relative">
       {/* Scroll Progress Bar */}
       <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-brand-primary z-[60] origin-left"
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#00F0FF] via-[#AD00FF] to-[#FF007A] z-[60] origin-left shadow-[0_0_15px_rgba(0,240,255,0.4)]"
         style={{ scaleX }}
       />
 

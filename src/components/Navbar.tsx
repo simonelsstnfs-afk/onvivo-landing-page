@@ -30,7 +30,7 @@ export default function Navbar() {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
-              className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/60 hover:text-white transition-all"
+              className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/60 hover:text-[#00F0FF] hover:scale-105 transition-all duration-300"
             >
               {item}
             </motion.a>
@@ -41,7 +41,7 @@ export default function Navbar() {
             rel="noopener noreferrer"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="text-[10px] font-bold uppercase tracking-[0.2em] px-5 py-2 border border-white/20 rounded-full hover:bg-white hover:text-background transition-all"
+            className="text-[10px] font-bold uppercase tracking-[0.25em] px-5 py-2.5 border border-[#00F0FF]/35 text-[#00F0FF] rounded-full hover:bg-[#00F0FF]/5 hover:border-[#00F0FF]/70 hover:shadow-[0_0_15px_rgba(0,240,255,0.25)] transition-all duration-300 font-mono"
           >
             Acceso Directo
           </motion.a>
@@ -49,31 +49,38 @@ export default function Navbar() {
 
         {/* Mobile Toggle */}
         <button 
-          className="md:hidden text-slate-300 hover:text-white"
+          className="md:hidden text-[#00F0FF] hover:text-white transition-colors p-2"
           onClick={() => setIsOpen(!isOpen)}
         >
           <Menu size={24} />
         </button>
       </div>
 
-      {/* Mobile Menu (Optional expansion) */}
+      {/* Mobile Menu en Cristal Esmerilado Premium */}
       {isOpen && (
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="md:hidden mt-2 glass rounded-2xl p-4 flex flex-col gap-4"
+          className="md:hidden mt-3 backdrop-blur-2xl bg-[#07070a]/90 border border-white/10 rounded-2xl p-5 flex flex-col gap-4 shadow-[0_15px_40px_rgba(0,0,0,0.8)]"
         >
           {["Inicio", "Servicios", "Proceso", "FAQ"].map((item) => (
-            <a key={item} href={`#${item.toLowerCase()}`} className="text-slate-300 hover:text-white px-2 py-1">
+            <a 
+              key={item} 
+              href={`#${item.toLowerCase()}`} 
+              onClick={() => setIsOpen(false)}
+              className="text-white/60 hover:text-[#00F0FF] font-bold text-xs uppercase tracking-widest px-2 py-1 transition-colors"
+            >
               {item}
             </a>
           ))}
           <a
             href="https://t.me/onvivo_bot"
-            className="flex items-center justify-center gap-2 bg-brand-primary text-background px-5 py-3 rounded-xl font-bold"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 bg-gradient-to-r from-[#00F0FF] via-[#7000FF] to-[#FF007A] text-white px-5 py-3.5 rounded-xl font-mono text-[10px] font-bold uppercase tracking-[0.2em] shadow-[0_0_20px_rgba(0,240,255,0.3)] transition-transform duration-300 active:scale-95"
           >
-            <Send size={16} />
-            Telegram
+            <Send size={14} />
+            Telegram Directo
           </a>
         </motion.div>
       )}
