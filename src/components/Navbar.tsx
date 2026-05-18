@@ -11,19 +11,14 @@ export default function Navbar() {
         <motion.div 
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="flex items-center gap-3 cursor-pointer"
+          className="flex items-center gap-2 cursor-pointer"
         >
-          <svg className="w-8 h-8 drop-shadow-[0_0_8px_rgba(0,240,255,0.5)]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M35 25 L75 50 L35 75 Z" fill="url(#onvivo-grad)" stroke="white" strokeOpacity="0.2" strokeWidth="2" />
-            <path d="M35 25 L55 50 L35 75 Z" fill="#FFFFFF" fillOpacity="0.15" />
-            <circle cx="47" cy="50" r="5" fill="#FFFFFF" />
-            <defs>
-              <linearGradient id="onvivo-grad" x1="35" y1="25" x2="75" y2="75" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#00F0FF" />
-                <stop offset="1" stopColor="#7000FF" />
-              </linearGradient>
-            </defs>
-          </svg>
+          <img 
+            src="/logo.png" 
+            alt="onvivo logo" 
+            className="w-10 h-10 object-contain drop-shadow-[0_0_12px_rgba(0,240,255,0.4)]"
+            style={{ mixBlendMode: 'screen' }} 
+          />
           <span className="text-xl font-black tracking-tighter uppercase text-white">onvivo</span>
         </motion.div>
 
