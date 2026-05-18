@@ -12,7 +12,6 @@ export default function Footer() {
                 src="/logo.png" 
                 alt="onvivo logo" 
                 className="w-10 h-10 object-contain drop-shadow-[0_0_12px_rgba(0,240,255,0.3)]"
-                style={{ mixBlendMode: 'screen' }} 
               />
               <span className="text-xl font-black text-white tracking-tighter uppercase">onvivo</span>
             </div>
