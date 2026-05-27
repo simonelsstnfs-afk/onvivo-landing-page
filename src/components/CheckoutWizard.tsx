@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   X, Globe, Mic, Tv, Mail, CheckCircle, ArrowRight, ArrowLeft, Type, 
@@ -84,6 +84,20 @@ export default function CheckoutWizard({ isOpen, onClose, preSelectedMovie }: Ch
     anime: null as boolean | null,
     email: '',
   });
+  const [orderId, setOrderId] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Generar ID de Orden Alfanumérico Único una sola vez al llegar al paso 5
+  useEffect(() => {
+    if (step === 5 && !orderId) {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let result = 'ONV-';
+      for (let i = 0; i < 6; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      setOrderId(result);
+    }
+  }, [step, orderId]);
 
   const updatePreference = (key: keyof typeof preferences, value: any) => {
     setPreferences((prev) => ({ ...prev, [key]: value }));
@@ -94,28 +108,77 @@ export default function CheckoutWizard({ isOpen, onClose, preSelectedMovie }: Ch
 
   const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-  // Configuración de Lemon Squeezy y estado de pasarela (Forzado a activo para compra directa única web)
-  const productUrl = import.meta.env.VITE_LEMON_SQUEEZY_PRODUCT_URL || 'https://onvivo.lemonsqueezy.com/buy/tu-producto-id';
-
   const finalAudio = preferences.audio === 'Otro' ? preferences.audioCustom : preferences.audio;
   const finalSubtitles = preferences.subtitles === 'Otro' ? preferences.subtitlesCustom : preferences.subtitles;
 
-  const handleCheckout = () => {
-    if (window.LemonSqueezy) {
-      window.LemonSqueezy.Setup({
-        checkoutData: {
-          email: preferences.email,
-          custom: {
-            language: preferences.language,
-            audio: finalAudio,
-            subtitles: finalSubtitles,
-            anime: preferences.anime ? 'yes' : 'no'
+  // Guardar Orden en Firestore mediante REST API (Ligera y sin dependencias del SDK)
+  const saveOrderToFirestore = async (orderIdStr: string, channel: 'whatsapp' | 'telegram') => {
+    const url = `https://firestore.googleapis.com/v1/projects/propeller-hub-7/databases/(default)/documents/orders/${orderIdStr}`;
+    
+    const payload = {
+      fields: {
+        orderId: { stringValue: orderIdStr },
+        customerEmail: { stringValue: preferences.email },
+        status: { stringValue: 'RESERVED' },
+        channel: { stringValue: channel },
+        config_language: { stringValue: preferences.language === 'Español' ? 'es' : 'en' },
+        ui_language: { stringValue: preferences.language === 'Español' ? 'es' : 'en' },
+        preferences: {
+          mapValue: {
+            fields: {
+              language: { stringValue: preferences.language },
+              audio: { stringValue: finalAudio },
+              subtitles: { stringValue: finalSubtitles },
+              anime: { booleanValue: !!preferences.anime }
+            }
           }
-        }
-      });
-      window.LemonSqueezy.Url.Open(productUrl);
-    } else {
-      window.open(productUrl, '_blank');
+        },
+        created_at: { stringValue: new Date().toISOString() },
+        updated_at: { stringValue: new Date().toISOString() }
+      }
+    };
+
+    const response = await fetch(url, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+      throw new Error('Error al guardar la orden en Firestore');
+    }
+  };
+
+  const handleChannelCheckout = async (channel: 'whatsapp' | 'telegram') => {
+    setIsLoading(true);
+    try {
+      await saveOrderToFirestore(orderId, channel);
+      
+      const animeText = preferences.anime ? "Sí" : "No";
+
+      if (channel === 'whatsapp') {
+        const text = `¡Hola onvivo! Acabo de configurar mi cine en la web. 🍿\n\n` +
+                     `* ID de Orden: ${orderId}\n` +
+                     `* Preferencias: Películas, Series y Anime (${animeText})\n` +
+                     `* Audio: ${finalAudio} // Subs: ${finalSubtitles}\n` +
+                     `* Email de entrega: ${preferences.email}\n\n` +
+                     `¿Cómo realizo el pago único de 50€ para activar mi cuenta?`;
+        
+        const whatsappUrl = `https://wa.me/34600000000?text=${encodeURIComponent(text)}`;
+        window.open(whatsappUrl, '_blank');
+      } else {
+        const telegramUrl = `https://t.me/onvivo_bot?start=${orderId}`;
+        window.open(telegramUrl, '_blank');
+      }
+      
+      setStep(6);
+    } catch (error) {
+      console.error(error);
+      alert('Hubo un problema al registrar tu orden en el sistema. Por favor, inténtalo de nuevo.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -592,7 +655,11 @@ export default function CheckoutWizard({ isOpen, onClose, preSelectedMovie }: Ch
                   </div>
                   
                   {/* Resumen Satinado Glassmorphic */}
-                  <div className="backdrop-blur-md bg-white/[0.02] border border-white/10 rounded-2xl p-6 space-y-3.5 shadow-xl">
+                  <div className="backdrop-blur-md bg-white/[0.02] border border-white/10 rounded-2xl p-6 space-y-3.5 shadow-xl relative overflow-hidden">
+                    <div className="absolute top-2 right-4 text-[9px] font-mono text-[#00F0FF]/50 border border-[#00F0FF]/20 px-2 py-0.5 rounded bg-[#00F0FF]/5 font-bold animate-pulse">
+                      {orderId}
+                    </div>
+
                     <div className="flex justify-between items-center text-xs">
                       <span className="text-white/40 font-mono tracking-wider">INTERFACE_LANG:</span>
                       <span className="text-white font-bold bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg">{preferences.language || '-'}</span>
@@ -621,32 +688,42 @@ export default function CheckoutWizard({ isOpen, onClose, preSelectedMovie }: Ch
                     </div>
                   </div>
 
-                  <div className="space-y-4">
-                    {/* Botón Principal: Finalizar y Pagar Shimmer */}
-                    <motion.button
-                      onClick={handleCheckout}
-                      whileHover={{ scale: 1.03, y: -2, boxShadow: '0 0 45px rgba(0, 240, 255, 0.45)' }}
-                      whileTap={{ scale: 0.98 }}
-                      className="w-full group relative inline-flex items-center justify-center py-4 bg-gradient-to-r from-[#00F0FF] via-[#7000FF] to-[#FF007A] text-white font-extrabold uppercase text-xs tracking-[0.2em] rounded-xl overflow-hidden shadow-[0_0_35px_rgba(0,240,255,0.35)] transition-all duration-300 cursor-pointer font-mono"
-                    >
-                      {/* Destello reflectivo (Shimmer Effect) */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-[1200ms] ease-out" />
-                      <span className="relative z-10 flex items-center gap-2">
-                        Finalizar y Pagar <Sparkles size={12} className="animate-spin-slow text-white" />
-                      </span>
-                    </motion.button>
+                  <p className="text-[11px] text-white/40 leading-relaxed text-center max-w-sm mx-auto">
+                    Tu configuración está reservada. Elige por cuál de nuestras plataformas oficiales prefieres continuar para realizar el pago de **50€ (pago único)** y recibir tus accesos:
+                  </p>
 
-                    {/* Botón de Simulación para Entorno de Desarrollo */}
-                    {import.meta.env.DEV && (
-                      <motion.button
-                        onClick={() => setStep(6)}
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        className="w-full bg-white/[0.02] hover:bg-[#00F0FF]/5 border border-white/5 hover:border-[#00F0FF]/30 text-white/50 hover:text-[#00F0FF] font-mono text-[10px] uppercase py-2.5 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer tracking-wider"
-                      >
-                        <Terminal className="w-3.5 h-3.5" />
-                        Simular Pago Exitoso (Dev Mode)
-                      </motion.button>
+                  <div className="space-y-3">
+                    {isLoading ? (
+                      <div className="py-6 flex flex-col items-center justify-center gap-3">
+                        <div className="w-8 h-8 rounded-full border-2 border-t-[#00F0FF] border-r-transparent border-b-transparent border-l-transparent animate-spin" />
+                        <span className="text-[10px] font-mono text-white/30 uppercase tracking-widest animate-pulse">Guardando Configuración...</span>
+                      </div>
+                    ) : (
+                      <>
+                        {/* Botón Verde: WhatsApp */}
+                        <motion.button
+                          onClick={() => handleChannelCheckout('whatsapp')}
+                          whileHover={{ scale: 1.02, y: -2, boxShadow: '0 0 30px rgba(0, 255, 133, 0.25)' }}
+                          whileTap={{ scale: 0.98 }}
+                          className="w-full relative inline-flex items-center justify-center py-4 bg-gradient-to-r from-[#00FF85]/20 to-[#00FF85]/5 hover:from-[#00FF85] hover:to-[#00FF85] text-[#00FF85] hover:text-black border border-[#00FF85]/35 hover:border-transparent font-extrabold uppercase text-[10px] tracking-[0.2em] rounded-xl overflow-hidden shadow-lg transition-all duration-300 cursor-pointer font-mono"
+                        >
+                          <span className="relative z-10 flex items-center gap-2">
+                            🟢 Continuar por WhatsApp
+                          </span>
+                        </motion.button>
+
+                        {/* Botón Azul: Telegram */}
+                        <motion.button
+                          onClick={() => handleChannelCheckout('telegram')}
+                          whileHover={{ scale: 1.02, y: -2, boxShadow: '0 0 30px rgba(0, 240, 255, 0.25)' }}
+                          whileTap={{ scale: 0.98 }}
+                          className="w-full relative inline-flex items-center justify-center py-4 bg-gradient-to-r from-[#00F0FF]/20 to-[#00F0FF]/5 hover:from-[#00F0FF] hover:to-[#00F0FF] text-[#00F0FF] hover:text-black border border-[#00F0FF]/35 hover:border-transparent font-extrabold uppercase text-[10px] tracking-[0.2em] rounded-xl overflow-hidden shadow-lg transition-all duration-300 cursor-pointer font-mono"
+                        >
+                          <span className="relative z-10 flex items-center gap-2">
+                            🔵 Continuar por Telegram
+                          </span>
+                        </motion.button>
+                      </>
                     )}
                   </div>
                 </motion.div>
