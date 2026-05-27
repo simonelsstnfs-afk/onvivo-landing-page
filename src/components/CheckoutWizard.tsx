@@ -736,7 +736,7 @@ export default function CheckoutWizard({ isOpen, onClose, preSelectedMovie }: Ch
                 </motion.div>
               )}
 
-              {/* STEP 6: SIMULATED SUCCESS (Dev Mode Only) */}
+              {/* STEP 6: ÉXITO & INSTRUCCIONES DE PAGO */}
               {step === 6 && (
                 <motion.div
                   key="step6"
@@ -749,66 +749,62 @@ export default function CheckoutWizard({ isOpen, onClose, preSelectedMovie }: Ch
                   <div className="flex justify-center">
                     <div 
                       style={{ 
-                        boxShadow: `0 0 40px rgba(255, 215, 0, 0.35)`, 
-                        borderColor: `rgba(255, 215, 0, 0.4)` 
+                        boxShadow: `0 0 40px rgba(0, 255, 133, 0.25)`, 
+                        borderColor: `rgba(0, 255, 133, 0.4)` 
                       }} 
-                      className="w-16 h-16 rounded-2xl bg-[#FFD700]/10 border flex items-center justify-center animate-bounce"
+                      className="w-16 h-16 rounded-2xl bg-[#00FF85]/10 border flex items-center justify-center"
                     >
-                      <ShieldCheck className="w-10 h-10 text-[#FFD700]" />
+                      <CheckCircle className="w-10 h-10 text-[#00FF85]" />
                     </div>
                   </div>
                   
                   <div className="space-y-2">
-                    <h2 className="text-2xl font-black text-[#FFD700] uppercase tracking-wider">¡Simulación Exitosa!</h2>
+                    <h2 className="text-xl font-black text-white uppercase tracking-wider">¡Reserva Confirmada!</h2>
                     <p className="text-white/60 text-xs max-w-sm mx-auto leading-relaxed">
-                      Has completado el flujo de configuración. A continuación se detalla el payload enriquecido que sería procesado por el webhook en producción:
+                      Tu configuración con ID <strong className="text-[#00F0FF]">{orderId}</strong> se ha guardado en nuestro sistema con éxito.
                     </p>
                   </div>
 
-                  {/* Terminal de visualización de datos de consola */}
-                  <div className="bg-black/95 border border-white/10 rounded-xl p-4 font-mono text-[10px] text-left text-cyan-400 overflow-x-auto max-h-48 shadow-2xl relative">
-                    <div className="absolute top-2 right-2 flex gap-1">
-                      <span className="w-2.5 h-2.5 rounded-full bg-red-500/50" />
-                      <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/50" />
-                      <span className="w-2.5 h-2.5 rounded-full bg-green-500/50" />
-                    </div>
-                    <div className="text-white/30 border-b border-white/5 pb-2 mb-2 flex justify-between items-center select-none">
-                      <span>onvivo-system-payload.json</span>
-                      <span className="text-[8px] bg-brand-primary/10 text-brand-primary px-1.5 py-0.5 rounded tracking-widest font-bold">LOCAL_MOCK</span>
-                    </div>
-                    {preSelectedMovie && (
-                      <div className="text-[#00F0FF] mb-2 animate-pulse font-bold">
-                        {`[OK] INJECTING PROFILES FOR '${preSelectedMovie.toUpperCase()}'... CACHE SYNC: 100% OK`}
-                      </div>
-                    )}
-                    <pre className="leading-tight">{JSON.stringify({
-                      email: preferences.email,
-                      language: preferences.language,
-                      audio: finalAudio,
-                      subtitles: finalSubtitles,
-                      anime: preferences.anime ? "yes" : "no",
-                      status: "PAID",
-                      channel: "web_checkout_direct",
-                      createdAt: new Date().toISOString(),
-                      metadata: {
-                        injectedTitle: preSelectedMovie || null,
-                        userAgent: typeof navigator !== 'undefined' ? navigator.userAgent.substring(0, 30) : 'unknown',
-                        environment: 'development'
-                      }
-                    }, null, 2)}</pre>
+                  <div className="backdrop-blur-md bg-white/[0.02] border border-white/5 rounded-2xl p-5 text-left space-y-3">
+                    <div className="text-[10px] font-mono text-[#00FF85] font-bold tracking-widest uppercase">Instrucciones de activación:</div>
+                    <p className="text-[11px] text-white/75 leading-relaxed">
+                      1. Hemos abierto tu chat de WhatsApp o Telegram para formalizar la entrega.
+                    </p>
+                    <p className="text-[11px] text-white/75 leading-relaxed">
+                      2. Realiza el pago único de <strong>50€</strong> mediante el método acordado en el chat.
+                    </p>
+                    <p className="text-[11px] text-white/75 leading-relaxed">
+                      3. Facilita tu ID de orden <strong className="text-[#00F0FF]">{orderId}</strong> en el concepto y tu cuenta se activará inmediatamente.
+                    </p>
                   </div>
 
-                  <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl text-[10px] text-white/40 leading-relaxed text-left">
-                    💡 **Próximo Paso Backend:** En producción, el webhook de Lemon Squeezy captura el evento `order_created` y escribe este JSON en la colección `orders` de Firestore, lo que activa el *Engineer Agent* de manera autónoma.
+                  <div className="p-3 bg-white/[0.01] border border-white/5 rounded-xl text-[10px] text-white/40 leading-relaxed">
+                    📧 Hemos enviado una copia del estado de tu solicitud de activación al correo: <strong className="text-white/75">{preferences.email}</strong>
                   </div>
 
                   <motion.button
-                    onClick={onClose}
+                    onClick={() => {
+                      onClose();
+                      // Reiniciar el wizard al estado inicial tras cerrar
+                      setTimeout(() => {
+                        setStep(0);
+                        setPreferences({
+                          language: '',
+                          audio: '',
+                          audioCustom: '',
+                          subtitles: '',
+                          subtitlesCustom: '',
+                          anime: null,
+                          email: '',
+                        });
+                        setOrderId('');
+                      }, 400);
+                    }}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full bg-[#FFD700] hover:bg-[#FFE042] text-black font-extrabold py-3.5 rounded-xl transition-all cursor-pointer font-mono text-xs uppercase tracking-widest shadow-xl"
+                    className="w-full bg-[#00F0FF] hover:bg-[#00D0FF] text-black font-extrabold py-3.5 rounded-xl transition-all cursor-pointer font-mono text-xs uppercase tracking-widest shadow-xl"
                   >
-                    Cerrar y Volver a la Landing
+                    Entendido y Volver
                   </motion.button>
                 </motion.div>
               )}
