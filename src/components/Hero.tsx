@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, useMotionValue, useSpring, animate, useAnimationFrame } from "motion/react";
 import { Zap, PlayCircle, RefreshCw, Pause } from "lucide-react";
 
@@ -164,20 +164,20 @@ export default function Hero({ onOpenWizard }: HeroProps) {
             <span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-[#00F0FF] animate-ping" />
             <span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-[#00F0FF] absolute" />
             <span className="text-[#00F0FF] text-[8px] md:text-xs font-black tracking-[0.2em] md:tracking-[0.25em] uppercase font-mono">
-              ● ONVIVO SETUP PREMIUM 100% AUTÓNOMO
+              ● PROGRAMA DE SOCIOS B2B & REVENDEDORES
             </span>
           </div>
           
           {/* Título Monumental */}
           <h1 className="text-4xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-4 md:mb-6 leading-[0.95] md:leading-[0.92] uppercase">
-            <span className="text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.18)] block mb-1">CINE PERSONAL</span>
+            <span className="text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.18)] block mb-1">CREA TU RED</span>
             <span className="bg-gradient-to-r from-[#00F0FF] via-[#AD00FF] to-[#FF007A] text-transparent bg-clip-text drop-shadow-[0_0_35px_rgba(0,240,255,0.32)] block">
-              SIN COMPLICACIONES
+              DE STREAMING B2B
             </span>
           </h1>
           
           <p className="max-w-2xl text-white/70 text-xs md:text-base mb-2 md:mb-6 leading-relaxed font-normal px-2">
-            Configuramos tu entorno Stremio de manera profesional en segundos. Accede a los estrenos mundiales de 2026 en Full HD nativo y sin geobloqueos.
+            Vende licencias y configura cuentas de Stremio premium personalizadas de forma 100% automatizada con Playwright. Gestiona tus clientes y saldo desde tu propio Panel.
           </p>
         </motion.div>
 
@@ -307,7 +307,7 @@ export default function Hero({ onOpenWizard }: HeroProps) {
             
             <div className="shrink-0 w-full md:w-auto mt-2 md:mt-0">
               <motion.a
-                href="#precio"
+                href="#/login"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
                 className="w-full group relative flex flex-col items-center justify-center px-6 md:px-8 py-3.5 md:py-4 bg-gradient-to-r text-white rounded-xl overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.5)] font-sans cursor-pointer text-center border border-white/10"
@@ -317,10 +317,10 @@ export default function Hero({ onOpenWizard }: HeroProps) {
               >
                 <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
                 <span className="relative z-10 flex items-center gap-2 font-black uppercase text-[11px] md:text-[13px] tracking-[0.12em] drop-shadow-md mb-1 md:mb-1.5">
-                  <PlayCircle className="w-4 h-4 md:w-5 md:h-5" /> CONFIGURAR MI CINE AHORA
+                  <PlayCircle className="w-4 h-4 md:w-5 md:h-5" /> ACCESO DISTRIBUIDORES
                 </span>
                 <span className="relative z-10 text-[9px] md:text-[10px] font-medium text-white/80 tracking-wide uppercase drop-shadow-sm">
-                  Desbloquea tu ecosistema. Pago único 50€
+                  Entra a tu Panel de Socio Revendedor
                 </span>
               </motion.a>
             </div>
