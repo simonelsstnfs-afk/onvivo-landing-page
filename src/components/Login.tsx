@@ -9,8 +9,12 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [mode, setMode] = useState<"login" | "forgot">("login");
   const navigate = useNavigate();
+
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
 
   // Redirigir si ya está autenticado
   useEffect(() => {
@@ -23,7 +27,7 @@ export default function Login() {
     }
   }, [user, role, loading, navigate]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
       setError("Por favor, rellene todos los campos.");
@@ -31,6 +35,7 @@ export default function Login() {
     }
 
     setError(null);
+    setSuccessMessage(null);
     setIsSubmitting(true);
 
     try {
@@ -45,6 +50,39 @@ export default function Login() {
         errorMsg = "Demasiados intentos fallidos. Cuenta bloqueada temporalmente.";
       }
       setError(errorMsg);
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleForgotSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) {
+      setError("Por favor, introduce tu correo electrónico.");
+      return;
+    }
+
+    setError(null);
+    setSuccessMessage(null);
+    setIsSubmitting(true);
+
+    try {
+      const res = await fetch(`${API_URL}/api/partner/forgot-password`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        setSuccessMessage(data.message || "Se ha enviado un enlace de recuperación de contraseña.");
+        setEmail("");
+      } else {
+        setError(data.error || "No se pudo enviar el enlace de recuperación.");
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Error de conexión con el servidor. Inténtalo más tarde.");
+    } finally {
       setIsSubmitting(false);
     }
   };
@@ -82,12 +120,12 @@ export default function Login() {
             onvivo <span className="text-[#00F0FF]">B2B</span>
           </h1>
           <p className="text-[10px] text-white/40 font-bold uppercase tracking-[0.2em] mt-1">
-            Panel de Socios & Distribuidores
+            {mode === "login" ? "Panel de Socios & Distribuidores" : "Recuperar Acceso de Socio"}
           </p>
         </div>
 
         {/* Formulario */}
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={mode === "login" ? handleLoginSubmit : handleForgotSubmit} className="space-y-6">
           {error && (
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
@@ -96,6 +134,17 @@ export default function Login() {
             >
               <AlertTriangle className="w-5 h-5 text-red-400 shrink-0" />
               <span>{error}</span>
+            </motion.div>
+          )}
+
+          {successMessage && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="flex items-center gap-3 p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl text-emerald-200 text-xs"
+            >
+              <Sparkles className="w-5 h-5 text-emerald-400 shrink-0" />
+              <span>{successMessage}</span>
             </motion.div>
           )}
 
@@ -117,25 +166,40 @@ export default function Login() {
             </div>
           </div>
 
-          {/* Input de Contraseña */}
-          <div className="space-y-2">
-            <label className="text-[10px] text-white/50 font-bold uppercase tracking-widest block pl-1">
-              Contraseña
-            </label>
-            <div className="relative">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
-              <input
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••••••"
-                className="w-full bg-[#050508]/80 border border-white/5 pl-12 pr-4 py-3.5 rounded-2xl text-white placeholder-white/20 text-sm focus:outline-none focus:border-[#AD00FF] focus:shadow-[0_0_15px_rgba(173,0,255,0.15)] transition-all duration-300"
-              />
+          {/* Input de Contraseña (Solo en modo Login) */}
+          {mode === "login" && (
+            <div className="space-y-2">
+              <div className="flex justify-between items-center px-1">
+                <label className="text-[10px] text-white/50 font-bold uppercase tracking-widest">
+                  Contraseña
+                </label>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMode("forgot");
+                    setError(null);
+                    setSuccessMessage(null);
+                  }}
+                  className="text-[10px] text-[#00F0FF] hover:underline cursor-pointer"
+                >
+                  ¿Olvidaste tu contraseña?
+                </button>
+              </div>
+              <div className="relative">
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
+                <input
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••••••"
+                  className="w-full bg-[#050508]/80 border border-white/5 pl-12 pr-4 py-3.5 rounded-2xl text-white placeholder-white/20 text-sm focus:outline-none focus:border-[#AD00FF] focus:shadow-[0_0_15px_rgba(173,0,255,0.15)] transition-all duration-300"
+                />
+              </div>
             </div>
-          </div>
+          )}
 
-          {/* Botón de Acceder */}
+          {/* Botón de Enviar / Acceder */}
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
@@ -146,12 +210,31 @@ export default function Login() {
             {isSubmitting ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin text-white" />
-                Autenticando...
+                {mode === "login" ? "Autenticando..." : "Enviando enlace..."}
               </>
-            ) : (
+            ) : mode === "login" ? (
               "Iniciar Sesión"
+            ) : (
+              "Recuperar Contraseña"
             )}
           </motion.button>
+
+          {/* Botón de volver al Login (Solo en modo forgot) */}
+          {mode === "forgot" && (
+            <div className="text-center pt-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setMode("login");
+                  setError(null);
+                  setSuccessMessage(null);
+                }}
+                className="text-[10px] text-white/40 hover:text-white uppercase tracking-wider font-bold cursor-pointer transition-colors"
+              >
+                Volver al inicio de sesión
+              </button>
+            </div>
+          )}
         </form>
       </motion.div>
     </div>
