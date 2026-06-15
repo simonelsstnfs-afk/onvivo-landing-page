@@ -50,6 +50,9 @@ export default function PartnerDashboard() {
   const [clientEmail, setClientEmail] = useState("");
   const [clientPassword, setClientPassword] = useState("");
   const [addonsProfile, setAddonsProfile] = useState("estandar");
+  const [interfaceLanguage, setInterfaceLanguage] = useState("Español");
+  const [audioLanguage, setAudioLanguage] = useState("Español");
+  const [subtitleLanguage, setSubtitleLanguage] = useState("Español");
 
   // Estado del Terminal de Logs
   const [isConsoleActive, setIsConsoleActive] = useState(false);
@@ -198,7 +201,10 @@ export default function PartnerDashboard() {
           clientName,
           clientEmail,
           clientPassword,
-          addonsProfile
+          addonsProfile,
+          interfaceLanguage,
+          audioLanguage,
+          subtitleLanguage
         })
       });
 
@@ -447,16 +453,58 @@ export default function PartnerDashboard() {
                 </button>
               </div>
 
-              <div className="space-y-1">
-                <label className="text-[10px] text-white/50 font-bold uppercase tracking-wider pl-1">Pack de Addons</label>
-                <select
-                  value={addonsProfile}
-                  onChange={(e) => setAddonsProfile(e.target.value)}
-                  disabled={activeAccountId !== null}
-                  className="w-full bg-[#050508]/80 border border-white/5 px-4 py-3 rounded-xl text-white text-xs focus:outline-none focus:border-[#AD00FF] transition-all"
-                >
-                  <option value="estandar">Pack Estándar (7 Addons Optimizado)</option>
-                </select>
+              <div className="grid grid-cols-1 gap-4">
+                <div className="space-y-1">
+                  <label className="text-[10px] text-white/50 font-bold uppercase tracking-wider pl-1">Idioma de Interfaz</label>
+                  <select
+                    value={interfaceLanguage}
+                    onChange={(e) => setInterfaceLanguage(e.target.value)}
+                    disabled={activeAccountId !== null}
+                    className="w-full bg-[#050508]/80 border border-white/5 px-4 py-3 rounded-xl text-white text-xs focus:outline-none focus:border-[#AD00FF] transition-all cursor-pointer"
+                  >
+                    <option value="Español">Español</option>
+                    <option value="Inglés">Inglés</option>
+                    <option value="Francés">Francés</option>
+                    <option value="Italiano">Italiano</option>
+                  </select>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[10px] text-white/50 font-bold uppercase tracking-wider pl-1">Idioma de Audio</label>
+                  <select
+                    value={audioLanguage}
+                    onChange={(e) => setAudioLanguage(e.target.value)}
+                    disabled={activeAccountId !== null}
+                    className="w-full bg-[#050508]/80 border border-white/5 px-4 py-3 rounded-xl text-white text-xs focus:outline-none focus:border-[#AD00FF] transition-all cursor-pointer"
+                  >
+                    <option value="Español">Español</option>
+                    <option value="Inglés">Inglés</option>
+                    <option value="Francés">Francés</option>
+                    <option value="Italiano">Italiano</option>
+                  </select>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[10px] text-white/50 font-bold uppercase tracking-wider pl-1">Idioma de Subtítulos</label>
+                  <select
+                    value={subtitleLanguage}
+                    onChange={(e) => setSubtitleLanguage(e.target.value)}
+                    disabled={activeAccountId !== null}
+                    className="w-full bg-[#050508]/80 border border-white/5 px-4 py-3 rounded-xl text-white text-xs focus:outline-none focus:border-[#AD00FF] transition-all cursor-pointer"
+                  >
+                    <option value="Español">Español</option>
+                    <option value="Inglés">Inglés</option>
+                    <option value="Francés">Francés</option>
+                    <option value="Italiano">Italiano</option>
+                  </select>
+                </div>
+
+                <div className="bg-[#050508]/40 border border-dashed border-white/10 p-3 rounded-xl flex items-center justify-between text-xs text-white/60">
+                  <span className="font-bold uppercase text-[9px] tracking-wider text-white/40">Calidad de Video</span>
+                  <span className="text-[#00F0FF] font-black uppercase text-[10px] tracking-widest bg-[#00F0FF]/10 px-2 py-0.5 rounded border border-[#00F0FF]/20">
+                    1080p FULL HD
+                  </span>
+                </div>
               </div>
 
               <motion.button
