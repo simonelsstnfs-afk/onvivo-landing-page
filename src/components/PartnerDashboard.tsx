@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
+import { findLanguage } from "../utils/languages";
 import { 
   Key, 
   PlusCircle, 
@@ -54,11 +55,21 @@ export default function PartnerDashboard() {
   const [audioLanguage, setAudioLanguage] = useState("Español");
   const [subtitleLanguage, setSubtitleLanguage] = useState("Español");
 
+  // Estados de idiomas personalizados
+  const [customInterfaceLanguage, setCustomInterfaceLanguage] = useState("");
+  const [customAudioLanguage, setCustomAudioLanguage] = useState("");
+  const [customSubtitleLanguage, setCustomSubtitleLanguage] = useState("");
+
+  const [interfaceLanguageError, setInterfaceLanguageError] = useState("");
+  const [audioLanguageError, setAudioLanguageError] = useState("");
+  const [subtitleLanguageError, setSubtitleLanguageError] = useState("");
+
   // Estado del Terminal de Logs
   const [isConsoleActive, setIsConsoleActive] = useState(false);
   const [consoleLogs, setConsoleLogs] = useState<LogMessage[]>([]);
   const [activeAccountId, setActiveAccountId] = useState<string | null>(null);
   const terminalEndRef = useRef<HTMLDivElement>(null);
+  const consoleContainerRef = useRef<HTMLDivElement>(null);
 
   // Estados del Historial de Cuentas
   const [accounts, setAccounts] = useState<Account[]>([]);
@@ -84,10 +95,64 @@ export default function PartnerDashboard() {
 
   // Auto-scroll en consola
   useEffect(() => {
-    if (terminalEndRef.current) {
-      terminalEndRef.current.scrollIntoView({ behavior: "smooth" });
+    if (consoleContainerRef.current) {
+      consoleContainerRef.current.scrollTop = consoleContainerRef.current.scrollHeight;
     }
   }, [consoleLogs]);
+
+  // Validación de idioma de Interfaz
+  useEffect(() => {
+    if (interfaceLanguage === "Otro") {
+      if (!customInterfaceLanguage.trim()) {
+        setInterfaceLanguageError("Introduce un idioma");
+      } else {
+        const resolved = findLanguage(customInterfaceLanguage);
+        if (!resolved) {
+          setInterfaceLanguageError("Idioma no soportado por los addons");
+        } else {
+          setInterfaceLanguageError("");
+        }
+      }
+    } else {
+      setInterfaceLanguageError("");
+    }
+  }, [interfaceLanguage, customInterfaceLanguage]);
+
+  // Validación de idioma de Audio
+  useEffect(() => {
+    if (audioLanguage === "Otro") {
+      if (!customAudioLanguage.trim()) {
+        setAudioLanguageError("Introduce un idioma");
+      } else {
+        const resolved = findLanguage(customAudioLanguage);
+        if (!resolved) {
+          setAudioLanguageError("Idioma no soportado por los addons");
+        } else {
+          setAudioLanguageError("");
+        }
+      }
+    } else {
+      setAudioLanguageError("");
+    }
+  }, [audioLanguage, customAudioLanguage]);
+
+  // Validación de idioma de Subtítulos
+  useEffect(() => {
+    if (subtitleLanguage === "Otro") {
+      if (!customSubtitleLanguage.trim()) {
+        setSubtitleLanguageError("Introduce un idioma");
+      } else {
+        const resolved = findLanguage(customSubtitleLanguage);
+        if (!resolved) {
+          setSubtitleLanguageError("Idioma no soportado por los addons");
+        } else {
+          setSubtitleLanguageError("");
+        }
+      }
+    } else {
+      setSubtitleLanguageError("");
+    }
+  }, [subtitleLanguage, customSubtitleLanguage]);
 
   // Polling para el proceso de creación en background
   useEffect(() => {
@@ -179,6 +244,11 @@ export default function PartnerDashboard() {
     e.preventDefault();
     if (!clientName || !clientEmail || !clientPassword) return;
 
+    if (interfaceLanguageError || audioLanguageError || subtitleLanguageError) {
+      alert("Por favor, corrige los errores de idioma antes de continuar.");
+      return;
+    }
+
     if (partnerStatus && partnerStatus.keys_available < 1) {
       alert("No dispones de llaves de activación. Por favor, solicita una recarga.");
       return;
@@ -188,6 +258,19 @@ export default function PartnerDashboard() {
     setConsoleLogs([]);
     addLog("🚀 Iniciando petición de creación de cuenta...", "info");
     addLog("🔒 Bloqueando 1 llave de activación de forma atómica...", "info");
+
+    // Resolver los nombres de idiomas finales
+    const finalInterface = interfaceLanguage === "Otro"
+      ? (findLanguage(customInterfaceLanguage)?.name || customInterfaceLanguage)
+      : interfaceLanguage;
+
+    const finalAudio = audioLanguage === "Otro"
+      ? (findLanguage(customAudioLanguage)?.name || customAudioLanguage)
+      : audioLanguage;
+
+    const finalSubtitle = subtitleLanguage === "Otro"
+      ? (findLanguage(customSubtitleLanguage)?.name || customSubtitleLanguage)
+      : subtitleLanguage;
 
     try {
       const token = await getToken();
@@ -202,9 +285,9 @@ export default function PartnerDashboard() {
           clientEmail,
           clientPassword,
           addonsProfile,
-          interfaceLanguage,
-          audioLanguage,
-          subtitleLanguage
+          interfaceLanguage: finalInterface,
+          audioLanguage: finalAudio,
+          subtitleLanguage: finalSubtitle
         })
       });
 
@@ -214,6 +297,9 @@ export default function PartnerDashboard() {
         setActiveAccountId(data.accountId);
         addLog(`✅ Llave bloqueada. Account ID: ${data.accountId}`, "success");
         addLog("⚙️ Lanzando motor de automatización Playwright en background...", "system");
+        
+        // Refrescar el saldo de llaves inmediatamente tras el bloqueo de 1 llave
+        fetchPartnerData();
         
         // Simular fases de log detalladas en cliente para espectacularidad
         simulatePlaywrightLogs();
@@ -236,7 +322,7 @@ export default function PartnerDashboard() {
       { msg: "Enviando formulario de registro y aceptando términos...", delay: 13500 },
       { msg: "Esperando redirección al panel de Stremio (dashboard)...", delay: 16500 },
       { msg: "Cuenta creada con éxito. Extrayendo cookie de sesión 'authKey'...", delay: 19000 },
-      { msg: "Descargando manifiestos del pack estándar de addons (7 addons)...", delay: 22000 },
+      { msg: "Descargando manifiestos del pack estándar de addons (9 addons)...", delay: 22000 },
       { msg: "Inyectando addons a través de la API oficial de Stremio...", delay: 25000 },
       { msg: "Confirmando instalación del catálogo unificado 1080p...", delay: 27000 },
       { msg: "Esperando respuesta final del backend...", delay: 30000 }
@@ -466,7 +552,29 @@ export default function PartnerDashboard() {
                     <option value="Inglés">Inglés</option>
                     <option value="Francés">Francés</option>
                     <option value="Italiano">Italiano</option>
+                    <option value="Otro">Otro...</option>
                   </select>
+                  {interfaceLanguage === "Otro" && (
+                    <div className="space-y-1 mt-1.5">
+                      <input
+                        type="text"
+                        placeholder="Ej: Alemán, Portugués..."
+                        value={customInterfaceLanguage}
+                        onChange={(e) => setCustomInterfaceLanguage(e.target.value)}
+                        disabled={activeAccountId !== null}
+                        className={`w-full bg-[#050508]/80 border ${interfaceLanguageError ? 'border-red-500/50' : 'border-white/5'} pl-4 pr-4 py-2.5 rounded-xl text-white placeholder-white/20 text-xs focus:outline-none focus:border-[#AD00FF] transition-all`}
+                      />
+                      {interfaceLanguageError ? (
+                        <span className="text-[9px] text-red-400 font-bold block pl-1">⚠️ {interfaceLanguageError}</span>
+                      ) : (
+                        customInterfaceLanguage.trim() && findLanguage(customInterfaceLanguage) && (
+                          <span className="text-[9px] text-emerald-400 font-bold block pl-1">
+                            ✓ Detectado: {findLanguage(customInterfaceLanguage)?.name} ({findLanguage(customInterfaceLanguage)?.iso3})
+                          </span>
+                        )
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 <div className="space-y-1">
@@ -481,7 +589,29 @@ export default function PartnerDashboard() {
                     <option value="Inglés">Inglés</option>
                     <option value="Francés">Francés</option>
                     <option value="Italiano">Italiano</option>
+                    <option value="Otro">Otro...</option>
                   </select>
+                  {audioLanguage === "Otro" && (
+                    <div className="space-y-1 mt-1.5">
+                      <input
+                        type="text"
+                        placeholder="Ej: Alemán, Ruso, Portugués..."
+                        value={customAudioLanguage}
+                        onChange={(e) => setCustomAudioLanguage(e.target.value)}
+                        disabled={activeAccountId !== null}
+                        className={`w-full bg-[#050508]/80 border ${audioLanguageError ? 'border-red-500/50' : 'border-white/5'} pl-4 pr-4 py-2.5 rounded-xl text-white placeholder-white/20 text-xs focus:outline-none focus:border-[#AD00FF] transition-all`}
+                      />
+                      {audioLanguageError ? (
+                        <span className="text-[9px] text-red-400 font-bold block pl-1">⚠️ {audioLanguageError}</span>
+                      ) : (
+                        customAudioLanguage.trim() && findLanguage(customAudioLanguage) && (
+                          <span className="text-[9px] text-emerald-400 font-bold block pl-1">
+                            ✓ Detectado: {findLanguage(customAudioLanguage)?.name}
+                          </span>
+                        )
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 <div className="space-y-1">
@@ -496,7 +626,29 @@ export default function PartnerDashboard() {
                     <option value="Inglés">Inglés</option>
                     <option value="Francés">Francés</option>
                     <option value="Italiano">Italiano</option>
+                    <option value="Otro">Otro...</option>
                   </select>
+                  {subtitleLanguage === "Otro" && (
+                    <div className="space-y-1 mt-1.5">
+                      <input
+                        type="text"
+                        placeholder="Ej: Español, Inglés, Alemán..."
+                        value={customSubtitleLanguage}
+                        onChange={(e) => setCustomSubtitleLanguage(e.target.value)}
+                        disabled={activeAccountId !== null}
+                        className={`w-full bg-[#050508]/80 border ${subtitleLanguageError ? 'border-red-500/50' : 'border-white/5'} pl-4 pr-4 py-2.5 rounded-xl text-white placeholder-white/20 text-xs focus:outline-none focus:border-[#AD00FF] transition-all`}
+                      />
+                      {subtitleLanguageError ? (
+                        <span className="text-[9px] text-red-400 font-bold block pl-1">⚠️ {subtitleLanguageError}</span>
+                      ) : (
+                        customSubtitleLanguage.trim() && findLanguage(customSubtitleLanguage) && (
+                          <span className="text-[9px] text-emerald-400 font-bold block pl-1">
+                            ✓ Detectado: {findLanguage(customSubtitleLanguage)?.name}
+                          </span>
+                        )
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 <div className="bg-[#050508]/40 border border-dashed border-white/10 p-3 rounded-xl flex items-center justify-between text-xs text-white/60">
@@ -511,7 +663,7 @@ export default function PartnerDashboard() {
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.99 }}
                 type="submit"
-                disabled={activeAccountId !== null || (partnerStatus && partnerStatus.keys_available < 1)}
+                disabled={activeAccountId !== null || (partnerStatus && partnerStatus.keys_available < 1) || !!interfaceLanguageError || !!audioLanguageError || !!subtitleLanguageError}
                 className="w-full bg-gradient-to-r from-[#00F0FF] to-[#AD00FF] hover:shadow-[0_0_20px_rgba(0,240,255,0.25)] text-white text-[11px] font-black uppercase tracking-[0.15em] py-3.5 rounded-2xl transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-4"
               >
                 <Send size={14} />
@@ -559,7 +711,10 @@ export default function PartnerDashboard() {
               </div>
 
               {/* Logs */}
-              <div className="p-6 h-64 overflow-y-auto font-mono text-xs space-y-1.5 scrollbar-thin scrollbar-thumb-cyan-500">
+              <div 
+                ref={consoleContainerRef}
+                className="p-6 h-64 overflow-y-auto font-mono text-xs space-y-1.5 scrollbar-thin scrollbar-thumb-cyan-500"
+              >
                 {consoleLogs.map((log, i) => (
                   <div 
                     key={i} 
