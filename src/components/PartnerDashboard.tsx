@@ -64,12 +64,20 @@ export default function PartnerDashboard() {
   const [audioLanguageError, setAudioLanguageError] = useState("");
   const [subtitleLanguageError, setSubtitleLanguageError] = useState("");
 
+  // Contraseña de la última cuenta creada — se conserva post-éxito para que el socio la tenga a mano
+  const [lastCreatedPassword, setLastCreatedPassword] = useState<string | null>(null);
+
   // Estado del Terminal de Logs
   const [isConsoleActive, setIsConsoleActive] = useState(false);
   const [consoleLogs, setConsoleLogs] = useState<LogMessage[]>([]);
   const [activeAccountId, setActiveAccountId] = useState<string | null>(null);
+  const [processResult, setProcessResult] = useState<'success' | 'failed' | null>(null); // UX-05
   const terminalEndRef = useRef<HTMLDivElement>(null);
   const consoleContainerRef = useRef<HTMLDivElement>(null);
+  // BUG-01: ref para capturar clientPassword sin stale closure en el polling
+  const clientPasswordRef = useRef<string>("");
+  // BUG-03: contador de intentos de polling para timeout máximo
+  const pollingAttemptsRef = useRef<number>(0);
 
   // Estados del Historial de Cuentas
   const [accounts, setAccounts] = useState<Account[]>([]);
@@ -84,6 +92,12 @@ export default function PartnerDashboard() {
 
   // Utilidades generales
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  // UX-01: estado de carga durante el submit inicial
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  // BUG-05: error inline en modal de recarga (reemplaza alert)
+  const [rechargeError, setRechargeError] = useState<string | null>(null);
+  // BUG-06: error log expandido en historial (reemplaza alert)
+  const [selectedErrorLog, setSelectedErrorLog] = useState<string | null>(null);
 
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
 
@@ -99,6 +113,11 @@ export default function PartnerDashboard() {
       consoleContainerRef.current.scrollTop = consoleContainerRef.current.scrollHeight;
     }
   }, [consoleLogs]);
+
+  // BUG-01: mantener clientPasswordRef sincronizado con el estado
+  useEffect(() => {
+    clientPasswordRef.current = clientPassword;
+  }, [clientPassword]);
 
   // Validación de idioma de Interfaz
   useEffect(() => {
@@ -154,12 +173,42 @@ export default function PartnerDashboard() {
     }
   }, [subtitleLanguage, customSubtitleLanguage]);
 
+  // Resetear formulario de cliente tras una creación. Preserva la contraseña si keepPassword=true.
+  const resetClientForm = (keepPassword = false) => {
+    setClientName("");
+    setClientEmail("");
+    if (!keepPassword) setClientPassword("");
+    setAddonsProfile("estandar");
+    setInterfaceLanguage("Español");
+    setAudioLanguage("Español");
+    setSubtitleLanguage("Español");
+    setCustomInterfaceLanguage("");
+    setCustomAudioLanguage("");
+    setCustomSubtitleLanguage("");
+    setInterfaceLanguageError("");
+    setAudioLanguageError("");
+    setSubtitleLanguageError("");
+  };
+
   // Polling para el proceso de creación en background
   useEffect(() => {
     let interval: NodeJS.Timeout;
 
     if (activeAccountId) {
+      pollingAttemptsRef.current = 0; // BUG-03: reset contador
+
       interval = setInterval(async () => {
+        pollingAttemptsRef.current += 1;
+
+        // BUG-03: timeout máximo de 75 intentos (~5 minutos)
+        if (pollingAttemptsRef.current > 75) {
+          clearInterval(interval);
+          addLog("⏰ Tiempo de espera agotado. El proceso sigue corriendo en el servidor. Recarga la página para ver el resultado.", "error");
+          setActiveAccountId(null);
+          setProcessResult('failed'); // UX-05
+          return;
+        }
+
         try {
           const token = await getToken();
           const res = await fetch(`${API_URL}/api/partner/accounts`, {
@@ -175,13 +224,19 @@ export default function PartnerDashboard() {
                 addLog("📧 Correo con credenciales de acceso enviado al cliente.", "success");
                 addLog("🎉 ¡Proceso finalizado con éxito! La llave ha sido consumida.", "success");
                 setActiveAccountId(null);
-                fetchPartnerData(); // Actualizar saldo
+                setProcessResult('success'); // UX-05
+                // BUG-01: usar ref en lugar del estado clientPassword (evita stale closure)
+                setLastCreatedPassword(clientPasswordRef.current);
+                resetClientForm(false);
+                fetchPartnerData();
                 fetchAccountsHistory();
               } else if (currentAcc.status === "failed") {
                 addLog(`❌ El proceso falló: ${currentAcc.error_log || "Error desconocido en Playwright"}`, "error");
                 addLog("♻️ La llave de activación ha sido reembolsada automáticamente a tu saldo.", "info");
                 setActiveAccountId(null);
-                fetchPartnerData(); // Actualizar saldo
+                setProcessResult('failed'); // UX-05
+                resetClientForm(false);
+                fetchPartnerData();
                 fetchAccountsHistory();
               }
             }
@@ -254,6 +309,8 @@ export default function PartnerDashboard() {
       return;
     }
 
+    setIsSubmitting(true); // UX-01
+    setProcessResult(null); // UX-05: resetear color de consola
     setIsConsoleActive(true);
     setConsoleLogs([]);
     addLog("🚀 Iniciando petición de creación de cuenta...", "info");
@@ -297,18 +354,18 @@ export default function PartnerDashboard() {
         setActiveAccountId(data.accountId);
         addLog(`✅ Llave bloqueada. Account ID: ${data.accountId}`, "success");
         addLog("⚙️ Lanzando motor de automatización Playwright en background...", "system");
-        
-        // Refrescar el saldo de llaves inmediatamente tras el bloqueo de 1 llave
         fetchPartnerData();
-        
-        // Simular fases de log detalladas en cliente para espectacularidad
         simulatePlaywrightLogs();
       } else {
         addLog(`❌ Error del servidor: ${data.error || "Error desconocido"}`, "error");
         addLog("♻️ Llave liberada.", "info");
+        setProcessResult('failed'); // UX-05
       }
     } catch (err: any) {
       addLog(`💥 Error de red: ${err.message}`, "error");
+      setProcessResult('failed'); // UX-05
+    } finally {
+      setIsSubmitting(false); // UX-01
     }
   };
 
@@ -348,6 +405,7 @@ export default function PartnerDashboard() {
     e.preventDefault();
     setIsRecharging(true);
     setRechargeResponse(null);
+    setRechargeError(null); // BUG-05: limpiar error anterior
 
     try {
       const token = await getToken();
@@ -358,7 +416,7 @@ export default function PartnerDashboard() {
           Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({
-          keysRequested: rechargeKeysCount,
+          keysRequested: Math.max(1, rechargeKeysCount), // BUG-04
           paymentMethod
         })
       });
@@ -366,13 +424,15 @@ export default function PartnerDashboard() {
       const data = await res.json();
       if (res.ok) {
         setRechargeResponse(data);
-        fetchPartnerData(); // Actualizar datos
+        fetchPartnerData();
       } else {
-        alert(data.error || "Ocurrió un error al crear la solicitud");
+        // BUG-05: reemplaza alert() por estado inline
+        setRechargeError(data.error || "Ocurrió un error al crear la solicitud");
       }
     } catch (err) {
       console.error(err);
-      alert("Error al conectar con la API de recargas");
+      // BUG-05: reemplaza alert() por estado inline
+      setRechargeError("Error al conectar con la API de recargas. Comprueba tu conexión.");
     } finally {
       setIsRecharging(false);
     }
@@ -484,6 +544,46 @@ export default function PartnerDashboard() {
               Registrar Nuevo Cliente Stremio
             </h2>
 
+            {/* Banner de contraseña post-éxito */}
+            {lastCreatedPassword && (
+              <motion.div
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                className="mb-5 p-4 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 backdrop-blur-sm"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[9px] font-black uppercase tracking-widest text-emerald-400 mb-1.5 flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse inline-block" />
+                      ✅ Cuenta creada — Contraseña del cliente
+                    </p>
+                    <div className="flex items-center gap-2">
+                      <code className="text-sm font-mono text-white tracking-wide bg-black/30 px-3 py-1.5 rounded-lg border border-white/10 flex-1 overflow-x-auto whitespace-nowrap">
+                        {lastCreatedPassword}
+                      </code>
+                      <button
+                        type="button"
+                        onClick={() => handleCopy(lastCreatedPassword, "last-pass")}
+                        className="shrink-0 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase bg-emerald-500/20 border border-emerald-500/30 hover:bg-emerald-500/30 text-emerald-300 transition-all cursor-pointer"
+                      >
+                        {copiedId === "last-pass" ? "✓ Copiada" : "Copiar"}
+                      </button>
+                    </div>
+                    <p className="text-[9px] text-white/30 mt-1.5">El formulario ha sido limpiado y está listo para el siguiente cliente.</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setLastCreatedPassword(null)}
+                    className="shrink-0 text-white/20 hover:text-white/60 transition-colors cursor-pointer text-lg leading-none mt-0.5"
+                    title="Descartar"
+                  >
+                    ×
+                  </button>
+                </div>
+              </motion.div>
+            )}
+
             <form onSubmit={handleCreateAccount} className="space-y-4">
               <div className="space-y-1">
                 <label className="text-[10px] text-white/50 font-bold uppercase tracking-wider pl-1">Nombre del Cliente</label>
@@ -525,11 +625,13 @@ export default function PartnerDashboard() {
                 <button
                   type="button"
                   onClick={() => {
+                    // BUG-02: generador criptográficamente seguro
                     const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#";
-                    let autoPass = "";
-                    for (let i = 0; i < 10; i++) {
-                      autoPass += chars.charAt(Math.floor(Math.random() * chars.length));
-                    }
+                    const array = new Uint8Array(12);
+                    crypto.getRandomValues(array);
+                    const autoPass = Array.from(array)
+                      .map(b => chars[b % chars.length])
+                      .join("");
                     setClientPassword(autoPass);
                   }}
                   disabled={activeAccountId !== null}
@@ -663,11 +765,20 @@ export default function PartnerDashboard() {
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.99 }}
                 type="submit"
-                disabled={activeAccountId !== null || (partnerStatus && partnerStatus.keys_available < 1) || !!interfaceLanguageError || !!audioLanguageError || !!subtitleLanguageError}
+                disabled={isSubmitting || activeAccountId !== null || (partnerStatus && partnerStatus.keys_available < 1) || !!interfaceLanguageError || !!audioLanguageError || !!subtitleLanguageError}
                 className="w-full bg-gradient-to-r from-[#00F0FF] to-[#AD00FF] hover:shadow-[0_0_20px_rgba(0,240,255,0.25)] text-white text-[11px] font-black uppercase tracking-[0.15em] py-3.5 rounded-2xl transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-4"
               >
-                <Send size={14} />
-                Crear Cuenta & Consumir Llave
+                {isSubmitting ? (
+                  <>
+                    <Loader2 size={14} className="animate-spin" />
+                    Procesando...
+                  </>
+                ) : (
+                  <>
+                    <Send size={14} />
+                    Crear Cuenta &amp; Consumir Llave
+                  </>
+                )}
               </motion.button>
             </form>
           </motion.div>
@@ -681,7 +792,13 @@ export default function PartnerDashboard() {
             <motion.div 
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="bg-[#020204] border border-cyan-500/30 rounded-3xl overflow-hidden shadow-2xl relative"
+              className={`backdrop-blur-xl rounded-3xl overflow-hidden shadow-2xl relative border ${
+                processResult === 'success'
+                  ? 'bg-emerald-950/30 border-emerald-500/40'
+                  : processResult === 'failed'
+                  ? 'bg-red-950/30 border-red-500/40'
+                  : 'bg-[#020204] border-cyan-500/30'
+              }`}
             >
               {/* Barra superior de terminal */}
               <div className="bg-[#0a0a0f] border-b border-white/5 px-6 py-3 flex items-center justify-between">
@@ -745,6 +862,16 @@ export default function PartnerDashboard() {
               Historial de Cuentas Creadas
             </h2>
 
+            {/* BUG-06: Error log inline expandido */}
+            {selectedErrorLog && (
+              <div className="mb-4 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-xs text-red-300">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="font-bold uppercase tracking-wider text-[10px] text-red-400">Log de error de automatización</span>
+                  <button onClick={() => setSelectedErrorLog(null)} className="text-white/30 hover:text-white/60 cursor-pointer">×</button>
+                </div>
+                <pre className="font-mono whitespace-pre-wrap break-all text-[10px] text-red-300/80">{selectedErrorLog}</pre>
+              </div>
+            )}
             {loadingAccounts ? (
               <div className="py-12 flex items-center justify-center">
                 <RefreshCw size={24} className="animate-spin text-white/30" />
@@ -760,6 +887,7 @@ export default function PartnerDashboard() {
                     <tr className="border-b border-white/5 text-[10px] font-black uppercase tracking-wider text-white/40">
                       <th className="pb-3 pl-2">Cliente</th>
                       <th className="pb-3">Email Stremio</th>
+                      <th className="pb-3">Fecha</th>
                       <th className="pb-3 text-center">Estado</th>
                       <th className="pb-3 text-right pr-2">Acciones</th>
                     </tr>
@@ -769,6 +897,9 @@ export default function PartnerDashboard() {
                       <tr key={acc.id} className="hover:bg-white/[0.02] transition-colors group">
                         <td className="py-4 pl-2 font-bold text-white/90">{acc.client_name}</td>
                         <td className="py-4 font-mono text-white/70">{acc.client_email}</td>
+                        <td className="py-4 text-white/40 text-[10px]">
+                          {acc.created_at?.toDate ? acc.created_at.toDate().toLocaleDateString('es-ES', { day:'2-digit', month:'short', year:'2-digit' }) : '—'}
+                        </td>
                         <td className="py-4 text-center">
                           <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold ${
                             acc.status === "completed" ? "bg-emerald-500/10 text-emerald-400" :
@@ -786,14 +917,14 @@ export default function PartnerDashboard() {
                               <button
                                 onClick={() => handleCopy(acc.auth_key || "", acc.id)}
                                 className="p-2 bg-white/5 hover:bg-[#00F0FF]/15 border border-white/5 hover:border-[#00F0FF]/20 hover:text-[#00F0FF] rounded-xl transition-all cursor-pointer"
-                                title="Copiar AuthKey de Stremio"
+                                title={`AuthKey: ...${acc.auth_key.slice(-8)}`}
                               >
                                 {copiedId === acc.id ? <Check size={12} /> : <Copy size={12} />}
                               </button>
                             )}
                             {acc.status === "failed" && acc.error_log && (
                               <button
-                                onClick={() => alert(`Log de error de automatización:\n${acc.error_log}`)}
+                                onClick={() => setSelectedErrorLog(acc.error_log || "")}
                                 className="p-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-400 rounded-xl transition-all cursor-pointer"
                                 title="Ver detalle de error"
                               >
@@ -815,7 +946,10 @@ export default function PartnerDashboard() {
       {/* ================= MODAL DE SOLICITUD DE RECARGA ================= */}
       <AnimatePresence>
         {isRechargeOpen && (
-          <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 z-50">
+          <div
+            className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 z-50"
+            onClick={(e) => { if (e.target === e.currentTarget) { setIsRechargeOpen(false); setRechargeError(null); } }}
+          >
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 15 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -829,6 +963,13 @@ export default function PartnerDashboard() {
 
               {!rechargeResponse ? (
                 <form onSubmit={handleRequestKeys} className="space-y-4">
+                  {/* BUG-05: Error inline en modal de recarga */}
+                  {rechargeError && (
+                    <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-xs text-red-400 flex items-center gap-2">
+                      <XCircle size={14} className="shrink-0" />
+                      <span>{rechargeError}</span>
+                    </div>
+                  )}
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-1">
                       <label className="text-[10px] text-white/50 font-bold uppercase tracking-wider">Cantidad de Llaves</label>
