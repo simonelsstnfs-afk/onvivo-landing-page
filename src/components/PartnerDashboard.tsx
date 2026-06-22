@@ -725,7 +725,7 @@ export default function PartnerDashboard() {
               <div className="py-12 flex items-center justify-center">
                 <RefreshCw size={24} className="animate-spin text-white/30" />
               </div>
-            ) : accounts.length === 0 ? (
+            ) : accounts.filter(a => a.status !== 'failed').length === 0 ? (
               <div className="py-12 text-center border border-dashed border-white/5 rounded-2xl bg-[#050508]/40">
                 <p className="text-xs text-white/40 font-bold uppercase tracking-wider">No se han registrado cuentas aún.</p>
               </div>
@@ -742,7 +742,7 @@ export default function PartnerDashboard() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-white/5 text-xs">
-                    {accounts.map((acc) => (
+                    {accounts.filter(acc => acc.status !== 'failed').map((acc) => (
                       <tr key={acc.id} className="hover:bg-white/[0.02] transition-colors group">
                         <td className="py-4 pl-2 font-bold text-white/90">{acc.client_name}</td>
                         <td className="py-4 font-mono text-white/70">{acc.client_email}</td>

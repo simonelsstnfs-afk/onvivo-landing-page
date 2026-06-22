@@ -39,6 +39,16 @@ interface Metrics {
   totalRevenue: number;
 }
 
+interface GlobalAccount {
+  id: string;
+  client_email: string;
+  client_name: string;
+  partner_id: string;
+  status: "pending" | "completed" | "failed";
+  error_log?: string;
+  created_at?: any;
+}
+
 export default function AdminDashboard() {
   const { logout, getToken, user } = useAuth();
   const navigate = useNavigate();
@@ -54,6 +64,10 @@ export default function AdminDashboard() {
   const [partners, setPartners] = useState<Partner[]>([]);
   const [loadingMetrics, setLoadingMetrics] = useState(true);
   const [loadingPartners, setLoadingPartners] = useState(true);
+  
+  // Historial global
+  const [globalAccounts, setGlobalAccounts] = useState<GlobalAccount[]>([]);
+  const [loadingGlobalAccounts, setLoadingGlobalAccounts] = useState(true);
 
   // Formulario de Nuevo Socio
   const [newPartnerName, setNewPartnerName] = useState("");
@@ -73,6 +87,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     fetchMetrics();
     fetchPartners();
+    fetchGlobalAccounts();
   }, []);
 
   const fetchMetrics = async () => {
@@ -108,6 +123,24 @@ export default function AdminDashboard() {
       console.error("Error al cargar socios:", err);
     } finally {
       setLoadingPartners(false);
+    }
+  };
+
+  const fetchGlobalAccounts = async () => {
+    setLoadingGlobalAccounts(true);
+    try {
+      const token = await getToken();
+      const res = await fetch(`${API_URL}/api/admin/accounts-history?limit=100`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setGlobalAccounts(data.accounts || []);
+      }
+    } catch (err) {
+      console.error("Error al cargar historial global:", err);
+    } finally {
+      setLoadingGlobalAccounts(false);
     }
   };
 
@@ -272,6 +305,7 @@ export default function AdminDashboard() {
             onClick={() => {
               fetchMetrics();
               fetchPartners();
+              fetchGlobalAccounts();
             }}
             className="p-3 bg-[#07070a] border border-white/5 hover:border-white/10 hover:text-[#AD00FF] rounded-2xl transition-all cursor-pointer"
             title="Refrescar datos"
@@ -491,6 +525,69 @@ export default function AdminDashboard() {
               </div>
             )}
           </div>
+        </div>
+
+        {/* ================= FILA 3: HISTORIAL GLOBAL DE CUENTAS ================= */}
+        <div className="bg-[#07070a]/75 backdrop-blur-xl border border-white/10 p-6 rounded-3xl shadow-2xl overflow-hidden">
+          <h2 className="text-xs font-black uppercase tracking-widest text-white/40 mb-5 flex items-center gap-2">
+            <Activity size={14} className="text-[#00F0FF]" />
+            Historial Global de Cuentas (Logs de Playwright)
+          </h2>
+
+          {loadingGlobalAccounts ? (
+            <div className="py-12 flex items-center justify-center">
+              <RefreshCw size={24} className="animate-spin text-white/30" />
+            </div>
+          ) : globalAccounts.length === 0 ? (
+            <div className="py-12 text-center border border-dashed border-white/5 rounded-2xl bg-[#050508]/40">
+              <p className="text-xs text-white/40 font-bold uppercase tracking-wider">No se han registrado cuentas a nivel global.</p>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="border-b border-white/5 text-[10px] font-black uppercase tracking-wider text-white/40">
+                    <th className="pb-3 pl-2">Socio</th>
+                    <th className="pb-3">Cliente</th>
+                    <th className="pb-3 text-center">Estado</th>
+                    <th className="pb-3">Detalle (Log)</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/5 text-xs">
+                  {globalAccounts.map((acc) => (
+                    <tr key={acc.id} className="hover:bg-white/[0.01] transition-colors">
+                      <td className="py-4 pl-2 font-mono text-white/50">{acc.partner_id}</td>
+                      <td className="py-4">
+                        <div className="font-bold text-white">{acc.client_name}</div>
+                        <div className="text-[10px] text-white/40 font-mono">{acc.client_email}</div>
+                      </td>
+                      <td className="py-4 text-center">
+                        <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-[10px] font-bold ${
+                          acc.status === 'completed' ? 'bg-emerald-500/10 text-emerald-400' :
+                          acc.status === 'failed' ? 'bg-red-500/10 text-red-400' :
+                          'bg-[#00F0FF]/10 text-[#00F0FF]'
+                        }`}>
+                          {acc.status === 'completed' && <Check size={10} />}
+                          {acc.status === 'failed' && <X size={10} />}
+                          {acc.status === 'pending' && <RefreshCw size={10} className="animate-spin" />}
+                          {acc.status.toUpperCase()}
+                        </span>
+                      </td>
+                      <td className="py-4 pr-2">
+                        {acc.status === 'failed' && acc.error_log ? (
+                          <div className="bg-red-500/5 border border-red-500/10 text-red-400/80 p-2 rounded text-[10px] max-w-sm whitespace-pre-wrap font-mono">
+                            {acc.error_log}
+                          </div>
+                        ) : (
+                          <span className="text-white/20 text-[10px]">—</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </main>
 
