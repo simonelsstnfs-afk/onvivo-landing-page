@@ -51,18 +51,8 @@ export default function PartnerDashboard() {
   const [clientEmail, setClientEmail] = useState("");
   const [clientPassword, setClientPassword] = useState("");
   const [addonsProfile, setAddonsProfile] = useState("estandar");
-  const [interfaceLanguage, setInterfaceLanguage] = useState("Español");
-  const [audioLanguage, setAudioLanguage] = useState("Español");
-  const [subtitleLanguage, setSubtitleLanguage] = useState("Español");
-
-  // Estados de idiomas personalizados
-  const [customInterfaceLanguage, setCustomInterfaceLanguage] = useState("");
-  const [customAudioLanguage, setCustomAudioLanguage] = useState("");
-  const [customSubtitleLanguage, setCustomSubtitleLanguage] = useState("");
-
-  const [interfaceLanguageError, setInterfaceLanguageError] = useState("");
-  const [audioLanguageError, setAudioLanguageError] = useState("");
-  const [subtitleLanguageError, setSubtitleLanguageError] = useState("");
+  const [addonLanguages, setAddonLanguages] = useState("Español");
+  const [addonLanguagesError, setAddonLanguagesError] = useState("");
 
   // Contraseña de la última cuenta creada — se conserva post-éxito para que el socio la tenga a mano
   const [lastCreatedPassword, setLastCreatedPassword] = useState<string | null>(null);
@@ -119,59 +109,21 @@ export default function PartnerDashboard() {
     clientPasswordRef.current = clientPassword;
   }, [clientPassword]);
 
-  // Validación de idioma de Interfaz
+  // Validación de idiomas de Addons (múltiples separados por coma)
   useEffect(() => {
-    if (interfaceLanguage === "Otro") {
-      if (!customInterfaceLanguage.trim()) {
-        setInterfaceLanguageError("Introduce un idioma");
-      } else {
-        const resolved = findLanguage(customInterfaceLanguage);
-        if (!resolved) {
-          setInterfaceLanguageError("Idioma no soportado por los addons");
-        } else {
-          setInterfaceLanguageError("");
-        }
-      }
-    } else {
-      setInterfaceLanguageError("");
+    if (!addonLanguages.trim()) {
+      setAddonLanguagesError("Introduce al menos un idioma");
+      return;
     }
-  }, [interfaceLanguage, customInterfaceLanguage]);
-
-  // Validación de idioma de Audio
-  useEffect(() => {
-    if (audioLanguage === "Otro") {
-      if (!customAudioLanguage.trim()) {
-        setAudioLanguageError("Introduce un idioma");
-      } else {
-        const resolved = findLanguage(customAudioLanguage);
-        if (!resolved) {
-          setAudioLanguageError("Idioma no soportado por los addons");
-        } else {
-          setAudioLanguageError("");
-        }
-      }
+    const langs = addonLanguages.split(',').map(l => l.trim()).filter(l => l);
+    const invalidLangs = langs.filter(l => !findLanguage(l));
+    
+    if (invalidLangs.length > 0) {
+      setAddonLanguagesError(`Idioma no soportado: ${invalidLangs.join(', ')}`);
     } else {
-      setAudioLanguageError("");
+      setAddonLanguagesError("");
     }
-  }, [audioLanguage, customAudioLanguage]);
-
-  // Validación de idioma de Subtítulos
-  useEffect(() => {
-    if (subtitleLanguage === "Otro") {
-      if (!customSubtitleLanguage.trim()) {
-        setSubtitleLanguageError("Introduce un idioma");
-      } else {
-        const resolved = findLanguage(customSubtitleLanguage);
-        if (!resolved) {
-          setSubtitleLanguageError("Idioma no soportado por los addons");
-        } else {
-          setSubtitleLanguageError("");
-        }
-      }
-    } else {
-      setSubtitleLanguageError("");
-    }
-  }, [subtitleLanguage, customSubtitleLanguage]);
+  }, [addonLanguages]);
 
   // Resetear formulario de cliente tras una creación. Preserva la contraseña si keepPassword=true.
   const resetClientForm = (keepPassword = false) => {
@@ -179,15 +131,8 @@ export default function PartnerDashboard() {
     setClientEmail("");
     if (!keepPassword) setClientPassword("");
     setAddonsProfile("estandar");
-    setInterfaceLanguage("Español");
-    setAudioLanguage("Español");
-    setSubtitleLanguage("Español");
-    setCustomInterfaceLanguage("");
-    setCustomAudioLanguage("");
-    setCustomSubtitleLanguage("");
-    setInterfaceLanguageError("");
-    setAudioLanguageError("");
-    setSubtitleLanguageError("");
+    setAddonLanguages("Español");
+    setAddonLanguagesError("");
   };
 
   // Polling para el proceso de creación en background
@@ -299,7 +244,7 @@ export default function PartnerDashboard() {
     e.preventDefault();
     if (!clientName || !clientEmail || !clientPassword) return;
 
-    if (interfaceLanguageError || audioLanguageError || subtitleLanguageError) {
+    if (addonLanguagesError) {
       alert("Por favor, corrige los errores de idioma antes de continuar.");
       return;
     }
@@ -316,18 +261,13 @@ export default function PartnerDashboard() {
     addLog("🚀 Iniciando petición de creación de cuenta...", "info");
     addLog("🔒 Bloqueando 1 llave de activación de forma atómica...", "info");
 
-    // Resolver los nombres de idiomas finales
-    const finalInterface = interfaceLanguage === "Otro"
-      ? (findLanguage(customInterfaceLanguage)?.name || customInterfaceLanguage)
-      : interfaceLanguage;
-
-    const finalAudio = audioLanguage === "Otro"
-      ? (findLanguage(customAudioLanguage)?.name || customAudioLanguage)
-      : audioLanguage;
-
-    const finalSubtitle = subtitleLanguage === "Otro"
-      ? (findLanguage(customSubtitleLanguage)?.name || customSubtitleLanguage)
-      : subtitleLanguage;
+    // Resolver los nombres de idiomas finales separados por comas
+    const finalAddonLanguages = addonLanguages
+      .split(',')
+      .map(l => l.trim())
+      .filter(l => l)
+      .map(l => findLanguage(l)?.name || l)
+      .join(', ');
 
     try {
       const token = await getToken();
@@ -342,9 +282,7 @@ export default function PartnerDashboard() {
           clientEmail,
           clientPassword,
           addonsProfile,
-          interfaceLanguage: finalInterface,
-          audioLanguage: finalAudio,
-          subtitleLanguage: finalSubtitle
+          addonLanguages: finalAddonLanguages
         })
       });
 
@@ -643,113 +581,24 @@ export default function PartnerDashboard() {
 
               <div className="grid grid-cols-1 gap-4">
                 <div className="space-y-1">
-                  <label className="text-[10px] text-white/50 font-bold uppercase tracking-wider pl-1">Idioma de Interfaz</label>
-                  <select
-                    value={interfaceLanguage}
-                    onChange={(e) => setInterfaceLanguage(e.target.value)}
+                  <label className="text-[10px] text-white/50 font-bold uppercase tracking-wider pl-1">Idiomas de Contenido (Addons)</label>
+                  <p className="text-[9px] text-white/40 pl-1 mb-1">Puedes escribir varios idiomas separados por comas (Ej: Español, Inglés, Alemán)</p>
+                  <input
+                    type="text"
+                    placeholder="Español, Inglés..."
+                    value={addonLanguages}
+                    onChange={(e) => setAddonLanguages(e.target.value)}
                     disabled={activeAccountId !== null}
-                    className="w-full bg-[#050508]/80 border border-white/5 px-4 py-3 rounded-xl text-white text-xs focus:outline-none focus:border-[#AD00FF] transition-all cursor-pointer"
-                  >
-                    <option value="Español">Español</option>
-                    <option value="Inglés">Inglés</option>
-                    <option value="Francés">Francés</option>
-                    <option value="Italiano">Italiano</option>
-                    <option value="Otro">Otro...</option>
-                  </select>
-                  {interfaceLanguage === "Otro" && (
-                    <div className="space-y-1 mt-1.5">
-                      <input
-                        type="text"
-                        placeholder="Ej: Alemán, Portugués..."
-                        value={customInterfaceLanguage}
-                        onChange={(e) => setCustomInterfaceLanguage(e.target.value)}
-                        disabled={activeAccountId !== null}
-                        className={`w-full bg-[#050508]/80 border ${interfaceLanguageError ? 'border-red-500/50' : 'border-white/5'} pl-4 pr-4 py-2.5 rounded-xl text-white placeholder-white/20 text-xs focus:outline-none focus:border-[#AD00FF] transition-all`}
-                      />
-                      {interfaceLanguageError ? (
-                        <span className="text-[9px] text-red-400 font-bold block pl-1">⚠️ {interfaceLanguageError}</span>
-                      ) : (
-                        customInterfaceLanguage.trim() && findLanguage(customInterfaceLanguage) && (
-                          <span className="text-[9px] text-emerald-400 font-bold block pl-1">
-                            ✓ Detectado: {findLanguage(customInterfaceLanguage)?.name} ({findLanguage(customInterfaceLanguage)?.iso3})
-                          </span>
-                        )
-                      )}
-                    </div>
-                  )}
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-[10px] text-white/50 font-bold uppercase tracking-wider pl-1">Idioma de Audio</label>
-                  <select
-                    value={audioLanguage}
-                    onChange={(e) => setAudioLanguage(e.target.value)}
-                    disabled={activeAccountId !== null}
-                    className="w-full bg-[#050508]/80 border border-white/5 px-4 py-3 rounded-xl text-white text-xs focus:outline-none focus:border-[#AD00FF] transition-all cursor-pointer"
-                  >
-                    <option value="Español">Español</option>
-                    <option value="Inglés">Inglés</option>
-                    <option value="Francés">Francés</option>
-                    <option value="Italiano">Italiano</option>
-                    <option value="Otro">Otro...</option>
-                  </select>
-                  {audioLanguage === "Otro" && (
-                    <div className="space-y-1 mt-1.5">
-                      <input
-                        type="text"
-                        placeholder="Ej: Alemán, Ruso, Portugués..."
-                        value={customAudioLanguage}
-                        onChange={(e) => setCustomAudioLanguage(e.target.value)}
-                        disabled={activeAccountId !== null}
-                        className={`w-full bg-[#050508]/80 border ${audioLanguageError ? 'border-red-500/50' : 'border-white/5'} pl-4 pr-4 py-2.5 rounded-xl text-white placeholder-white/20 text-xs focus:outline-none focus:border-[#AD00FF] transition-all`}
-                      />
-                      {audioLanguageError ? (
-                        <span className="text-[9px] text-red-400 font-bold block pl-1">⚠️ {audioLanguageError}</span>
-                      ) : (
-                        customAudioLanguage.trim() && findLanguage(customAudioLanguage) && (
-                          <span className="text-[9px] text-emerald-400 font-bold block pl-1">
-                            ✓ Detectado: {findLanguage(customAudioLanguage)?.name}
-                          </span>
-                        )
-                      )}
-                    </div>
-                  )}
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-[10px] text-white/50 font-bold uppercase tracking-wider pl-1">Idioma de Subtítulos</label>
-                  <select
-                    value={subtitleLanguage}
-                    onChange={(e) => setSubtitleLanguage(e.target.value)}
-                    disabled={activeAccountId !== null}
-                    className="w-full bg-[#050508]/80 border border-white/5 px-4 py-3 rounded-xl text-white text-xs focus:outline-none focus:border-[#AD00FF] transition-all cursor-pointer"
-                  >
-                    <option value="Español">Español</option>
-                    <option value="Inglés">Inglés</option>
-                    <option value="Francés">Francés</option>
-                    <option value="Italiano">Italiano</option>
-                    <option value="Otro">Otro...</option>
-                  </select>
-                  {subtitleLanguage === "Otro" && (
-                    <div className="space-y-1 mt-1.5">
-                      <input
-                        type="text"
-                        placeholder="Ej: Español, Inglés, Alemán..."
-                        value={customSubtitleLanguage}
-                        onChange={(e) => setCustomSubtitleLanguage(e.target.value)}
-                        disabled={activeAccountId !== null}
-                        className={`w-full bg-[#050508]/80 border ${subtitleLanguageError ? 'border-red-500/50' : 'border-white/5'} pl-4 pr-4 py-2.5 rounded-xl text-white placeholder-white/20 text-xs focus:outline-none focus:border-[#AD00FF] transition-all`}
-                      />
-                      {subtitleLanguageError ? (
-                        <span className="text-[9px] text-red-400 font-bold block pl-1">⚠️ {subtitleLanguageError}</span>
-                      ) : (
-                        customSubtitleLanguage.trim() && findLanguage(customSubtitleLanguage) && (
-                          <span className="text-[9px] text-emerald-400 font-bold block pl-1">
-                            ✓ Detectado: {findLanguage(customSubtitleLanguage)?.name}
-                          </span>
-                        )
-                      )}
-                    </div>
+                    className={`w-full bg-[#050508]/80 border ${addonLanguagesError ? 'border-red-500/50' : 'border-white/5'} pl-4 pr-4 py-3 rounded-xl text-white placeholder-white/20 text-xs focus:outline-none focus:border-[#AD00FF] transition-all`}
+                  />
+                  {addonLanguagesError ? (
+                    <span className="text-[9px] text-red-400 font-bold block pl-1 mt-1">⚠️ {addonLanguagesError}</span>
+                  ) : (
+                    addonLanguages.trim() && (
+                      <span className="text-[9px] text-emerald-400 font-bold block pl-1 mt-1">
+                        ✓ Detectados: {addonLanguages.split(',').map(l => l.trim()).filter(l => l && findLanguage(l)).map(l => findLanguage(l)?.name).join(', ')}
+                      </span>
+                    )
                   )}
                 </div>
 
@@ -765,7 +614,7 @@ export default function PartnerDashboard() {
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.99 }}
                 type="submit"
-                disabled={isSubmitting || activeAccountId !== null || (partnerStatus && partnerStatus.keys_available < 1) || !!interfaceLanguageError || !!audioLanguageError || !!subtitleLanguageError}
+                disabled={isSubmitting || activeAccountId !== null || (partnerStatus && partnerStatus.keys_available < 1) || !!addonLanguagesError}
                 className="w-full bg-gradient-to-r from-[#00F0FF] to-[#AD00FF] hover:shadow-[0_0_20px_rgba(0,240,255,0.25)] text-white text-[11px] font-black uppercase tracking-[0.15em] py-3.5 rounded-2xl transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-4"
               >
                 {isSubmitting ? (
