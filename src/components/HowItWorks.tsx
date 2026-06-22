@@ -4,22 +4,22 @@ import { MessageSquare, Settings, PlayCircle, ChevronRight, HelpCircle, ArrowRig
 const steps = [
   {
     icon: <MessageSquare className="w-7 h-7 text-[#00F0FF]" />,
-    title: "Personaliza tu Plan",
-    desc: "Elige tus preferencias de visualización (idioma, audio, subtítulos y tus géneros favoritos) directamente en nuestro intuitivo asistente web en segundos.",
+    title: "Personaliza la cuenta de tu cliente",
+    desc: "Introduce el correo de tu cliente y personaliza el idioma de sus subtítulos directamente en tu panel de control B2B en segundos.",
     tag: "PASO 01",
     glowColor: "rgba(0, 240, 255, 0.1)"
   },
   {
     icon: <Settings className="w-7 h-7 text-[#AD00FF]" />,
-    title: "Activación Automatizada",
-    desc: "Completa la suscripción mediante nuestra pasarela segura Lemon Squeezy y nuestro motor de IA generará tu cuenta Stremio de inmediato.",
+    title: "Creación Automatizada",
+    desc: "Con solo un clic, nuestro motor inteligente consume una llave de tu saldo y configura la cuenta de Stremio con los 9 Addons premium de forma 100% autónoma.",
     tag: "PASO 02",
     glowColor: "rgba(173, 0, 255, 0.1)"
   },
   {
     icon: <PlayCircle className="w-7 h-7 text-[#FF007A]" />,
-    title: "Acceso y Disfrute",
-    desc: "Inicia sesión en Stremio en tu Smart TV, PC o móvil y empieza a ver tu contenido favorito con velocidad extrema y resolución 1080p Full HD fluida.",
+    title: "Entrega Inmediata",
+    desc: "Entrega las credenciales a tu cliente. Solo tendrá que iniciar sesión en su Smart TV, PC o móvil y disfrutar del catálogo unificado en 1080p sin configurar nada.",
     tag: "PASO 03",
     glowColor: "rgba(255, 0, 122, 0.1)"
   }
@@ -51,14 +51,14 @@ export default function HowItWorks() {
             </h3>
             
             <p className="text-white/45 mb-10 max-w-lg leading-relaxed text-sm md:text-base">
-              No necesitas conocimientos técnicos previos. Hemos simplificado todo el proceso a través de inteligencia robótica para que lo tengas todo listo en menos de 3 minutos de reloj.
+              No necesitas conocimientos técnicos previos. Hemos simplificado todo el proceso a través de automatización para que la cuenta de tu cliente esté lista en menos de 3 minutos de reloj.
             </p>
             
             <div className="space-y-4 max-w-md">
               {[
-                { text: "Automatización total de plugins", color: "text-[#00F0FF]" },
-                { text: "Soporte técnico de activación incluido", color: "text-[#AD00FF]" },
-                { text: "Actualizaciones de contenido automáticas", color: "text-[#FF007A]" }
+                { text: "Automatización total de los 9 Addons", color: "text-[#00F0FF]" },
+                { text: "Reembolso automático si falla el setup", color: "text-[#AD00FF]" },
+                { text: "Cero configuración para tu cliente final", color: "text-[#FF007A]" }
               ].map((item, idx) => (
                 <motion.div 
                   key={idx} 

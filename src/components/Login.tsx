@@ -88,7 +88,11 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center px-4 relative overflow-hidden">
+    <div className="min-h-screen w-full flex items-center justify-center px-4 relative overflow-hidden bg-background">
+      {/* Ambient backgrounds */}
+      <div className="absolute inset-0 bg-grid opacity-40 pointer-events-none" />
+      <div className="absolute top-1/4 -left-64 w-[500px] h-[500px] bg-cyan-500/20 rounded-full blur-[150px] pointer-events-none" />
+      <div className="absolute bottom-1/4 -right-64 w-[500px] h-[500px] bg-violet-500/20 rounded-full blur-[150px] pointer-events-none" />
       {/* Botón de retroceso */}
       <motion.button
         initial={{ opacity: 0, x: -10 }}
@@ -105,7 +109,7 @@ export default function Login() {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ type: "spring", stiffness: 100, damping: 20 }}
-        className="relative w-full max-w-md bg-[#07070a]/75 backdrop-blur-2xl border border-white/10 p-8 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] z-10"
+        className="relative w-full max-w-md glass-card p-8 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] z-10"
       >
         {/* Glows interiores */}
         <div className="absolute -top-10 -left-10 w-40 h-40 bg-[#00F0FF]/10 rounded-full blur-3xl pointer-events-none" />
@@ -113,13 +117,21 @@ export default function Login() {
 
         {/* Cabecera */}
         <div className="flex flex-col items-center text-center mb-8">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#00F0FF]/20 to-[#AD00FF]/20 border border-white/10 flex items-center justify-center mb-4 shadow-[0_0_20px_rgba(0,240,255,0.25)]">
-            <Sparkles className="w-8 h-8 text-[#00F0FF] animate-pulse" />
+          <div className="relative w-16 h-16 rounded-2xl overflow-hidden ring-1 ring-cyan-500/40 mb-4 shadow-[0_0_20px_rgba(0,240,255,0.25)]">
+            <img
+              src="/onvivo-logo.png"
+              alt="onvivo logo"
+              className="object-cover w-full h-full"
+            />
+            <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/20 to-violet-500/20 mix-blend-overlay pointer-events-none" />
           </div>
-          <h1 className="text-2xl font-black uppercase tracking-tighter text-white">
-            onvivo <span className="text-[#00F0FF]">B2B</span>
+          <h1 
+            className="text-3xl font-black uppercase tracking-tight text-white flex gap-2"
+            style={{ fontFamily: 'var(--font-display)' }}
+          >
+            ONVIVO <span className="text-[#00F0FF]">B2B</span>
           </h1>
-          <p className="text-[10px] text-white/40 font-bold uppercase tracking-[0.2em] mt-1">
+          <p className="text-[10px] text-white/40 font-bold uppercase tracking-[0.2em] mt-2">
             {mode === "login" ? "Panel de Socios & Distribuidores" : "Recuperar Acceso de Socio"}
           </p>
         </div>
@@ -161,7 +173,7 @@ export default function Login() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="socio@tuempresa.com"
-                className="w-full bg-[#050508]/80 border border-white/5 pl-12 pr-4 py-3.5 rounded-2xl text-white placeholder-white/20 text-sm focus:outline-none focus:border-[#00F0FF] focus:shadow-[0_0_15px_rgba(0,240,255,0.15)] transition-all duration-300"
+                className="w-full bg-white/5 border border-white/10 pl-12 pr-4 py-3.5 rounded-2xl text-white placeholder-white/20 text-sm focus:outline-none focus:border-cyan-400 focus:shadow-[0_0_15px_rgba(0,240,255,0.15)] transition-all duration-300"
               />
             </div>
           </div>
@@ -193,7 +205,7 @@ export default function Login() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••••••"
-                  className="w-full bg-[#050508]/80 border border-white/5 pl-12 pr-4 py-3.5 rounded-2xl text-white placeholder-white/20 text-sm focus:outline-none focus:border-[#AD00FF] focus:shadow-[0_0_15px_rgba(173,0,255,0.15)] transition-all duration-300"
+                  className="w-full bg-white/5 border border-white/10 pl-12 pr-4 py-3.5 rounded-2xl text-white placeholder-white/20 text-sm focus:outline-none focus:border-violet-400 focus:shadow-[0_0_15px_rgba(173,0,255,0.15)] transition-all duration-300"
                 />
               </div>
             </div>
@@ -205,7 +217,7 @@ export default function Login() {
             whileTap={{ scale: 0.98 }}
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-gradient-to-r from-[#00F0FF] to-[#AD00FF] hover:shadow-[0_0_25px_rgba(0,240,255,0.35)] text-white text-xs font-black uppercase tracking-[0.2em] py-4 rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full btn-neon hover:shadow-[0_0_25px_rgba(0,240,255,0.35)] text-white text-xs font-black uppercase tracking-[0.2em] py-4 rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSubmitting ? (
               <>

@@ -285,19 +285,23 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen w-full text-white pb-12 pt-20 px-4 md:px-8 relative">
+    <div className="min-h-screen w-full text-white pb-12 pt-20 px-4 md:px-8 relative bg-background">
+      {/* Background Ambience */}
+      <div className="absolute inset-0 bg-grid opacity-40 pointer-events-none" />
+      <div className="fixed top-1/4 -right-64 w-[500px] h-[500px] bg-magenta-500/20 rounded-full blur-[150px] pointer-events-none z-0" />
+      <div className="fixed bottom-1/4 -left-64 w-[500px] h-[500px] bg-violet-500/20 rounded-full blur-[150px] pointer-events-none z-0" />
       
       {/* 🔮 HEADER */}
-      <header className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/5 pb-6 mb-8">
+      <header className="relative max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/5 pb-6 mb-8 z-10">
         <div>
-          <h1 className="text-2xl font-black uppercase tracking-tight flex items-center gap-2">
-            Panel de <span className="text-[#AD00FF]">Administración</span>
-            <span className="text-[10px] bg-red-500/20 text-red-400 border border-red-500/30 px-2 py-0.5 rounded-full font-bold">
+          <h1 className="text-3xl sm:text-4xl font-black tracking-tight flex items-center gap-2" style={{ fontFamily: 'var(--font-display)' }}>
+            Panel de <span className="text-gradient-magenta">Administración</span>
+            <span className="text-[10px] bg-red-500/20 text-red-400 border border-red-500/30 px-2 py-0.5 rounded-full font-bold uppercase tracking-widest translate-y-[-2px]">
               ROOT
             </span>
           </h1>
-          <p className="text-xs text-white/50">
-            Sesión: {user?.email} • Gestión global de la red onvivo B2B
+          <p className="text-xs text-white/50 mt-1 uppercase tracking-widest font-mono">
+            Sesión: {user?.email} <span className="mx-2 opacity-50">|</span> Gestión global de la red onvivo B2B
           </p>
         </div>
         <div className="flex gap-4">
@@ -307,7 +311,7 @@ export default function AdminDashboard() {
               fetchPartners();
               fetchGlobalAccounts();
             }}
-            className="p-3 bg-[#07070a] border border-white/5 hover:border-white/10 hover:text-[#AD00FF] rounded-2xl transition-all cursor-pointer"
+            className="p-3 bg-white/5 border border-white/10 hover:border-pink-500/50 hover:text-[#AD00FF] rounded-2xl transition-all cursor-pointer"
             title="Refrescar datos"
           >
             <RefreshCw size={18} />
@@ -327,51 +331,47 @@ export default function AdminDashboard() {
         {/* ================= FILA 1: MÉTRICAS GENERALES ================= */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {/* Ingresos */}
-          <div className="bg-[#07070a]/75 backdrop-blur-xl border border-white/10 p-5 rounded-3xl relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-2xl pointer-events-none" />
-            <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest block mb-2 flex items-center gap-1.5">
-              <DollarSign size={12} className="text-emerald-400" />
-              Ingresos Facturados
+          <div className="bg-[#0a0a0f]/50 border border-white/5 p-6 rounded-2xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/10 blur-2xl rounded-full pointer-events-none" />
+            <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest block mb-4 flex items-center gap-1.5">
+              <DollarSign className="w-3 h-3 text-emerald-400" /> Ingresos Facturados
             </span>
-            <span className="text-3xl font-black text-emerald-400 tracking-tight">
+            <div className="text-4xl font-black text-emerald-400 tracking-tight">
               {loadingMetrics ? "..." : `${metrics.totalRevenue.toFixed(2)}€`}
-            </span>
+            </div>
           </div>
 
           {/* Socios Activos */}
-          <div className="bg-[#07070a]/75 backdrop-blur-xl border border-white/10 p-5 rounded-3xl relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-[#AD00FF]/5 rounded-full blur-2xl pointer-events-none" />
-            <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest block mb-2 flex items-center gap-1.5">
-              <Users size={12} className="text-[#AD00FF]" />
-              Socios Activos
+          <div className="bg-[#0a0a0f]/50 border border-white/5 p-6 rounded-2xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-[#AD00FF]/10 blur-2xl rounded-full pointer-events-none" />
+            <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest block mb-4 flex items-center gap-1.5">
+              <Users className="w-3 h-3 text-[#AD00FF]" /> Socios Activos
             </span>
-            <span className="text-3xl font-black text-white tracking-tight">
+            <div className="text-4xl font-black text-white tracking-tight">
               {loadingMetrics ? "..." : `${metrics.activePartners} / ${metrics.totalPartners}`}
-            </span>
+            </div>
           </div>
 
           {/* Cuentas Stremio */}
-          <div className="bg-[#07070a]/75 backdrop-blur-xl border border-white/10 p-5 rounded-3xl relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-[#00F0FF]/5 rounded-full blur-2xl pointer-events-none" />
-            <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest block mb-2 flex items-center gap-1.5">
-              <Activity size={12} className="text-[#00F0FF]" />
-              Cuentas Creadas
+          <div className="bg-[#0a0a0f]/50 border border-white/5 p-6 rounded-2xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-[#00F0FF]/10 blur-2xl rounded-full pointer-events-none" />
+            <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest block mb-4 flex items-center gap-1.5">
+              <Activity className="w-3 h-3 text-[#00F0FF]" /> Cuentas Creadas
             </span>
-            <span className="text-3xl font-black text-[#00F0FF] tracking-tight">
+            <div className="text-4xl font-black text-[#00F0FF] tracking-tight">
               {loadingMetrics ? "..." : metrics.completedAccounts}
-            </span>
+            </div>
           </div>
 
           {/* Eficiencia transaccional */}
-          <div className="bg-[#07070a]/75 backdrop-blur-xl border border-white/10 p-5 rounded-3xl relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-[#FF007A]/5 rounded-full blur-2xl pointer-events-none" />
-            <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest block mb-2 flex items-center gap-1.5">
-              <Key size={12} className="text-[#FF007A]" />
-              Intentos Totales
+          <div className="bg-[#0a0a0f]/50 border border-white/5 p-6 rounded-2xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-[#FF007A]/10 blur-2xl rounded-full pointer-events-none" />
+            <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest block mb-4 flex items-center gap-1.5">
+              <Key className="w-3 h-3 text-[#FF007A]" /> Intentos Totales
             </span>
-            <span className="text-3xl font-black text-white/80 tracking-tight">
+            <div className="text-4xl font-black text-white/80 tracking-tight">
               {loadingMetrics ? "..." : metrics.totalAccounts}
-            </span>
+            </div>
           </div>
         </div>
 
@@ -379,10 +379,10 @@ export default function AdminDashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
           {/* Formulario de Alta de Socios */}
-          <div className="lg:col-span-1 bg-[#07070a]/75 backdrop-blur-xl border border-white/10 p-6 rounded-3xl shadow-2xl">
-            <h2 className="text-xs font-black uppercase tracking-widest text-white/40 mb-5 flex items-center gap-2">
-              <UserPlus size={14} className="text-[#AD00FF]" />
-              Crear Nuevo Socio Revendedor
+          <div className="lg:col-span-1 bg-[#0a0a0f]/50 border border-white/5 p-6 rounded-2xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#AD00FF]/10 blur-2xl rounded-full pointer-events-none" />
+            <h2 className="text-[10px] font-black uppercase tracking-widest text-white/40 mb-6 flex items-center gap-1.5">
+              <UserPlus className="w-3 h-3 text-[#AD00FF]" /> Crear Nuevo Socio Revendedor
             </h2>
 
             <form onSubmit={handleCreatePartner} className="space-y-4">
@@ -394,7 +394,7 @@ export default function AdminDashboard() {
                   placeholder="Ej: Max Streaming"
                   value={newPartnerName}
                   onChange={(e) => setNewPartnerName(e.target.value)}
-                  className="w-full bg-[#050508]/80 border border-white/5 pl-4 pr-4 py-3 rounded-xl text-white placeholder-white/20 text-xs focus:outline-none focus:border-[#AD00FF] transition-all"
+                  className="w-full bg-background/50 border border-white/5 pl-4 pr-4 py-3 rounded-xl text-white placeholder-white/20 text-xs focus:outline-none focus:border-magenta-500 focus:shadow-[0_0_15px_rgba(236,72,153,0.15)] transition-all"
                 />
               </div>
 
@@ -406,7 +406,7 @@ export default function AdminDashboard() {
                   placeholder="socio@email.com"
                   value={newPartnerEmail}
                   onChange={(e) => setNewPartnerEmail(e.target.value)}
-                  className="w-full bg-[#050508]/80 border border-white/5 pl-4 pr-4 py-3 rounded-xl text-white placeholder-white/20 text-xs focus:outline-none focus:border-[#AD00FF] transition-all"
+                  className="w-full bg-background/50 border border-white/5 pl-4 pr-4 py-3 rounded-xl text-white placeholder-white/20 text-xs focus:outline-none focus:border-magenta-500 focus:shadow-[0_0_15px_rgba(236,72,153,0.15)] transition-all"
                 />
               </div>
 
@@ -418,7 +418,7 @@ export default function AdminDashboard() {
                   placeholder="Mínimo 6 caracteres"
                   value={newPartnerPassword}
                   onChange={(e) => setNewPartnerPassword(e.target.value)}
-                  className="w-full bg-[#050508]/80 border border-white/5 pl-4 pr-4 py-3 rounded-xl text-white placeholder-white/20 text-xs focus:outline-none focus:border-[#AD00FF] transition-all"
+                  className="w-full bg-background/50 border border-white/5 pl-4 pr-4 py-3 rounded-xl text-white placeholder-white/20 text-xs focus:outline-none focus:border-magenta-500 focus:shadow-[0_0_15px_rgba(236,72,153,0.15)] transition-all"
                 />
               </div>
 
@@ -431,7 +431,7 @@ export default function AdminDashboard() {
                   required
                   value={newPartnerCost}
                   onChange={(e) => setNewPartnerCost(parseFloat(e.target.value) || 0)}
-                  className="w-full bg-[#050508]/80 border border-white/5 pl-4 pr-4 py-3 rounded-xl text-white font-bold text-xs focus:outline-none focus:border-[#AD00FF] transition-all"
+                  className="w-full bg-background/50 border border-white/5 pl-4 pr-4 py-3 rounded-xl text-magenta-400 font-bold text-xs focus:outline-none focus:border-magenta-500 focus:shadow-[0_0_15px_rgba(236,72,153,0.15)] transition-all"
                 />
               </div>
 
@@ -440,18 +440,17 @@ export default function AdminDashboard() {
                 whileTap={{ scale: 0.99 }}
                 type="submit"
                 disabled={isCreatingPartner}
-                className="w-full bg-gradient-to-r from-[#AD00FF] to-[#FF007A] hover:shadow-[0_0_20px_rgba(173,0,255,0.25)] text-white text-[11px] font-black uppercase tracking-[0.15em] py-3.5 rounded-2xl transition-all cursor-pointer disabled:opacity-40"
+                className="w-full btn-neon flex justify-center items-center gap-2 py-4 rounded-xl text-xs font-black uppercase tracking-wider cursor-pointer mt-6 disabled:opacity-40"
               >
                 Crear Socio & Asignar claims B2B
               </motion.button>
             </form>
           </div>
 
-          {/* Listado General de Socios */}
-          <div className="lg:col-span-2 bg-[#07070a]/75 backdrop-blur-xl border border-white/10 p-6 rounded-3xl shadow-2xl overflow-hidden">
-            <h2 className="text-xs font-black uppercase tracking-widest text-white/40 mb-5 flex items-center gap-2">
-              <Sliders size={14} className="text-[#00F0FF]" />
-              Gestión y Monitoreo de Socios
+          {/* Tabla de Socios */}
+          <div className="lg:col-span-2 bg-[#0a0a0f]/50 border border-white/5 p-6 rounded-2xl relative overflow-hidden">
+            <h2 className="text-[10px] font-black uppercase tracking-widest text-white/40 mb-6 flex items-center gap-1.5">
+              <List className="w-3 h-3 text-[#00F0FF]" /> Gestión de Socios Activos
             </h2>
 
             {loadingPartners ? (
@@ -459,7 +458,7 @@ export default function AdminDashboard() {
                 <RefreshCw size={24} className="animate-spin text-white/30" />
               </div>
             ) : partners.length === 0 ? (
-              <div className="py-12 text-center border border-dashed border-white/5 rounded-2xl bg-[#050508]/40">
+              <div className="py-12 text-center border border-dashed border-white/5 rounded-2xl bg-card/30">
                 <p className="text-xs text-white/40 font-bold uppercase tracking-wider">No se han registrado socios revendedores.</p>
               </div>
             ) : (
@@ -528,7 +527,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* ================= FILA 3: HISTORIAL GLOBAL DE CUENTAS ================= */}
-        <div className="bg-[#07070a]/75 backdrop-blur-xl border border-white/10 p-6 rounded-3xl shadow-2xl overflow-hidden">
+        <div className="glass-card p-6 rounded-3xl shadow-2xl overflow-hidden">
           <h2 className="text-xs font-black uppercase tracking-widest text-white/40 mb-5 flex items-center gap-2">
             <Activity size={14} className="text-[#00F0FF]" />
             Historial Global de Cuentas (Logs de Playwright)
@@ -539,7 +538,7 @@ export default function AdminDashboard() {
               <RefreshCw size={24} className="animate-spin text-white/30" />
             </div>
           ) : globalAccounts.length === 0 ? (
-            <div className="py-12 text-center border border-dashed border-white/5 rounded-2xl bg-[#050508]/40">
+            <div className="py-12 text-center border border-dashed border-white/5 rounded-2xl bg-card/30">
               <p className="text-xs text-white/40 font-bold uppercase tracking-wider">No se han registrado cuentas a nivel global.</p>
             </div>
           ) : (
@@ -599,7 +598,7 @@ export default function AdminDashboard() {
               initial={{ opacity: 0, scale: 0.95, y: 15 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 15 }}
-              className="bg-[#07070a] border border-white/10 w-full max-w-md p-6 rounded-3xl shadow-2xl relative"
+              className="bg-card border border-white/10 w-full max-w-md p-6 rounded-3xl shadow-2xl relative"
             >
               <h2 className="text-lg font-black uppercase tracking-tight mb-2">Recargar Llaves a Socio</h2>
               <p className="text-xs text-white/50 mb-6">
@@ -619,7 +618,7 @@ export default function AdminDashboard() {
                       setRechargeQuantity(qty);
                       setRechargeRevenue(qty * selectedPartner.cost_per_key);
                     }}
-                    className="w-full bg-[#050508]/80 border border-white/5 px-4 py-3 rounded-xl text-white font-bold text-sm focus:outline-none focus:border-[#00F0FF] transition-all"
+                    className="w-full bg-card/50 border border-white/5 px-4 py-3 rounded-xl text-white font-bold text-sm focus:outline-none focus:border-[#00F0FF] transition-all"
                   />
                 </div>
 
@@ -632,7 +631,7 @@ export default function AdminDashboard() {
                     required
                     value={rechargeRevenue}
                     onChange={(e) => setRechargeRevenue(parseFloat(e.target.value) || 0)}
-                    className="w-full bg-[#050508]/80 border border-white/5 px-4 py-3 rounded-xl text-white font-bold text-sm focus:outline-none focus:border-[#00F0FF] transition-all"
+                    className="w-full bg-card/50 border border-white/5 px-4 py-3 rounded-xl text-white font-bold text-sm focus:outline-none focus:border-[#00F0FF] transition-all"
                   />
                 </div>
 
@@ -668,3 +667,4 @@ export default function AdminDashboard() {
     </div>
   );
 }
+

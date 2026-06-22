@@ -1,70 +1,359 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Space+Grotesk:wght@300..700&display=swap');
+:root {
+  --font-display: 'Orbitron', sans-serif;
+  --font-grotesk: 'Space Grotesk', sans-serif;
+}
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap');
 @import "tailwindcss";
+@import "tw-animate-css";
 
-@theme {
-  --color-brand-primary: #00F0FF;
-  --color-brand-secondary: #7000FF;
-  --color-background: #050505;
-  --color-surface: #111111;
-  
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-display);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* ========================================
+   ONVIVO — FUTURISTIC DARK THEME
+   Palette: Deep space black + Cyan + Violet + Magenta
+   ======================================== */
+:root {
+  --radius: 0.75rem;
+
+  /* Brand neon colors */
+  --onvivo-cyan: #00f0ff;
+  --onvivo-cyan-soft: #22d3ee;
+  --onvivo-violet: #a855f7;
+  --onvivo-violet-soft: #8b5cf6;
+  --onvivo-magenta: #ec4899;
+  --onvivo-emerald: #10b981;
+
+  /* Dark futuristic background */
+  --background: #050510;
+  --foreground: #e2e8ff;
+  --card: rgba(15, 15, 35, 0.6);
+  --card-foreground: #e2e8ff;
+  --popover: #0a0a1f;
+  --popover-foreground: #e2e8ff;
+  --primary: #00f0ff;
+  --primary-foreground: #050510;
+  --secondary: rgba(168, 85, 247, 0.15);
+  --secondary-foreground: #e2e8ff;
+  --muted: rgba(255, 255, 255, 0.04);
+  --muted-foreground: #8b8ba7;
+  --accent: #a855f7;
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
+  --border: rgba(0, 240, 255, 0.15);
+  --input: rgba(255, 255, 255, 0.08);
+  --ring: #00f0ff;
+  --chart-1: #00f0ff;
+  --chart-2: #a855f7;
+  --chart-3: #ec4899;
+  --chart-4: #10b981;
+  --chart-5: #fbbf24;
+  --sidebar: #0a0a1f;
+  --sidebar-foreground: #e2e8ff;
+  --sidebar-primary: #00f0ff;
+  --sidebar-primary-foreground: #050510;
+  --sidebar-accent: rgba(168, 85, 247, 0.15);
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgba(0, 240, 255, 0.15);
+  --sidebar-ring: #00f0ff;
+}
+
+.dark {
+  --background: #050510;
+  --foreground: #e2e8ff;
+  --card: rgba(15, 15, 35, 0.6);
+  --card-foreground: #e2e8ff;
+  --popover: #0a0a1f;
+  --popover-foreground: #e2e8ff;
+  --primary: #00f0ff;
+  --primary-foreground: #050510;
+  --secondary: rgba(168, 85, 247, 0.15);
+  --secondary-foreground: #e2e8ff;
+  --muted: rgba(255, 255, 255, 0.04);
+  --muted-foreground: #8b8ba7;
+  --accent: #a855f7;
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
+  --border: rgba(0, 240, 255, 0.15);
+  --input: rgba(255, 255, 255, 0.08);
+  --ring: #00f0ff;
 }
 
 @layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
   body {
-    @apply bg-background text-white antialiased overflow-x-hidden;
+    @apply bg-background text-foreground;
+    background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(168, 85, 247, 0.18), transparent 60%),
+                radial-gradient(ellipse 60% 50% at 80% 30%, rgba(0, 240, 255, 0.10), transparent 60%),
+                radial-gradient(ellipse 60% 50% at 20% 70%, rgba(236, 72, 153, 0.08), transparent 60%),
+                #050510;
+    background-attachment: fixed;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: rgba(0, 240, 255, 0.3);
+    color: #fff;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #050510;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #00f0ff, #a855f7);
+    border-radius: 8px;
+    border: 2px solid #050510;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #22d3ee, #c084fc);
   }
 }
 
-@layer utilities {
-  .text-stroke {
-    -webkit-text-stroke: 1.5px white;
-  }
-  
-  .glass {
-    @apply bg-white/5 backdrop-blur-lg border border-white/10;
-  }
-  
-  .glow-cyan {
-    box-shadow: 0 0 40px rgba(0, 240, 255, 0.2);
-  }
-  
-  .dot-grid {
-    background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-    background-size: 40px 40px;
-  }
+/* ========================================
+   FUTURISTIC UTILITIES
+   ======================================== */
+
+/* Animated gradient text */
+.text-gradient-neon {
+  background: linear-gradient(110deg, #00f0ff 0%, #a855f7 50%, #ec4899 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-flow 8s ease infinite;
 }
 
-/* Custom animations if needed beyond motion */
+.text-gradient-cyan {
+  background: linear-gradient(135deg, #00f0ff 0%, #22d3ee 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-violet {
+  background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Glassmorphism cards */
+.glass-card {
+  background: rgba(15, 15, 35, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 240, 255, 0.12);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.08) 0%, transparent 40%, rgba(168, 85, 247, 0.08) 100%);
+  pointer-events: none;
+}
+
+/* Neon glow effects */
+.glow-cyan {
+  box-shadow: 0 0 30px rgba(0, 240, 255, 0.4), 0 0 60px rgba(0, 240, 255, 0.2);
+}
+
+.glow-violet {
+  box-shadow: 0 0 30px rgba(168, 85, 247, 0.4), 0 0 60px rgba(168, 85, 247, 0.2);
+}
+
+.glow-magenta {
+  box-shadow: 0 0 30px rgba(236, 72, 153, 0.4), 0 0 60px rgba(236, 72, 153, 0.2);
+}
+
+.text-glow-cyan {
+  text-shadow: 0 0 20px rgba(0, 240, 255, 0.6), 0 0 40px rgba(0, 240, 255, 0.3);
+}
+
+.text-glow-violet {
+  text-shadow: 0 0 20px rgba(168, 85, 247, 0.6), 0 0 40px rgba(168, 85, 247, 0.3);
+}
+
+/* Neon button */
+.btn-neon {
+  position: relative;
+  background: linear-gradient(135deg, #00f0ff 0%, #a855f7 100%);
+  color: #050510;
+  font-weight: 700;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 25px rgba(0, 240, 255, 0.4), 0 0 50px rgba(168, 85, 247, 0.25);
+}
+
+.btn-neon:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 0 40px rgba(0, 240, 255, 0.6), 0 0 80px rgba(168, 85, 247, 0.4);
+}
+
+.btn-neon::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(135deg, #00f0ff, #a855f7, #ec4899, #00f0ff);
+  background-size: 300% 300%;
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  animation: gradient-flow 4s linear infinite;
+}
+
+.btn-neon:hover::after {
+  opacity: 1;
+}
+
+/* Outline neon button */
+.btn-outline-neon {
+  position: relative;
+  background: transparent;
+  color: #00f0ff;
+  border: 1px solid rgba(0, 240, 255, 0.4);
+  transition: all 0.3s ease;
+}
+
+.btn-outline-neon:hover {
+  background: rgba(0, 240, 255, 0.08);
+  border-color: #00f0ff;
+  box-shadow: 0 0 25px rgba(0, 240, 255, 0.3), inset 0 0 25px rgba(0, 240, 255, 0.1);
+  color: #fff;
+}
+
+/* Grid background pattern */
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(0, 240, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.06) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 60% 50% at 50% 50%, black 30%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse 60% 50% at 50% 50%, black 30%, transparent 80%);
+}
+
+/* Animated conic border */
+.conic-border {
+  position: relative;
+  background: rgba(15, 15, 35, 0.6);
+  border-radius: 1rem;
+}
+.conic-border::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(from var(--angle, 0deg), #00f0ff, #a855f7, #ec4899, #00f0ff);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: rotate-conic 6s linear infinite;
+  pointer-events: none;
+}
+
+/* Floating animation */
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
+  50% { transform: translateY(-12px); }
 }
-
-@keyframes pulse-slow {
-  0%, 100% { opacity: 0.85; transform: scale(1) translate(0px, 0px); }
-  50% { opacity: 1; transform: scale(1.08) translate(15px, -15px); }
-}
-
-@keyframes pulse-medium {
-  0%, 100% { opacity: 0.75; transform: scale(1) translate(0px, 0px); }
-  50% { opacity: 0.95; transform: scale(1.12) translate(-20px, 20px); }
-}
-
 .animate-float {
-  animation: float 5s ease-in-out infinite;
+  animation: float 6s ease-in-out infinite;
 }
 
-.animate-pulse-slow {
-  animation: pulse-slow 15s ease-in-out infinite;
+/* Pulse glow */
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
 }
 
-.animate-pulse-medium {
-  animation: pulse-medium 12s ease-in-out infinite;
+/* Gradient flow */
+@keyframes gradient-flow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
-/* Shimmer horizontal (FinalCTA) */
+/* Conic rotation */
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes rotate-conic {
+  to { --angle: 360deg; }
+}
+
+/* Scan line */
+@keyframes scan-line {
+  0% { transform: translateY(-100%); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateY(100%); opacity: 0; }
+}
+.animate-scan {
+  animation: scan-line 4s linear infinite;
+}
+
+/* Shimmer */
 @keyframes shimmer {
   0% { transform: translateX(-100%); }
   100% { transform: translateX(100%); }
@@ -73,119 +362,55 @@
   animation: shimmer 3s ease-in-out infinite;
 }
 
-/* Spin lento (Hero badge "Rotando") */
-@keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+/* Marquee */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
-.animate-spin-slow {
-  animation: spin-slow 3s linear infinite;
-}
-
-/* ==========================================================================
-   ESTILIZACIÓN DE BARRAS DE SCROLL PREMIUM (Cromático & Cinematic)
-   ========================================================================== */
-
-/* Firefox */
-html {
-  scrollbar-width: thin;
-  scrollbar-color: #AD00FF #050505;
+.animate-marquee {
+  animation: marquee 40s linear infinite;
 }
 
-/* Chrome, Edge, Safari y navegadores Webkit (Aplicado de forma universal a todos los contenedores) */
-*::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+/* Tilt card 3D perspective */
+.perspective-1000 {
+  perspective: 1000px;
+}
+.preserve-3d {
+  transform-style: preserve-3d;
 }
 
-/* Canal del scrollbar (Track) */
-*::-webkit-scrollbar-track {
-  background: #050505;
-  border-left: 1px solid rgba(255, 255, 255, 0.03);
+/* Section divider */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.4), rgba(168, 85, 247, 0.4), transparent);
 }
 
-/* Tirador del scrollbar (Thumb) - Gradiente cromático neón vertical */
-*::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #00F0FF 0%, #AD00FF 50%, #FF007A 100%);
-  border: 2px solid #050505;
-  border-radius: 9999px;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+/* Reveal underline on headings */
+.heading-underline {
+  position: relative;
+  display: inline-block;
+}
+.heading-underline::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -12px;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #00f0ff, #a855f7);
+  border-radius: 2px;
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.6);
 }
 
-/* Tirador en Hover - Brillo verdoso-cian interactivo */
-*::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #00FF85 0%, #00F0FF 50%, #7000FF 100%);
-}
-
-/* Estilización específica para scrollbars dentro de modales con fondos de cristal */
-.backdrop-blur-2xl::-webkit-scrollbar-track,
-.backdrop-blur-3xl::-webkit-scrollbar-track,
-.relative.max-h-\[92vh\]::-webkit-scrollbar-track {
-  background: rgba(7, 7, 10, 0.85) !important;
-  border-left: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.backdrop-blur-2xl::-webkit-scrollbar-thumb,
-.backdrop-blur-3xl::-webkit-scrollbar-thumb,
-.relative.max-h-\[92vh\]::-webkit-scrollbar-thumb {
-  border-color: rgba(7, 7, 10, 0.9) !important;
-}
-
-/* ==========================================================================
-   SISTEMA DE FONDO CÓSMICO GALÁCTICO Y CONSTELACIONES
-   ========================================================================== */
-
-.cosmic-background {
-  background-color: #030206;
-  background-image: 
-    radial-gradient(circle at 15% 15%, rgba(0, 240, 255, 0.22) 0%, transparent 40%),
-    radial-gradient(circle at 85% 20%, rgba(173, 0, 255, 0.18) 0%, transparent 45%),
-    radial-gradient(circle at 50% 50%, rgba(255, 0, 122, 0.14) 0%, transparent 50%),
-    radial-gradient(circle at 15% 80%, rgba(112, 0, 255, 0.16) 0%, transparent 45%),
-    radial-gradient(circle at 80% 85%, rgba(0, 240, 255, 0.18) 0%, transparent 40%);
-  /* No usar background-attachment: fixed — el elemento padre ya es position: fixed.
-     Esto garantiza compatibilidad con iOS Safari que no soporta bg-attachment: fixed. */
-  background-size: cover;
-}
-
-@keyframes twinkle {
-  0%, 100% { opacity: 0.2; }
-  50% { opacity: 1; }
-}
-
-@keyframes twinkle-cyan {
-  0%, 100% { opacity: 0.25; }
-  50% { opacity: 1; }
-}
-
-@keyframes twinkle-pink {
-  0%, 100% { opacity: 0.25; }
-  50% { opacity: 1; }
-}
-
-.animate-twinkle-slow {
-  animation: twinkle 6s ease-in-out infinite;
-}
-
-.animate-twinkle-medium {
-  animation: twinkle-cyan 4.5s ease-in-out infinite;
-}
-
-.animate-twinkle-fast {
-  animation: twinkle-pink 3s ease-in-out infinite;
-}
-
-/* ==========================================================================
-   ACCESIBILIDAD: Respetar prefers-reduced-motion (WCAG 2.1 AA)
-   ========================================================================== */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+/* Noise overlay */
+.noise-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+  opacity: 0.04;
+  pointer-events: none;
+  mix-blend-mode: overlay;
 }
 

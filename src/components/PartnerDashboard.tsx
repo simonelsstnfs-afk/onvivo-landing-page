@@ -445,16 +445,20 @@ export default function PartnerDashboard() {
   const totalCost = (rechargeKeysCount * cost).toFixed(2);
 
   return (
-    <div className="min-h-screen w-full text-white pb-12 pt-20 px-4 md:px-8 relative">
+    <div className="min-h-screen w-full text-white pb-12 pt-20 px-4 md:px-8 relative bg-background">
+      {/* Background Ambience */}
+      <div className="absolute inset-0 bg-grid opacity-40 pointer-events-none" />
+      <div className="fixed top-1/4 -left-64 w-[500px] h-[500px] bg-cyan-500/20 rounded-full blur-[150px] pointer-events-none z-0" />
+      <div className="fixed bottom-1/4 -right-64 w-[500px] h-[500px] bg-violet-500/20 rounded-full blur-[150px] pointer-events-none z-0" />
       
       {/* 🔮 HEADER */}
-      <header className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/5 pb-6 mb-8">
+      <header className="relative max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/5 pb-6 mb-8 z-10">
         <div>
-          <h1 className="text-2xl font-black uppercase tracking-tight">
-            Panel del <span className="text-[#00F0FF]">Socio</span>
+          <h1 className="text-3xl sm:text-4xl font-black tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>
+            Panel del <span className="text-gradient-cyan">Socio</span>
           </h1>
-          <p className="text-xs text-white/50">
-            Bienvenido, {partnerStatus?.name || user?.displayName || user?.email} • Estado: 
+          <p className="text-xs text-white/50 mt-1 uppercase tracking-widest font-mono">
+            Bienvenido, {partnerStatus?.name || user?.displayName || user?.email} <span className="mx-2 opacity-50">|</span> Estado: 
             <span className={`ml-1 px-2 py-0.5 rounded text-[10px] font-bold ${partnerStatus?.status === "active" ? "bg-emerald-500/20 text-emerald-400" : "bg-red-500/20 text-red-400"}`}>
               {partnerStatus?.status === "active" ? "ACTIVO" : "INACTIVO"}
             </span>
@@ -463,7 +467,7 @@ export default function PartnerDashboard() {
         <div className="flex gap-4">
           <button 
             onClick={fetchPartnerData}
-            className="p-3 bg-[#07070a] border border-white/5 hover:border-white/10 hover:text-[#00F0FF] rounded-2xl transition-all cursor-pointer"
+            className="p-3 bg-card border border-white/5 hover:border-white/10 hover:text-[#00F0FF] rounded-2xl transition-all cursor-pointer"
             title="Refrescar saldo"
           >
             <RefreshCw size={18} />
@@ -487,12 +491,11 @@ export default function PartnerDashboard() {
           <motion.div 
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-[#07070a]/75 backdrop-blur-xl border border-white/10 p-6 rounded-3xl relative overflow-hidden shadow-2xl"
+            className="bg-[#0a0a0f]/50 border border-white/5 p-6 rounded-2xl relative overflow-hidden"
           >
-            <div className="absolute top-0 right-0 w-32 h-32 bg-[#00F0FF]/5 rounded-full blur-2xl pointer-events-none" />
-            <h2 className="text-xs font-black uppercase tracking-widest text-white/40 mb-4 flex items-center gap-2">
-              <Key size={14} className="text-[#00F0FF]" />
-              Balance de Llaves
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#00F0FF]/10 blur-2xl rounded-full pointer-events-none" />
+            <h2 className="text-[10px] font-black uppercase tracking-widest text-white/40 mb-5 flex items-center gap-1.5">
+              <Key className="w-3 h-3 text-[#00F0FF]" /> Balance de Llaves
             </h2>
             
             {loadingStatus ? (
@@ -501,13 +504,13 @@ export default function PartnerDashboard() {
               </div>
             ) : (
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-[#050508]/80 border border-white/5 p-4 rounded-2xl">
-                  <span className="text-[10px] text-white/40 font-bold uppercase tracking-wider block">Disponibles</span>
-                  <span className="text-3xl font-black text-[#00F0FF] tracking-tight">{partnerStatus?.keys_available ?? 0}</span>
+                <div>
+                  <span className="text-[10px] text-white/40 font-bold uppercase tracking-wider block mb-1">Disponibles</span>
+                  <div className="text-4xl font-black text-[#00F0FF] tracking-tight">{partnerStatus?.keys_available ?? 0}</div>
                 </div>
-                <div className="bg-[#050508]/80 border border-white/5 p-4 rounded-2xl">
-                  <span className="text-[10px] text-white/40 font-bold uppercase tracking-wider block">Consumidas</span>
-                  <span className="text-3xl font-black text-white/80 tracking-tight">{partnerStatus?.keys_used ?? 0}</span>
+                <div>
+                  <span className="text-[10px] text-white/40 font-bold uppercase tracking-wider block mb-1">Consumidas</span>
+                  <div className="text-4xl font-black text-white/80 tracking-tight">{partnerStatus?.keys_used ?? 0}</div>
                 </div>
               </div>
             )}
@@ -517,10 +520,10 @@ export default function PartnerDashboard() {
                 setRechargeResponse(null);
                 setIsRechargeOpen(true);
               }}
-              className="w-full mt-4 bg-[#00F0FF]/10 hover:bg-[#00F0FF]/20 border border-[#00F0FF]/20 hover:border-[#00F0FF]/30 text-[#00F0FF] text-[11px] font-bold uppercase tracking-wider py-3.5 rounded-2xl transition-all cursor-pointer flex items-center justify-center gap-2"
+              className="w-full mt-6 btn-outline-neon flex items-center justify-center gap-2 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest cursor-pointer"
             >
               <PlusCircle size={14} />
-              Solicitar Recarga de Llaves
+              Solicitar Recarga
             </button>
           </motion.div>
 
@@ -529,12 +532,11 @@ export default function PartnerDashboard() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.05 }}
-            className="bg-[#07070a]/75 backdrop-blur-xl border border-[#AD00FF]/20 p-6 rounded-3xl relative overflow-hidden shadow-2xl"
+            className="bg-[#0a0a0f]/50 border border-[#AD00FF]/20 p-6 rounded-2xl relative overflow-hidden"
           >
-            <div className="absolute top-0 right-0 w-32 h-32 bg-[#AD00FF]/5 rounded-full blur-2xl pointer-events-none" />
-            <h2 className="text-xs font-black uppercase tracking-widest text-white/40 mb-4 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#AD00FF]" />
-              Beneficio Mes Actual
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#AD00FF]/10 blur-2xl rounded-full pointer-events-none" />
+            <h2 className="text-[10px] font-black uppercase tracking-widest text-white/40 mb-5 flex items-center gap-1.5">
+              <div className="w-1.5 h-1.5 rounded-full bg-[#AD00FF]" /> Beneficio Mes Actual
             </h2>
             
             {loadingFinance ? (
@@ -545,11 +547,11 @@ export default function PartnerDashboard() {
               <div className="flex items-end justify-between">
                 <div>
                   <span className="text-[10px] text-white/40 font-bold uppercase tracking-wider block mb-1">Beneficio Neto</span>
-                  <span className="text-4xl font-black text-[#AD00FF] tracking-tight">{currentMonthMetrics.profit.toFixed(2)}€</span>
+                  <div className="text-4xl font-black text-[#AD00FF] tracking-tight">{currentMonthMetrics.profit.toFixed(2)}€</div>
                 </div>
                 <div className="text-right">
                   <span className="text-[10px] text-white/40 font-bold uppercase tracking-wider block mb-1">Ingresos brutos</span>
-                  <span className="text-sm font-bold text-emerald-400">{currentMonthMetrics.revenue.toFixed(2)}€</span>
+                  <div className="text-sm font-bold text-emerald-400">{currentMonthMetrics.revenue.toFixed(2)}€</div>
                 </div>
               </div>
             )}
@@ -560,11 +562,11 @@ export default function PartnerDashboard() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-[#07070a]/75 backdrop-blur-xl border border-white/10 p-6 rounded-3xl shadow-2xl relative"
+            className="bg-[#0a0a0f]/50 border border-white/5 p-6 rounded-2xl relative overflow-hidden"
           >
-            <h2 className="text-xs font-black uppercase tracking-widest text-white/40 mb-5 flex items-center gap-2">
-              <PlusCircle size={14} className="text-[#AD00FF]" />
-              Registrar Nuevo Cliente Stremio
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#00F0FF]/10 blur-2xl rounded-full pointer-events-none" />
+            <h2 className="text-[10px] font-black uppercase tracking-widest text-white/40 mb-6 flex items-center gap-1.5">
+              <PlusCircle className="w-3 h-3 text-[#00F0FF]" /> Registrar Nuevo Cliente
             </h2>
 
             {/* Banner de contraseña post-éxito */}
@@ -617,7 +619,7 @@ export default function PartnerDashboard() {
                   value={clientName}
                   onChange={(e) => setClientName(e.target.value)}
                   disabled={activeAccountId !== null}
-                  className="w-full bg-[#050508]/80 border border-white/5 pl-4 pr-4 py-3 rounded-xl text-white placeholder-white/20 text-xs focus:outline-none focus:border-[#AD00FF] transition-all"
+                  className="w-full bg-background/50 border border-white/5 pl-4 pr-4 py-3 rounded-xl text-white placeholder-white/20 text-xs focus:outline-none focus:border-[#00F0FF] focus:shadow-[0_0_15px_rgba(0,240,255,0.15)] transition-all"
                 />
               </div>
 
@@ -630,7 +632,7 @@ export default function PartnerDashboard() {
                   value={clientEmail}
                   onChange={(e) => setClientEmail(e.target.value)}
                   disabled={activeAccountId !== null}
-                  className="w-full bg-[#050508]/80 border border-white/5 pl-4 pr-4 py-3 rounded-xl text-white placeholder-white/20 text-xs focus:outline-none focus:border-[#AD00FF] transition-all"
+                  className="w-full bg-background/50 border border-white/5 pl-4 pr-4 py-3 rounded-xl text-white placeholder-white/20 text-xs focus:outline-none focus:border-[#00F0FF] focus:shadow-[0_0_15px_rgba(0,240,255,0.15)] transition-all"
                 />
               </div>
 
@@ -643,7 +645,7 @@ export default function PartnerDashboard() {
                   value={clientPassword}
                   onChange={(e) => setClientPassword(e.target.value)}
                   disabled={activeAccountId !== null}
-                  className="w-full bg-[#050508]/80 border border-white/5 pl-4 pr-4 py-3 rounded-xl text-white placeholder-white/20 text-xs focus:outline-none focus:border-[#AD00FF] transition-all"
+                  className="w-full bg-card/50 border border-white/5 pl-4 pr-4 py-3 rounded-xl text-white placeholder-white/20 text-xs focus:outline-none focus:border-[#AD00FF] transition-all"
                 />
                 <button
                   type="button"
@@ -674,7 +676,7 @@ export default function PartnerDashboard() {
                     value={addonLanguages}
                     onChange={(e) => setAddonLanguages(e.target.value)}
                     disabled={activeAccountId !== null}
-                    className={`w-full bg-[#050508]/80 border ${addonLanguagesError ? 'border-red-500/50' : 'border-white/5'} pl-4 pr-4 py-3 rounded-xl text-white placeholder-white/20 text-xs focus:outline-none focus:border-[#AD00FF] transition-all`}
+                    className={`w-full bg-card/50 border ${addonLanguagesError ? 'border-red-500/50' : 'border-white/5'} pl-4 pr-4 py-3 rounded-xl text-white placeholder-white/20 text-xs focus:outline-none focus:border-[#AD00FF] transition-all`}
                   />
                   {addonLanguagesError ? (
                     <span className="text-[9px] text-red-400 font-bold block pl-1 mt-1">⚠️ {addonLanguagesError}</span>
@@ -687,7 +689,7 @@ export default function PartnerDashboard() {
                   )}
                 </div>
 
-                <div className="bg-[#050508]/40 border border-dashed border-white/10 p-3 rounded-xl flex items-center justify-between text-xs text-white/60">
+                <div className="bg-card/30 border border-dashed border-white/10 p-3 rounded-xl flex items-center justify-between text-xs text-white/60">
                   <span className="font-bold uppercase text-[9px] tracking-wider text-white/40">Calidad de Video</span>
                   <span className="text-[#00F0FF] font-black uppercase text-[10px] tracking-widest bg-[#00F0FF]/10 px-2 py-0.5 rounded border border-[#00F0FF]/20">
                     1080p FULL HD
@@ -706,7 +708,7 @@ export default function PartnerDashboard() {
                   value={salePrice}
                   onChange={(e) => setSalePrice(e.target.value)}
                   disabled={activeAccountId !== null}
-                  className="w-full bg-[#050508]/80 border border-white/5 pl-4 pr-4 py-3 rounded-xl text-[#00F0FF] font-bold text-xs focus:outline-none focus:border-[#AD00FF] transition-all"
+                  className="w-full bg-background/50 border border-white/5 pl-4 pr-4 py-3 rounded-xl text-[#00F0FF] font-bold text-xs focus:outline-none focus:border-[#00F0FF] focus:shadow-[0_0_15px_rgba(0,240,255,0.15)] transition-all"
                 />
               </div>
 
@@ -714,18 +716,18 @@ export default function PartnerDashboard() {
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.99 }}
                 type="submit"
-                disabled={isSubmitting || activeAccountId !== null || (partnerStatus && partnerStatus.keys_available < 1) || !!addonLanguagesError}
-                className="w-full bg-gradient-to-r from-[#00F0FF] to-[#AD00FF] hover:shadow-[0_0_20px_rgba(0,240,255,0.25)] text-white text-[11px] font-black uppercase tracking-[0.15em] py-3.5 rounded-2xl transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-4"
+                disabled={activeAccountId !== null || isSubmitting}
+                className="w-full btn-neon flex justify-center items-center gap-2 py-4 rounded-xl text-xs font-black uppercase tracking-wider cursor-pointer mt-6"
               >
-                {isSubmitting ? (
+                {isSubmitting || activeAccountId ? (
                   <>
-                    <Loader2 size={14} className="animate-spin" />
-                    Procesando...
+                    <Loader2 size={16} className="animate-spin" />
+                    Procesando en Servidor Seguro...
                   </>
                 ) : (
                   <>
-                    <Send size={14} />
-                    Crear Cuenta &amp; Consumir Llave
+                    <Send size={16} />
+                    Iniciar Despliegue Automatizado
                   </>
                 )}
               </motion.button>
@@ -750,7 +752,7 @@ export default function PartnerDashboard() {
               }`}
             >
               {/* Barra superior de terminal */}
-              <div className="bg-[#0a0a0f] border-b border-white/5 px-6 py-3 flex items-center justify-between">
+              <div className="bg-card border-b border-white/5 px-6 py-3 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <TermIcon className="w-4 h-4 text-cyan-400" />
                   <span className="text-[10px] font-bold uppercase tracking-widest text-white/60 font-mono">
@@ -804,11 +806,10 @@ export default function PartnerDashboard() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-[#07070a]/75 backdrop-blur-xl border border-white/10 p-6 rounded-3xl shadow-2xl relative"
+            className="bg-[#0a0a0f]/50 border border-white/5 p-6 rounded-2xl relative overflow-hidden"
           >
-            <h2 className="text-xs font-black uppercase tracking-widest text-white/40 mb-5 flex items-center gap-2">
-              <History size={14} className="text-[#FF007A]" />
-              Historial de Cuentas Creadas
+            <h2 className="text-[10px] font-black uppercase tracking-widest text-white/40 mb-5 flex items-center gap-1.5">
+              <History className="w-3 h-3 text-[#FF007A]" /> Historial de Cuentas Creadas
             </h2>
 
             {/* BUG-06: Error log inline expandido */}
@@ -826,13 +827,13 @@ export default function PartnerDashboard() {
                 <RefreshCw size={24} className="animate-spin text-white/30" />
               </div>
             ) : accounts.filter(a => a.status !== 'failed').length === 0 ? (
-              <div className="py-12 text-center border border-dashed border-white/5 rounded-2xl bg-[#050508]/40">
+              <div className="py-12 text-center border border-dashed border-white/5 rounded-2xl bg-card/30">
                 <p className="text-xs text-white/40 font-bold uppercase tracking-wider">No se han registrado cuentas aún.</p>
               </div>
             ) : (
               <div className="overflow-x-auto overflow-y-auto max-h-[400px] styled-scrollbar">
                 <table className="w-full text-left border-collapse">
-                  <thead className="sticky top-0 bg-[#07070a] z-10 shadow-sm">
+                  <thead className="sticky top-0 bg-card z-10 shadow-sm">
                     <tr className="border-b border-white/5 text-[10px] font-black uppercase tracking-wider text-white/40">
                       <th className="py-3 pl-2">Cliente</th>
                       <th className="py-3">Email Stremio</th>
@@ -860,7 +861,7 @@ export default function PartnerDashboard() {
                         const mName = mNames[parseInt(mm) - 1];
                         return (
                           <React.Fragment key={monthKey}>
-                            <tr className="bg-[#050508]/80">
+                            <tr className="bg-card/50">
                               <td colSpan={5} className="py-2 pl-2 text-[9px] font-black uppercase tracking-widest text-[#00F0FF]/70">
                                 {mName} {yyyy}
                               </td>
@@ -921,7 +922,7 @@ export default function PartnerDashboard() {
           <motion.div 
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-[#07070a]/75 backdrop-blur-xl border border-white/10 p-6 rounded-3xl relative overflow-hidden shadow-2xl"
+            className="glass-card p-6 rounded-3xl relative overflow-hidden shadow-2xl"
           >
             <h2 className="text-xs font-black uppercase tracking-widest text-white/40 mb-4 flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-[#AD00FF]" />
@@ -933,13 +934,13 @@ export default function PartnerDashboard() {
                 <RefreshCw size={24} className="animate-spin text-white/30" />
               </div>
             ) : financeMetrics.length === 0 ? (
-              <div className="py-8 text-center border border-dashed border-white/5 rounded-2xl bg-[#050508]/40">
+              <div className="py-8 text-center border border-dashed border-white/5 rounded-2xl bg-card/30">
                 <p className="text-[10px] text-white/30 uppercase tracking-wider font-bold">No hay registros financieros aún.</p>
               </div>
             ) : (
               <div className="space-y-6">
                 {/* Gráfico de Ventas */}
-                <div className="h-40 w-full bg-[#050508]/40 rounded-xl p-4 border border-white/5">
+                <div className="h-40 w-full bg-card/30 rounded-xl p-4 border border-white/5">
                   <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={chartData} margin={{ top: 5, right: 0, left: -20, bottom: 0 }}>
                       <defs>
@@ -1003,7 +1004,7 @@ export default function PartnerDashboard() {
               initial={{ opacity: 0, scale: 0.95, y: 15 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 15 }}
-              className="bg-[#07070a] border border-white/10 w-full max-w-lg p-6 rounded-3xl shadow-2xl relative"
+              className="bg-card border border-white/10 w-full max-w-lg p-6 rounded-3xl shadow-2xl relative"
             >
               <h2 className="text-lg font-black uppercase tracking-tight mb-2">Solicitar Recarga de Llaves</h2>
               <p className="text-xs text-white/50 mb-6">
@@ -1028,12 +1029,12 @@ export default function PartnerDashboard() {
                         required
                         value={rechargeKeysCount}
                         onChange={(e) => setRechargeKeysCount(parseInt(e.target.value) || 1)}
-                        className="w-full bg-[#050508]/80 border border-white/5 px-4 py-3 rounded-xl text-white font-bold text-sm focus:outline-none focus:border-[#00F0FF] transition-all"
+                        className="w-full bg-card/50 border border-white/5 px-4 py-3 rounded-xl text-white font-bold text-sm focus:outline-none focus:border-[#00F0FF] transition-all"
                       />
                     </div>
                     <div className="space-y-1">
                       <label className="text-[10px] text-white/50 font-bold uppercase tracking-wider">Importe Total</label>
-                      <div className="w-full bg-[#050508]/80 border border-white/5 px-4 py-3 rounded-xl text-white font-bold text-sm flex items-center">
+                      <div className="w-full bg-card/50 border border-white/5 px-4 py-3 rounded-xl text-white font-bold text-sm flex items-center">
                         <span className="text-[#00F0FF]">{totalCost}€</span>
                         <span className="text-[10px] text-white/30 font-medium ml-2">({cost.toFixed(2)}€/llave)</span>
                       </div>
@@ -1049,7 +1050,7 @@ export default function PartnerDashboard() {
                         className={`py-3 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
                           paymentMethod === "bizum" 
                             ? "bg-[#00F0FF]/10 border-[#00F0FF] text-[#00F0FF]" 
-                            : "bg-[#050508] border-white/5 hover:border-white/10 text-white/60"
+                            : "bg-card border-white/5 hover:border-white/10 text-white/60"
                         }`}
                       >
                         Bizum
@@ -1060,7 +1061,7 @@ export default function PartnerDashboard() {
                         className={`py-3 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
                           paymentMethod === "iban" 
                             ? "bg-[#00F0FF]/10 border-[#00F0FF] text-[#00F0FF]" 
-                            : "bg-[#050508] border-white/5 hover:border-white/10 text-white/60"
+                            : "bg-card border-white/5 hover:border-white/10 text-white/60"
                         }`}
                       >
                         Transferencia IBAN
@@ -1104,7 +1105,7 @@ export default function PartnerDashboard() {
                   </div>
 
                   {/* Instrucciones de Pago */}
-                  <div className="bg-[#050508] border border-white/5 p-5 rounded-2xl space-y-4">
+                  <div className="bg-card border border-white/5 p-5 rounded-2xl space-y-4">
                     <h4 className="text-[10px] font-black uppercase tracking-wider text-white/50">Instrucciones de Transferencia</h4>
                     
                     {paymentMethod === "bizum" ? (
@@ -1149,3 +1150,4 @@ export default function PartnerDashboard() {
     </div>
   );
 }
+
