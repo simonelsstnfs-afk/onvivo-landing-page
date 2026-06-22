@@ -113,10 +113,21 @@ export default function PartnerDashboard() {
 
   // Auto-scroll en consola
   useEffect(() => {
-    if (consoleContainerRef.current) {
-      consoleContainerRef.current.scrollTop = consoleContainerRef.current.scrollHeight;
+    // Si la consola está activa, scrolleamos hasta el final para ver lo nuevo
+    if (isConsoleActive && terminalEndRef.current) {
+      terminalEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [consoleLogs]);
+  }, [consoleLogs, isConsoleActive]);
+
+  // --- Helpers ---
+  const now = new Date();
+  const currentMonthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  const currentMonthMetrics = financeMetrics.find(f => f.month === currentMonthKey) || {
+    accountsSold: 0,
+    revenue: 0,
+    cost: 0,
+    profit: 0
+  };
 
   // BUG-01: mantener clientPasswordRef sincronizado con el estado
   useEffect(() => {
@@ -509,6 +520,37 @@ export default function PartnerDashboard() {
             </button>
           </motion.div>
 
+          {/* Card de Beneficio Mes Actual */}
+          <motion.div 
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.05 }}
+            className="bg-[#07070a]/75 backdrop-blur-xl border border-[#AD00FF]/20 p-6 rounded-3xl relative overflow-hidden shadow-2xl"
+          >
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#AD00FF]/5 rounded-full blur-2xl pointer-events-none" />
+            <h2 className="text-xs font-black uppercase tracking-widest text-white/40 mb-4 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#AD00FF]" />
+              Beneficio Mes Actual
+            </h2>
+            
+            {loadingFinance ? (
+              <div className="py-2 flex items-center justify-center">
+                <RefreshCw size={20} className="animate-spin text-white/30" />
+              </div>
+            ) : (
+              <div className="flex items-end justify-between">
+                <div>
+                  <span className="text-[10px] text-white/40 font-bold uppercase tracking-wider block mb-1">Beneficio Neto</span>
+                  <span className="text-4xl font-black text-[#AD00FF] tracking-tight">{currentMonthMetrics.profit.toFixed(2)}€</span>
+                </div>
+                <div className="text-right">
+                  <span className="text-[10px] text-white/40 font-bold uppercase tracking-wider block mb-1">Ingresos brutos</span>
+                  <span className="text-sm font-bold text-emerald-400">{currentMonthMetrics.revenue.toFixed(2)}€</span>
+                </div>
+              </div>
+            )}
+          </motion.div>
+
           {/* Formulario de Creación de Cuentas */}
           <motion.div 
             initial={{ opacity: 0, y: 15 }}
@@ -784,60 +826,87 @@ export default function PartnerDashboard() {
                 <p className="text-xs text-white/40 font-bold uppercase tracking-wider">No se han registrado cuentas aún.</p>
               </div>
             ) : (
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto overflow-y-auto max-h-[400px] styled-scrollbar">
                 <table className="w-full text-left border-collapse">
-                  <thead>
+                  <thead className="sticky top-0 bg-[#07070a] z-10 shadow-sm">
                     <tr className="border-b border-white/5 text-[10px] font-black uppercase tracking-wider text-white/40">
-                      <th className="pb-3 pl-2">Cliente</th>
-                      <th className="pb-3">Email Stremio</th>
-                      <th className="pb-3">Fecha</th>
-                      <th className="pb-3 text-center">Estado</th>
-                      <th className="pb-3 text-right pr-2">Acciones</th>
+                      <th className="py-3 pl-2">Cliente</th>
+                      <th className="py-3">Email Stremio</th>
+                      <th className="py-3">Fecha</th>
+                      <th className="py-3 text-center">Estado</th>
+                      <th className="py-3 text-right pr-2">Acciones</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-white/5 text-xs">
-                    {accounts.filter(acc => acc.status !== 'failed').map((acc) => (
-                      <tr key={acc.id} className="hover:bg-white/[0.02] transition-colors group">
-                        <td className="py-4 pl-2 font-bold text-white/90">{acc.client_name}</td>
-                        <td className="py-4 font-mono text-white/70">{acc.client_email}</td>
-                        <td className="py-4 text-white/40 text-[10px]">
-                          {acc.created_at?.toDate ? acc.created_at.toDate().toLocaleDateString('es-ES', { day:'2-digit', month:'short', year:'2-digit' }) : '—'}
-                        </td>
-                        <td className="py-4 text-center">
-                          <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold ${
-                            acc.status === "completed" ? "bg-emerald-500/10 text-emerald-400" :
-                            acc.status === "failed" ? "bg-red-500/10 text-red-400" : "bg-amber-500/10 text-amber-400"
-                          }`}>
-                            {acc.status === "completed" && <CheckCircle2 size={10} />}
-                            {acc.status === "failed" && <XCircle size={10} />}
-                            {acc.status === "pending" && <Clock size={10} className="animate-spin" />}
-                            {acc.status.toUpperCase()}
-                          </span>
-                        </td>
-                        <td className="py-4 text-right pr-2">
-                          <div className="flex items-center justify-end gap-2">
-                            {acc.status === "completed" && acc.auth_key && (
-                              <button
-                                onClick={() => handleCopy(acc.auth_key || "", acc.id)}
-                                className="p-2 bg-white/5 hover:bg-[#00F0FF]/15 border border-white/5 hover:border-[#00F0FF]/20 hover:text-[#00F0FF] rounded-xl transition-all cursor-pointer"
-                                title={`AuthKey: ...${acc.auth_key.slice(-8)}`}
-                              >
-                                {copiedId === acc.id ? <Check size={12} /> : <Copy size={12} />}
-                              </button>
-                            )}
-                            {acc.status === "failed" && acc.error_log && (
-                              <button
-                                onClick={() => setSelectedErrorLog(acc.error_log || "")}
-                                className="p-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-400 rounded-xl transition-all cursor-pointer"
-                                title="Ver detalle de error"
-                              >
-                                <HelpCircle size={12} />
-                              </button>
-                            )}
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
+                    {(() => {
+                      // Agrupar por mes
+                      const grouped = accounts.filter(a => a.status !== 'failed').reduce((groups, acc) => {
+                        const date = acc.created_at?.toDate ? acc.created_at.toDate() : new Date();
+                        const mKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+                        if (!groups[mKey]) groups[mKey] = [];
+                        groups[mKey].push(acc);
+                        return groups;
+                      }, {} as Record<string, Account[]>);
+                      
+                      const mNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+                      const sortedKeys = Object.keys(grouped).sort((a, b) => b.localeCompare(a));
+                      
+                      return sortedKeys.map(monthKey => {
+                        const [yyyy, mm] = monthKey.split('-');
+                        const mName = mNames[parseInt(mm) - 1];
+                        return (
+                          <React.Fragment key={monthKey}>
+                            <tr className="bg-[#050508]/80">
+                              <td colSpan={5} className="py-2 pl-2 text-[9px] font-black uppercase tracking-widest text-[#00F0FF]/70">
+                                {mName} {yyyy}
+                              </td>
+                            </tr>
+                            {grouped[monthKey].map(acc => (
+                              <tr key={acc.id} className="hover:bg-white/[0.02] transition-colors group">
+                                <td className="py-4 pl-2 font-bold text-white/90">{acc.client_name}</td>
+                                <td className="py-4 font-mono text-white/70">{acc.client_email}</td>
+                                <td className="py-4 text-white/40 text-[10px]">
+                                  {acc.created_at?.toDate ? acc.created_at.toDate().toLocaleDateString('es-ES', { day:'2-digit', month:'short', year:'2-digit' }) : '—'}
+                                </td>
+                                <td className="py-4 text-center">
+                                  <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold ${
+                                    acc.status === "completed" ? "bg-emerald-500/10 text-emerald-400" :
+                                    acc.status === "failed" ? "bg-red-500/10 text-red-400" : "bg-amber-500/10 text-amber-400"
+                                  }`}>
+                                    {acc.status === "completed" && <CheckCircle2 size={10} />}
+                                    {acc.status === "failed" && <XCircle size={10} />}
+                                    {acc.status === "pending" && <Clock size={10} className="animate-spin" />}
+                                    {acc.status.toUpperCase()}
+                                  </span>
+                                </td>
+                                <td className="py-4 text-right pr-2">
+                                  <div className="flex items-center justify-end gap-2">
+                                    {acc.status === "completed" && acc.auth_key && (
+                                      <button
+                                        onClick={() => handleCopy(acc.auth_key || "", acc.id)}
+                                        className="p-2 bg-white/5 hover:bg-[#00F0FF]/15 border border-white/5 hover:border-[#00F0FF]/20 hover:text-[#00F0FF] rounded-xl transition-all cursor-pointer"
+                                        title={`AuthKey: ...${acc.auth_key.slice(-8)}`}
+                                      >
+                                        {copiedId === acc.id ? <Check size={12} /> : <Copy size={12} />}
+                                      </button>
+                                    )}
+                                    {acc.status === "failed" && acc.error_log && (
+                                      <button
+                                        onClick={() => setSelectedErrorLog(acc.error_log || "")}
+                                        className="p-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-400 rounded-xl transition-all cursor-pointer"
+                                        title="Ver detalle de error"
+                                      >
+                                        <HelpCircle size={12} />
+                                      </button>
+                                    )}
+                                  </div>
+                                </td>
+                              </tr>
+                            ))}
+                          </React.Fragment>
+                        );
+                      });
+                    })()}
                   </tbody>
                 </table>
               </div>
