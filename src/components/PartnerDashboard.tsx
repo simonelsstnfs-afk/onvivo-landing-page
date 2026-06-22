@@ -21,6 +21,7 @@ import {
   RefreshCw,
   Loader2
 } from "lucide-react";
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
 interface Account {
   id: string;
@@ -128,6 +129,9 @@ export default function PartnerDashboard() {
     cost: 0,
     profit: 0
   };
+  
+  // Datos para el gráfico cronológico (del más antiguo al más reciente)
+  const chartData = [...financeMetrics].sort((a, b) => a.month.localeCompare(b.month));
 
   // BUG-01: mantener clientPasswordRef sincronizado con el estado
   useEffect(() => {
@@ -933,7 +937,32 @@ export default function PartnerDashboard() {
                 <p className="text-[10px] text-white/30 uppercase tracking-wider font-bold">No hay registros financieros aún.</p>
               </div>
             ) : (
-              <div className="overflow-x-auto">
+              <div className="space-y-6">
+                {/* Gráfico de Ventas */}
+                <div className="h-40 w-full bg-[#050508]/40 rounded-xl p-4 border border-white/5">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={chartData} margin={{ top: 5, right: 0, left: -20, bottom: 0 }}>
+                      <defs>
+                        <linearGradient id="colorProfit" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#AD00FF" stopOpacity={0.4}/>
+                          <stop offset="95%" stopColor="#AD00FF" stopOpacity={0}/>
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+                      <XAxis dataKey="month" stroke="rgba(255,255,255,0.2)" fontSize={9} tickLine={false} axisLine={false} />
+                      <YAxis stroke="rgba(255,255,255,0.2)" fontSize={9} tickLine={false} axisLine={false} tickFormatter={(value) => `€${value}`} />
+                      <Tooltip 
+                        contentStyle={{ backgroundColor: '#07070a', borderColor: 'rgba(255,255,255,0.1)', borderRadius: '8px', fontSize: '11px' }}
+                        itemStyle={{ color: '#00F0FF' }}
+                        formatter={(value: any) => [`${value}€`, 'Beneficio']}
+                        labelStyle={{ color: 'rgba(255,255,255,0.5)', marginBottom: '4px' }}
+                      />
+                      <Area type="monotone" dataKey="profit" stroke="#AD00FF" strokeWidth={2} fillOpacity={1} fill="url(#colorProfit)" />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
+
+                <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="border-b border-white/5 text-[9px] font-black uppercase tracking-wider text-white/40">
@@ -957,6 +986,7 @@ export default function PartnerDashboard() {
                   </tbody>
                 </table>
               </div>
+            </div>
             )}
           </motion.div>
         </div>
