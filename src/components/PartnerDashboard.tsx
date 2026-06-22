@@ -32,6 +32,14 @@ interface Account {
   auth_key?: string;
 }
 
+interface FinanceMetric {
+  month: string;
+  accountsSold: number;
+  revenue: number;
+  cost: number;
+  profit: number;
+}
+
 interface LogMessage {
   text: string;
   type: "system" | "success" | "error" | "info";
@@ -53,6 +61,7 @@ export default function PartnerDashboard() {
   const [addonsProfile, setAddonsProfile] = useState("estandar");
   const [addonLanguages, setAddonLanguages] = useState("Español");
   const [addonLanguagesError, setAddonLanguagesError] = useState("");
+  const [salePrice, setSalePrice] = useState("");
 
   // Contraseña de la última cuenta creada — se conserva post-éxito para que el socio la tenga a mano
   const [lastCreatedPassword, setLastCreatedPassword] = useState<string | null>(null);
@@ -72,6 +81,10 @@ export default function PartnerDashboard() {
   // Estados del Historial de Cuentas
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [loadingAccounts, setLoadingAccounts] = useState(true);
+
+  // Estados Financieros
+  const [financeMetrics, setFinanceMetrics] = useState<FinanceMetric[]>([]);
+  const [loadingFinance, setLoadingFinance] = useState(true);
 
   // Estados del Modal de Recarga
   const [isRechargeOpen, setIsRechargeOpen] = useState(false);
@@ -95,6 +108,7 @@ export default function PartnerDashboard() {
   useEffect(() => {
     fetchPartnerData();
     fetchAccountsHistory();
+    fetchFinanceMetrics();
   }, []);
 
   // Auto-scroll en consola
@@ -133,6 +147,7 @@ export default function PartnerDashboard() {
     setAddonsProfile("estandar");
     setAddonLanguages("Español");
     setAddonLanguagesError("");
+    setSalePrice("");
   };
 
   // Polling para el proceso de creación en background
@@ -235,6 +250,24 @@ export default function PartnerDashboard() {
     }
   };
 
+  const fetchFinanceMetrics = async () => {
+    setLoadingFinance(true);
+    try {
+      const token = await getToken();
+      const res = await fetch(`${API_URL}/api/partner/finance`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setFinanceMetrics(data.finance || []);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoadingFinance(false);
+    }
+  };
+
   const addLog = (text: string, type: "system" | "success" | "error" | "info" = "system") => {
     const time = new Date().toLocaleTimeString();
     setConsoleLogs((prev) => [...prev, { text, type, time }]);
@@ -246,6 +279,11 @@ export default function PartnerDashboard() {
 
     if (addonLanguagesError) {
       alert("Por favor, corrige los errores de idioma antes de continuar.");
+      return;
+    }
+
+    if (!salePrice || parseFloat(salePrice) < 20) {
+      alert("El precio de venta debe ser igual o superior a 20€.");
       return;
     }
 
@@ -282,7 +320,8 @@ export default function PartnerDashboard() {
           clientEmail,
           clientPassword,
           addonsProfile,
-          addonLanguages: finalAddonLanguages
+          addonLanguages: finalAddonLanguages,
+          salePrice
         })
       });
 
@@ -610,6 +649,21 @@ export default function PartnerDashboard() {
                 </div>
               </div>
 
+              <div className="space-y-1">
+                <label className="text-[10px] text-white/50 font-bold uppercase tracking-wider pl-1">Precio de Venta (€)</label>
+                <input
+                  type="number"
+                  required
+                  min="20"
+                  step="0.01"
+                  placeholder="Ej: 20"
+                  value={salePrice}
+                  onChange={(e) => setSalePrice(e.target.value)}
+                  disabled={activeAccountId !== null}
+                  className="w-full bg-[#050508]/80 border border-white/5 pl-4 pr-4 py-3 rounded-xl text-[#00F0FF] font-bold text-xs focus:outline-none focus:border-[#AD00FF] transition-all"
+                />
+              </div>
+
               <motion.button
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.99 }}
@@ -782,6 +836,53 @@ export default function PartnerDashboard() {
                             )}
                           </div>
                         </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </motion.div>
+
+          {/* ================= TABLA DE BALANCE FINANCIERO MENSUAL ================= */}
+          <motion.div 
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-[#07070a]/75 backdrop-blur-xl border border-white/10 p-6 rounded-3xl relative overflow-hidden shadow-2xl"
+          >
+            <h2 className="text-xs font-black uppercase tracking-widest text-white/40 mb-4 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#AD00FF]" />
+              Balance Financiero (Mensual)
+            </h2>
+            
+            {loadingFinance ? (
+              <div className="py-6 flex items-center justify-center">
+                <RefreshCw size={24} className="animate-spin text-white/30" />
+              </div>
+            ) : financeMetrics.length === 0 ? (
+              <div className="py-8 text-center border border-dashed border-white/5 rounded-2xl bg-[#050508]/40">
+                <p className="text-[10px] text-white/30 uppercase tracking-wider font-bold">No hay registros financieros aún.</p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="border-b border-white/5 text-[9px] font-black uppercase tracking-wider text-white/40">
+                      <th className="pb-3 pl-2">Mes</th>
+                      <th className="pb-3 text-center">Cuentas</th>
+                      <th className="pb-3 text-right">Ingresos</th>
+                      <th className="pb-3 text-right">Costos</th>
+                      <th className="pb-3 text-right pr-2">Beneficio Net</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-white/5 text-xs">
+                    {financeMetrics.map((metric) => (
+                      <tr key={metric.month} className="hover:bg-white/[0.01] transition-colors">
+                        <td className="py-3 pl-2 font-mono text-white/50 text-[10px]">{metric.month}</td>
+                        <td className="py-3 text-center font-bold text-white/80">{metric.accountsSold}</td>
+                        <td className="py-3 text-right text-emerald-400 font-bold">{metric.revenue.toFixed(2)}€</td>
+                        <td className="py-3 text-right text-red-400 font-bold">{metric.cost.toFixed(2)}€</td>
+                        <td className="py-3 text-right pr-2 text-[#00F0FF] font-black tracking-wider">{metric.profit.toFixed(2)}€</td>
                       </tr>
                     ))}
                   </tbody>
