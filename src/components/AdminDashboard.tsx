@@ -17,7 +17,8 @@ import {
   Sliders,
   AlertTriangle,
   Plus,
-  Loader2
+  Loader2,
+  List
 } from "lucide-react";
 
 interface Partner {
