@@ -114,9 +114,9 @@ export default function PartnerDashboard() {
 
   // Auto-scroll en consola
   useEffect(() => {
-    // Si la consola está activa, scrolleamos hasta el final para ver lo nuevo
-    if (isConsoleActive && terminalEndRef.current) {
-      terminalEndRef.current.scrollIntoView({ behavior: "smooth" });
+    // Si la consola está activa, scrolleamos hasta el final aislando el scroll
+    if (isConsoleActive && consoleContainerRef.current) {
+      consoleContainerRef.current.scrollTop = consoleContainerRef.current.scrollHeight;
     }
   }, [consoleLogs, isConsoleActive]);
 
