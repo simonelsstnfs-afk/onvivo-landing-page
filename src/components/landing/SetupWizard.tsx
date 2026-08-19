@@ -7,7 +7,7 @@ import { findLanguage } from '../../utils/languages';
 const STEP_CONFIG = [
   { number: 1, label: 'Paso 1 de 5: Dispositivos', percent: 20 },
   { number: 2, label: 'Paso 2 de 5: Idiomas de Reproducción', percent: 40 },
-  { number: 3, label: 'Paso 3 de 5: Catálogo & Contenido', percent: 60 },
+  { number: 3, label: 'Paso 3 de 5: Categorías Multimedia', percent: 60 },
   { number: 4, label: 'Paso 4 de 5: Email de Entrega', percent: 80 },
   { number: 5, label: 'Paso 5 de 5: Resumen & Checkout', percent: 100 },
 ];
@@ -135,18 +135,18 @@ export const SetupWizard: React.FC<SetupWizardProps> = ({ isOpen, onClose }) => 
           orderId: { stringValue: orderId },
           customerEmail: { stringValue: email.trim().toLowerCase() },
           status: { stringValue: 'PENDING_PAYMENT' },
+          serviceType: { stringValue: 'Asistencia Tecnica y Setup Multimedia' },
           devices: {
             arrayValue: {
               values: devices.map((d) => ({ stringValue: d })),
             },
           },
-          addonLanguages: { stringValue: selectedLanguages.join(', ') },
-          genres: {
+          selectedLanguages: { stringValue: selectedLanguages.join(', ') },
+          categories: {
             arrayValue: {
               values: genres.map((g) => ({ stringValue: g })),
             },
           },
-          includeAnime: { booleanValue: genres.includes('anime') },
           gateway: { stringValue: 'polar.sh' },
           price: { stringValue: '65€' },
           created_at: { stringValue: new Date().toISOString() },
@@ -165,7 +165,7 @@ export const SetupWizard: React.FC<SetupWizardProps> = ({ isOpen, onClose }) => 
       const params = new URLSearchParams({
         customer_email: email.trim().toLowerCase(),
         order_id: orderId,
-        addon_languages: selectedLanguages.join(','),
+        languages: selectedLanguages.join(','),
         devices: devices.join(','),
         ref: 'onvivo_wizard',
       });
@@ -212,7 +212,7 @@ export const SetupWizard: React.FC<SetupWizardProps> = ({ isOpen, onClose }) => 
           <div className="text-center mb-8 flex flex-col items-center pr-8 sm:pr-0">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 text-[#A855F7] text-xs font-mono font-bold uppercase tracking-[0.2em] mb-3">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>CONFIGURADOR INTERACTIVO</span>
+              <span>CONFIGURADOR DE ASISTENCIA TÉCNICA</span>
             </div>
             <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight uppercase leading-[0.98] font-display">
               CONFIGURA TU CENTRO <br />
@@ -406,24 +406,24 @@ export const SetupWizard: React.FC<SetupWizardProps> = ({ isOpen, onClose }) => 
             </div>
           )}
 
-          {/* STEP 3: Catálogo & Contenido */}
+          {/* STEP 3: Categorías & Organización */}
           {step === 3 && (
             <div className="space-y-5 font-grotesk">
               <div>
                 <h3 className="text-lg sm:text-xl font-black text-white mb-1 uppercase tracking-tight font-display">
-                  Preferencias de Catálogo y Categorías
+                  Preferencias de Organización Multimedia
                 </h3>
                 <p className="text-xs sm:text-sm text-white/60">
-                  Selecciona los tipos de contenido que priorizaremos en tu muro de reproducción.
+                  Selecciona las categorías y tipos de medios que deseas priorizar en tu entorno.
                 </p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 {[
-                  { id: 'cinema', title: 'Cine & Estrenos', tag: '1080p Full HD', desc: 'Estrenos recientes, grandes producciones de cartelera y cine independiente.' },
-                  { id: 'series', title: 'Series Completas', tag: 'Binge-Watching', desc: 'Temporadas completas, series en emisión y seguimiento de capítulos.' },
-                  { id: 'anime', title: 'Anime & Animación', tag: 'Simulcasts HD', desc: 'Catálogos de animación japonesa, estrenos y series en emisión.' },
-                  { id: 'docu_events', title: 'Documentales & Ciencia', tag: 'Alta Fidelidad', desc: 'Producciones documentales de ciencia, historia, naturaleza y tecnología.' },
+                  { id: 'cinema', title: 'Películas & Largometrajes', tag: 'Calidad 1080p', desc: 'Optimización de metadatos, carátulas y orden cronológico de títulos.' },
+                  { id: 'series', title: 'Series & Temporadas', tag: 'Seguimiento', desc: 'Organización de capítulos, temporadas y sincronización de progreso.' },
+                  { id: 'anime', title: 'Animación & Anime', tag: 'Dual Audio', desc: 'Configuración para audio dual y subtítulos específicos de animación.' },
+                  { id: 'docu_events', title: 'Documentales & Ciencia', tag: 'Alta Fidelidad', desc: 'Clasificación temática de ciencia, naturaleza, historia y tecnología.' },
                 ].map((item) => {
                   const isChecked = genres.includes(item.id);
                   return (
@@ -537,14 +537,14 @@ export const SetupWizard: React.FC<SetupWizardProps> = ({ isOpen, onClose }) => 
                       </span>
                     </div>
                     <div className="text-base font-black text-white uppercase tracking-tight font-display">
-                      Pack Setup Onvivo · Puesta a Punto
+                      Pack Setup Onvivo · Asistencia Técnica
                     </div>
                   </div>
                   <div className="text-left sm:text-right">
                     <div className="text-2xl font-black text-[#00FF85] font-display">
                       65€ <span className="text-xs text-white/40 font-normal">/ 75$</span>
                     </div>
-                    <div className="text-[10px] text-white/50 font-mono">Pago único por instalación</div>
+                    <div className="text-[10px] text-white/50 font-mono">Pago único por instalación y puesta a punto</div>
                   </div>
                 </div>
 
