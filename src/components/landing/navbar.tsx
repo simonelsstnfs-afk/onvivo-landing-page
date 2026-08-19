@@ -36,29 +36,16 @@ export const Navbar: React.FC = () => {
               : 'bg-[#070714]/80 backdrop-blur-xl border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.45)]'
           }`}
         >
-          {/* Brand Logo with Orbitron Display Typography */}
+          {/* Official ONVIVO Brand Logo */}
           <a
             href="#"
-            className="group flex items-center gap-3 text-decoration-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00F0FF]"
+            className="group flex items-center text-decoration-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00F0FF]"
           >
-            <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-[#00F0FF] via-[#A855F7] to-[#EC4899] p-[1px] shadow-[0_0_20px_rgba(0,240,255,0.35)] group-hover:shadow-[0_0_30px_rgba(0,240,255,0.6)] transition-all duration-300">
-              <div className="w-full h-full bg-[#050510] rounded-[11px] flex items-center justify-center">
-                <span className="text-[#00F0FF] text-lg font-black tracking-tighter transform group-hover:scale-110 transition-transform">
-                  ◆
-                </span>
-              </div>
-            </div>
-            <div className="flex flex-col">
-              <div className="flex items-center gap-1.5">
-                <span className="text-white font-black tracking-wider text-xl font-display">
-                  ONVIVO
-                </span>
-                <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#00FF85] animate-pulse shadow-[0_0_8px_#00FF85]" />
-              </div>
-              <span className="text-[9px] uppercase font-bold tracking-[0.25em] text-[#00F0FF]/70 -mt-1 font-mono">
-                Streaming Engine
-              </span>
-            </div>
+            <img
+              src="/onvivo-official-logo.png"
+              alt="ONVIVO Streaming Engine"
+              className="h-8 sm:h-9 w-auto object-contain transform group-hover:scale-105 transition-transform duration-300 drop-shadow-[0_0_15px_rgba(0,240,255,0.3)]"
+            />
           </a>
 
           {/* Desktop Navigation Links (Space Grotesk) */}
