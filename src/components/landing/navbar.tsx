@@ -39,13 +39,16 @@ export const Navbar: React.FC = () => {
           {/* Official ONVIVO Brand Logo */}
           <a
             href="#"
-            className="group flex items-center text-decoration-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00F0FF]"
+            className="group flex items-center gap-2.5 text-decoration-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00F0FF]"
           >
             <img
-              src="/onvivo-official-logo.png"
-              alt="ONVIVO Streaming Engine"
-              className="h-8 sm:h-9 w-auto object-contain transform group-hover:scale-105 transition-transform duration-300 drop-shadow-[0_0_15px_rgba(0,240,255,0.3)]"
+              src="/logo.png"
+              alt="onvivo logo"
+              className="w-9 h-9 sm:w-10 sm:h-10 object-contain transform group-hover:scale-105 transition-transform duration-300 drop-shadow-[0_0_15px_rgba(0,240,255,0.45)]"
             />
+            <span className="text-xl sm:text-2xl font-black tracking-wider uppercase text-white font-display">
+              onvivo
+            </span>
           </a>
 
           {/* Desktop Navigation Links (Space Grotesk) */}

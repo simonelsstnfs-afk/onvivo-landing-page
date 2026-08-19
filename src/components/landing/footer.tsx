@@ -15,13 +15,14 @@ export const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-white/[0.06]">
           {/* Brand Column */}
           <div className="lg:col-span-2 space-y-4">
-            <a href="#" className="inline-block">
+            <div className="flex items-center gap-2.5">
               <img
-                src="/onvivo-official-logo.png"
-                alt="ONVIVO Streaming Engine"
-                className="h-8 sm:h-9 w-auto object-contain drop-shadow-[0_0_15px_rgba(0,240,255,0.25)]"
+                src="/logo.png"
+                alt="onvivo logo"
+                className="w-8 h-8 sm:w-9 sm:h-9 object-contain drop-shadow-[0_0_15px_rgba(0,240,255,0.35)]"
               />
-            </a>
+              <span className="text-white font-black tracking-wider text-xl font-display uppercase">ONVIVO</span>
+            </div>
 
             <p className="text-xs sm:text-sm text-white/60 leading-relaxed max-w-sm font-grotesk">
               Tu centro de entretenimiento inteligente, optimizado y sin ataduras. Democratizando el acceso al entretenimiento digital a través de software open-source optimizado y accesible para todos.
