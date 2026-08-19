@@ -1,135 +1,143 @@
-import { Link } from 'react-router-dom'
-import { Mail, MessageCircle, Send } from 'lucide-react'
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Shield } from 'lucide-react';
 
-const NAV_GROUPS = [
-  {
-    title: 'Navegación',
-    links: [
-      { label: 'Inicio', href: '#hero' },
-      { label: 'Quiénes Somos', href: '#about' },
-      { label: 'Servicios', href: '#services' },
-      { label: 'Proceso', href: '#process' },
-      { label: 'FAQ', href: '#faq' },
-    ],
-  },
-  {
-    title: 'Socios B2B',
-    links: [
-      { label: 'Panel de Socio', href: '/login' },
-      { label: 'Tarifas de socio', href: '#services' },
-      { label: 'Llaves prepago', href: '#services' },
-      { label: 'Solicitar Acceso', href: '#contact' },
-    ],
-  },
-  {
-    title: 'Legal',
-    links: [
-      { label: 'Seguridad', href: '#' },
-      { label: 'Términos', href: '#' },
-      { label: 'Privacidad', href: '#' },
-      { label: 'Precio', href: '#cta' },
-    ],
-  },
-]
+export const Footer: React.FC = () => {
+  const scrollTo = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
 
-export function Footer() {
   return (
-    <footer className="relative mt-auto border-t border-cyan-500/15 bg-[#04040c]/80 backdrop-blur-xl">
-      <div className="absolute left-1/2 top-0 -translate-x-1/2 h-px w-1/2 bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent" />
-
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
-        <div className="grid lg:grid-cols-[1.5fr_2fr] gap-12">
-          {/* Brand */}
-          <div>
-            <div className="flex items-center gap-3 mb-5">
-              <div className="relative h-12 w-12 rounded-xl overflow-hidden ring-1 ring-cyan-500/40">
-                <img
-                  src="/onvivo-logo.png"
-                  alt="onvivo logo"
-                  className="object-cover w-full h-full"
-                />
-                <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/20 to-violet-500/20 mix-blend-overlay" />
-              </div>
-              <div>
-                <div
-                  className="text-2xl font-black text-gradient-cyan"
-                  style={{ fontFamily: 'var(--font-display)' }}
-                >
-                  onvivo
-                </div>
-                <div className="text-[10px] tracking-[0.25em] text-cyan-300/60 uppercase font-mono">
-                  B2B · Cloud · 2026
+    <footer className="relative bg-[#070A11] border-t border-white/10 pt-16 pb-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <div className="max-w-7xl mx-auto">
+        {/* Top Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-white/[0.06]">
+          {/* Brand Column */}
+          <div className="lg:col-span-2 space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#00F0FF] via-[#A855F7] to-[#EC4899] p-[1px] shadow-[0_0_15px_rgba(0,240,255,0.3)]">
+                <div className="w-full h-full bg-[#0B0F19] rounded-[11px] flex items-center justify-center">
+                  <span className="text-[#00F0FF] text-sm font-black">◆</span>
                 </div>
               </div>
+              <span className="text-white font-extrabold tracking-wider text-xl font-mono">ONVIVO</span>
             </div>
 
-            <p className="text-sm text-slate-400 leading-relaxed max-w-md">
-              Transformando la manera en que configuras y consumes tu contenido digital mediante
-              automatización inteligente de máxima fidelidad y configuraciones optimizadas a tu
-              medida.
+            <p className="text-xs sm:text-sm text-[#8B8BA7] leading-relaxed max-w-sm">
+              Tu centro de entretenimiento inteligente, optimizado y sin ataduras. Democratizando el acceso al entretenimiento digital a través de software open-source optimizado y accesible para todos.
             </p>
 
-            {/* Social */}
-            <div className="flex items-center gap-3 mt-6">
-              {[
-                { icon: Send, label: 'Telegram' },
-                { icon: MessageCircle, label: 'Discord' },
-                { icon: Mail, label: 'Email' },
-              ].map(({ icon: Icon, label }) => (
-                <a
-                  key={label}
-                  href="#"
-                  aria-label={label}
-                  className="h-10 w-10 inline-flex items-center justify-center rounded-lg border border-cyan-500/20 bg-white/[0.02] text-slate-400 hover:text-cyan-300 hover:border-cyan-500/50 hover:bg-cyan-500/5 transition-all"
-                >
-                  <Icon className="h-4 w-4" />
-                </a>
-              ))}
+            <div className="pt-2 flex items-center gap-3 text-xs font-mono text-[#10B981]">
+              <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse" />
+              <span>Sistema Operativo 100% Online</span>
             </div>
           </div>
 
-          {/* Nav columns */}
-          <div className="grid sm:grid-cols-3 gap-8">
-            {NAV_GROUPS.map((group) => (
-              <div key={group.title}>
-                <h4 className="text-xs font-mono uppercase tracking-[0.3em] text-cyan-300 mb-4">
-                  {group.title}
-                </h4>
-                <ul className="space-y-2.5">
-                  {group.links.map((link) => (
-                    <li key={link.label}>
-                      <a
-                        href={link.href}
-                        className="text-sm text-slate-400 hover:text-cyan-300 transition-colors inline-flex items-center gap-1.5 group"
-                      >
-                        <span className="h-px w-0 bg-cyan-400 group-hover:w-4 transition-all" />
-                        {link.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+          {/* Column 1: Producto */}
+          <div className="space-y-3">
+            <div className="text-xs font-mono font-bold uppercase tracking-wider text-[#00F0FF]">
+              Producto
+            </div>
+            <ul className="space-y-2 text-xs sm:text-sm text-[#8B8BA7]">
+              <li>
+                <button onClick={() => scrollTo('features')} className="hover:text-white transition-colors cursor-pointer text-left">
+                  Características
+                </button>
+              </li>
+              <li>
+                <button onClick={() => scrollTo('wizard')} className="hover:text-white transition-colors cursor-pointer text-left">
+                  Setup Wizard
+                </button>
+              </li>
+              <li>
+                <button onClick={() => scrollTo('showcase')} className="hover:text-white transition-colors cursor-pointer text-left">
+                  Simulador 1080p
+                </button>
+              </li>
+              <li>
+                <button onClick={() => scrollTo('comparativa')} className="hover:text-white transition-colors cursor-pointer text-left">
+                  Comparativa de Ahorro
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 2: Compatibilidad */}
+          <div className="space-y-3">
+            <div className="text-xs font-mono font-bold uppercase tracking-wider text-[#A855F7]">
+              Compatibilidad
+            </div>
+            <ul className="space-y-2 text-xs sm:text-sm text-[#8B8BA7]">
+              <li>
+                <button onClick={() => scrollTo('wizard')} className="hover:text-white transition-colors cursor-pointer text-left">
+                  Smart TV & Google TV
+                </button>
+              </li>
+              <li>
+                <button onClick={() => scrollTo('wizard')} className="hover:text-white transition-colors cursor-pointer text-left">
+                  Amazon Fire TV Stick
+                </button>
+              </li>
+              <li>
+                <button onClick={() => scrollTo('wizard')} className="hover:text-white transition-colors cursor-pointer text-left">
+                  PC Windows & Mac
+                </button>
+              </li>
+              <li>
+                <button onClick={() => scrollTo('wizard')} className="hover:text-white transition-colors cursor-pointer text-left">
+                  Móviles Android & iOS
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 3: Legal & Socios */}
+          <div className="space-y-3">
+            <div className="text-xs font-mono font-bold uppercase tracking-wider text-[#EC4899]">
+              Legal & Socios
+            </div>
+            <ul className="space-y-2 text-xs sm:text-sm text-[#8B8BA7]">
+              <li>
+                <button onClick={() => scrollTo('faq')} className="hover:text-white transition-colors cursor-pointer text-left">
+                  Preguntas Frecuentes
+                </button>
+              </li>
+              <li>
+                <a
+                  href="https://polar.sh/onvivo/setup-pack"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors flex items-center gap-1"
+                >
+                  Pasarela Segura (Polar.sh) ↗
+                </a>
+              </li>
+              <li className="pt-2">
+                <Link
+                  to="/login"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-[#00F0FF] text-xs font-mono border border-white/10 transition-colors"
+                >
+                  <Shield className="w-3.5 h-3.5" />
+                  <span>Acceso Socios / B2B</span>
+                </Link>
+              </li>
+            </ul>
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="mt-12 pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="text-xs text-slate-500 font-mono">
-            © 2026 ONVIVO · Sistema Operativo de Streaming
-          </div>
-          <div className="flex items-center gap-4 text-xs text-slate-500 font-mono">
-            <span className="inline-flex items-center gap-1.5">
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
-              </span>
-              Sistema operativo
-            </span>
-            <span className="text-cyan-300/60">v2.6 · Build 2026.06</span>
+        {/* Bottom Legal Disclaimer */}
+        <div className="pt-8 space-y-4">
+          <p className="text-[11px] text-[#8B8BA7]/70 leading-relaxed max-w-4xl">
+            <strong>Aviso Legal & Compliance:</strong> Onvivo es un servicio de consultoría técnica, configuración y entrega de guías de optimización para plataformas multimedia de código abierto. Onvivo no aloja, transmite, vende ni distribuye contenido multimedia protegido por derechos de autor. Stremio es una marca registrada de sus respectivos propietarios.
+          </p>
+
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[11px] text-[#8B8BA7] font-mono border-t border-white/[0.04] pt-4">
+            <span>© 2026 Onvivo. Todos los derechos reservados.</span>
+            <span>Diseñado para el entretenimiento sin límites.</span>
           </div>
         </div>
       </div>
     </footer>
-  )
-}
+  );
+};

@@ -1,181 +1,110 @@
-import React, { Suspense, lazy } from 'react'
-import { motion } from 'framer-motion'
-import { ArrowRight, Play, Zap, Shield, Sparkles } from 'lucide-react'
+import React from 'react';
+import { HeroScene3D } from './three/HeroScene3D';
+import { ArrowRight, Play, ShieldCheck, Zap, Monitor, Sparkles } from 'lucide-react';
 
-const HeroScene = lazy(() => import('./three/hero-scene').then((m) => ({ default: m.HeroScene })))
+export const Hero: React.FC = () => {
+  const scrollTo = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
 
-const STATS = [
-  { value: '+500', label: 'Configuraciones' },
-  { value: '4.9/5', label: 'Satisfacción' },
-  { value: '100%', label: 'Automatizado' },
-]
-
-const MARQUEE_ITEMS = [
-  'CONFIGURACIÓN AUTOMATIZADA',
-  'PANEL B2B',
-  'MÁRGENES DE HASTA 150%',
-  '9 ADDONS PREMIUM',
-  '1080P FULL HD',
-  'MULTIPLATAFORMA',
-  'SOCIOS REVENDEDORES',
-  'SOPORTE PRIORITARIO',
-]
-
-export function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen w-full overflow-hidden pt-24 pb-12"
+      className="relative min-h-[92vh] flex flex-col justify-center items-center pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden bg-[#0B0F19]"
     >
-      {/* Background grid */}
-      <div className="absolute inset-0 bg-grid pointer-events-none" />
+      {/* 3D Canvas Background */}
+      <HeroScene3D />
 
-      {/* 3D scene as backdrop */}
-      <div className="absolute inset-0 z-10 opacity-90 pointer-events-none">
-        <Suspense fallback={null}>
-          <HeroScene />
-        </Suspense>
-      </div>
-
-      {/* Radial dark overlay for text legibility */}
-      <div className="absolute inset-0 z-20 pointer-events-none bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(5,5,16,0.4)_60%,rgba(5,5,16,0.85)_100%)]" />
-
-      {/* Content */}
-      <div className="relative z-30 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 min-h-[calc(100vh-6rem)] flex flex-col items-center justify-center text-center">
-        {/* Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/5 px-4 py-1.5 backdrop-blur-sm mb-8"
-        >
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-75" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan-300" />
+      <div className="relative z-10 max-w-5xl mx-auto text-center flex flex-col items-center">
+        {/* Top Announcement Pill */}
+        <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/[0.04] backdrop-blur-xl border border-white/10 shadow-[0_0_25px_rgba(0,240,255,0.15)] mb-8">
+          <span className="flex h-2 w-2 relative">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00F0FF] opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00F0FF]" />
           </span>
-          <span className="text-xs sm:text-sm font-mono uppercase tracking-widest text-cyan-200">
-            Programa de Socios B2B · Estreno 2026
+          <span className="text-xs sm:text-sm font-medium text-[#E2E8FF] tracking-wide">
+            Setup Automatizado • 1080p Full HD • Sin Cuotas Mensuales
           </span>
-        </motion.div>
+        </div>
 
-        {/* Headline */}
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.35 }}
-          className="text-5xl sm:text-7xl lg:text-8xl font-black leading-[0.95] tracking-tight max-w-5xl"
-          style={{ fontFamily: 'var(--font-display)' }}
-        >
-          <span className="block text-white">Tu Streaming</span>
-          <span className="block text-gradient-neon">Premium B2B</span>
-          <span className="block text-white">sin Complicaciones</span>
-        </motion.h1>
+        {/* Main Headline */}
+        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.12] max-w-4xl">
+          Todo el cine y series del mundo
+          <span className="block mt-2 text-transparent bg-clip-text bg-gradient-to-r from-[#00F0FF] via-[#A855F7] to-[#EC4899] drop-shadow-[0_0_35px_rgba(0,240,255,0.35)]">
+            en una sola app
+          </span>
+        </h1>
 
-        {/* Subhead */}
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.55 }}
-          className="mt-8 max-w-2xl text-base sm:text-lg lg:text-xl text-slate-300/90 leading-relaxed"
-        >
-          Plataforma de configuración automatizada de streaming para
-          <span className="text-cyan-300 font-semibold"> revendedores y socios B2B</span>.
-          Gestiona licencias, automatiza setups con inteligencia robótica y
-          escala tu negocio desde un único panel de control.
-        </motion.p>
+        {/* Subheadline */}
+        <p className="mt-6 text-base sm:text-lg lg:text-xl text-[#8B8BA7] max-w-2xl leading-relaxed font-normal">
+          Elimina la fragmentación de pagar múltiples suscripciones al mes. Onvivo optimiza y preconfigura tu ecosistema de entretenimiento en cualquier pantalla para que disfrutes de streaming fluido a 1080p60 en tu idioma y listo en menos de 2 minutos.
+        </p>
 
-        {/* CTAs */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.75 }}
-          className="mt-10 flex flex-col sm:flex-row items-center gap-4"
-        >
-          <a
-            href="#contact"
-            className="btn-neon group inline-flex items-center gap-2 rounded-xl px-7 py-4 text-base font-bold"
+        {/* Dual CTAs */}
+        <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
+          {/* Primary CTA */}
+          <button
+            onClick={() => scrollTo('wizard')}
+            className="group relative w-full sm:w-auto inline-flex flex-col items-center justify-center p-[2px] rounded-2xl bg-gradient-to-r from-[#00F0FF] via-[#A855F7] to-[#EC4899] shadow-[0_0_30px_rgba(0,240,255,0.4)] hover:shadow-[0_0_50px_rgba(0,240,255,0.7)] transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 cursor-pointer"
           >
-            <Zap className="h-5 w-5" />
-            Solicitar Acceso como Socio
-            <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-          </a>
-          <a
-            href="#services"
-            className="btn-outline-neon inline-flex items-center gap-2 rounded-xl px-6 py-4 text-base font-semibold"
-          >
-            <Play className="h-4 w-4" />
-            Descubrir Ventajas
-          </a>
-        </motion.div>
-
-        {/* Quick badges */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.95 }}
-          className="mt-8 flex flex-wrap items-center justify-center gap-3 text-xs text-slate-400"
-        >
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1">
-            <Shield className="h-3.5 w-3.5 text-emerald-400" /> Llaves a 20€
-          </span>
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1">
-            <Sparkles className="h-3.5 w-3.5 text-cyan-400" /> Setup en 3 minutos
-          </span>
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1">
-            <Zap className="h-3.5 w-3.5 text-violet-400" /> 1080p Full HD
-          </span>
-        </motion.div>
-
-        {/* Stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 1.1 }}
-          className="mt-16 grid grid-cols-3 gap-6 sm:gap-12"
-        >
-          {STATS.map((s) => (
-            <div key={s.label} className="text-center">
-              <div
-                className="text-3xl sm:text-5xl font-black text-gradient-cyan"
-                style={{ fontFamily: 'var(--font-display)' }}
-              >
-                {s.value}
-              </div>
-              <div className="mt-1 text-xs sm:text-sm uppercase tracking-widest text-slate-400 font-mono">
-                {s.label}
-              </div>
+            <div className="w-full h-full bg-[#0B0F19] group-hover:bg-transparent rounded-[14px] px-8 py-3.5 flex flex-col items-center justify-center transition-colors duration-300">
+              <span className="text-base font-bold text-white group-hover:text-[#0B0F19] flex items-center gap-2 transition-colors duration-300">
+                Iniciar Setup Personalizado
+                <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+              </span>
+              <span className="text-[11px] text-[#8B8BA7] group-hover:text-[#0B0F19]/80 font-mono mt-0.5 transition-colors duration-300">
+                65€ pago único • Acceso inmediato
+              </span>
             </div>
-          ))}
-        </motion.div>
-      </div>
+          </button>
 
-      {/* Marquee */}
-      <div className="absolute bottom-0 left-0 right-0 z-30 border-y border-cyan-500/10 bg-[#050510]/60 backdrop-blur-sm py-3 overflow-hidden">
-        <div className="flex animate-marquee whitespace-nowrap">
-          {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
-            <span key={i} className="mx-6 text-xs font-mono uppercase tracking-[0.3em] text-cyan-300/60">
-              {item} <span className="text-violet-400 mx-2">◆</span>
+          {/* Secondary CTA */}
+          <button
+            onClick={() => scrollTo('showcase')}
+            className="w-full sm:w-auto inline-flex flex-col items-center justify-center px-7 py-3.5 rounded-2xl bg-white/[0.05] hover:bg-white/[0.09] backdrop-blur-xl border border-white/10 hover:border-white/20 text-white transform hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
+          >
+            <span className="text-base font-semibold text-[#E2E8FF] flex items-center gap-2">
+              Ver Simulación en Vivo
+              <span className="text-xs text-[#00F0FF]">● 1080p60</span>
             </span>
-          ))}
+            <span className="text-[11px] text-[#8B8BA7] font-mono mt-0.5">
+              Telemetría en tiempo real
+            </span>
+          </button>
+        </div>
+
+        {/* Social Proof Metrics Grid */}
+        <div className="mt-16 w-full max-w-4xl grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 pt-10 border-t border-white/[0.08]">
+          {/* Metric 1 */}
+          <div className="p-4 rounded-2xl bg-white/[0.02] backdrop-blur-md border border-white/[0.05] hover:border-[#00F0FF]/30 transition-all duration-300 text-left">
+            <div className="text-2xl sm:text-3xl font-extrabold text-[#00F0FF] font-mono">&gt; 650€</div>
+            <div className="text-xs sm:text-sm font-semibold text-[#E2E8FF] mt-1">Ahorro Anual Medio</div>
+            <div className="text-[11px] text-[#8B8BA7] mt-0.5">Vs plataformas tradicionales</div>
+          </div>
+
+          {/* Metric 2 */}
+          <div className="p-4 rounded-2xl bg-white/[0.02] backdrop-blur-md border border-white/[0.05] hover:border-[#A855F7]/30 transition-all duration-300 text-left">
+            <div className="text-2xl sm:text-3xl font-extrabold text-[#A855F7] font-mono">1080p60</div>
+            <div className="text-xs sm:text-sm font-semibold text-[#E2E8FF] mt-1">Streaming Optimizado</div>
+            <div className="text-[11px] text-[#8B8BA7] mt-0.5">Cero buffering garantizado</div>
+          </div>
+
+          {/* Metric 3 */}
+          <div className="p-4 rounded-2xl bg-white/[0.02] backdrop-blur-md border border-white/[0.05] hover:border-[#EC4899]/30 transition-all duration-300 text-left">
+            <div className="text-2xl sm:text-3xl font-extrabold text-[#EC4899] font-mono">&lt; 2 min</div>
+            <div className="text-xs sm:text-sm font-semibold text-[#E2E8FF] mt-1">Entrega Digital</div>
+            <div className="text-[11px] text-[#8B8BA7] mt-0.5">Fulfillment automatizado</div>
+          </div>
+
+          {/* Metric 4 */}
+          <div className="p-4 rounded-2xl bg-white/[0.02] backdrop-blur-md border border-white/[0.05] hover:border-[#10B981]/30 transition-all duration-300 text-left">
+            <div className="text-2xl sm:text-3xl font-extrabold text-[#10B981] font-mono">100%</div>
+            <div className="text-xs sm:text-sm font-semibold text-[#E2E8FF] mt-1">Compatibilidad</div>
+            <div className="text-[11px] text-[#8B8BA7] mt-0.5">Smart TV, Sticks, PC y Móvil</div>
+          </div>
         </div>
       </div>
-
-      {/* Scroll cue */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
-        className="absolute bottom-20 left-1/2 -translate-x-1/2 z-30 hidden sm:flex flex-col items-center gap-2 text-cyan-300/60"
-      >
-        <span className="text-[10px] uppercase tracking-[0.3em] font-mono">Scroll</span>
-        <div className="relative h-10 w-6 rounded-full border border-cyan-400/40">
-          <motion.span
-            animate={{ y: [4, 16, 4] }}
-            transition={{ duration: 1.8, repeat: Infinity }}
-            className="absolute left-1/2 -translate-x-1/2 top-1 h-1.5 w-1.5 rounded-full bg-cyan-300"
-          />
-        </div>
-      </motion.div>
     </section>
-  )
-}
+  );
+};
