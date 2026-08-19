@@ -4,12 +4,12 @@ import { HelpCircle, ChevronDown } from 'lucide-react';
 export const FAQ: React.FC = () => {
   const faqItems = [
     {
-      q: '¿En qué dispositivos puedo usar el pack de Onvivo?',
+      q: '¿En qué dispositivos puedo usar el servicio de Onvivo?',
       a: 'Onvivo es compatible con prácticamente cualquier dispositivo moderno: Smart TVs con Android TV o Google TV (Sony, Philips, Xiaomi, TCL), Amazon Fire TV Stick (todos los modelos), Xiaomi Mi Box, Chromecast con Google TV, ordenadores PC con Windows, Mac (macOS), Linux, así como teléfonos y tablets Android e iOS/iPadOS.',
     },
     {
       q: '¿Es legal utilizar el servicio de configuración de Onvivo?',
-      a: 'Completamente. Onvivo es un servicio técnico y digital de optimización, sincronización de metadatos y documentación educativa para aplicaciones de código abierto (open-source) como Stremio. No alojamos, distribuimos ni retransmitimos contenidos audiovisuales bajo derechos de autor en nuestros servidores; proporcionamos la consultoría, configuración técnica y el empaquetado para que aproveches software libre de manera fluida y segura.',
+      a: 'Completamente. Onvivo es un servicio técnico y digital de optimización, personalización y documentación educativa para centros de streaming multimedia de código abierto. No alojamos, distribuimos ni retransmitimos contenidos audiovisuales bajo derechos de autor en nuestros servidores; proporcionamos la consultoría técnica y la preparación para que disfrutes de tu entorno de manera fluida y segura.',
     },
     {
       q: '¿Cómo y cuándo recibo mi configuración tras realizar el pago?',
@@ -17,11 +17,11 @@ export const FAQ: React.FC = () => {
     },
     {
       q: '¿Realmente es un pago único de 65€ o hay cuotas ocultas?',
-      a: 'Es un pago único de 65€ (o 75$). No hay suscripciones mensuales, ni renovaciones automáticas, ni costes ocultos. Una vez adquirido, dispones de tu configuración y de las guías de optimización de forma vitalicia para todos los dispositivos de tu hogar.',
+      a: 'Es un pago único de 65€ (o 75$). No hay suscripciones mensuales, ni renovaciones automáticas, ni costes ocultos por parte de Onvivo. Una vez adquirido, dispones de tu configuración y de las guías de optimización de forma permanente.',
     },
     {
-      q: '¿Qué ocurre si necesito ayuda durante la instalación en mi pantalla?',
-      a: 'El pack incluye una Guía Visual Interactiva exhaustiva en PDF con capturas reales y explicaciones detalladas botón por botón para cada tipo de dispositivo (Smart TV, PC, Fire TV, móvil). La instalación está diseñada para completarse en menos de 60 segundos siguiendo 3 sencillos pasos ilustrados.',
+      q: '¿Qué ocurre si necesito ayuda durante la puesta en marcha?',
+      a: 'El pack incluye una Guía Visual Interactiva exhaustiva en PDF con capturas reales y explicaciones detalladas botón por botón para cada tipo de dispositivo (Smart TV, PC, Fire TV, móvil). La puesta en marcha está diseñada para completarse en menos de 60 segundos con solo iniciar sesión.',
     },
   ];
 

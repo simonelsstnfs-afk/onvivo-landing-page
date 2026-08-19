@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
-import { Play, Activity, Sparkles } from 'lucide-react';
+import { Play, Sparkles, CheckCircle2, ShieldCheck, Film, Tv } from 'lucide-react';
 
 export const ConsoleShowcase: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'player' | 'catalog' | 'telemetry'>('player');
+  const [activeTab, setActiveTab] = useState<'player' | 'catalog' | 'ecosystem'>('player');
 
-  const addonsList = [
-    { name: 'Cinemeta (Official)', type: 'Base Metadata Index', latency: '12 ms', status: 'ONLINE' },
-    { name: 'Torrentio 1080p Pro', type: 'Streams & P2P Engine', latency: '18 ms', status: 'ONLINE' },
-    { name: 'ThePirateBay+ Engine', type: 'Redundant Mirror Stream', latency: '22 ms', status: 'ONLINE' },
-    { name: 'Streaming Catalogs', type: 'Netflix, Disney+, Max Sync', latency: '15 ms', status: 'ONLINE' },
-    { name: 'Anime Catalogs HD', type: 'MyAnimeList Top Series', latency: '20 ms', status: 'ONLINE' },
-    { name: 'Anime Kitsu Live', type: 'Japanese Simulcast Data', latency: '19 ms', status: 'ONLINE' },
-    { name: 'OpenSubtitles v3 Pro', type: 'Auto-Sync Multi-Language', latency: '14 ms', status: 'ONLINE' },
+  const pillarsList = [
+    { name: 'Biblioteca Global Unificada', desc: 'Catálogo mundial clasificado con sinopsis y carátulas.', status: 'LISTO' },
+    { name: 'Filtro Inteligente 1080p', desc: 'Priorización automática de fuentes en alta definición.', status: 'ACTIVO' },
+    { name: 'Prioridad de Audio en Español', desc: 'Preselección de pistas en Castellano y Latino.', status: 'CONFIGURADO' },
+    { name: 'Subtítulos Automáticos', desc: 'Sincronización directa en múltiples idiomas.', status: 'ACTIVO' },
+    { name: 'Sincronización en la Nube', desc: 'Tu perfil disponible en cualquiera de tus pantallas.', status: 'VERIFICADO' },
+    { name: 'Cero Ajustes Manuales', desc: 'Todo verificado antes de la entrega de tus accesos.', status: '100% LISTO' },
   ];
 
   return (
@@ -25,14 +24,14 @@ export const ConsoleShowcase: React.FC = () => {
         <div className="text-center max-w-3xl mx-auto mb-14 flex flex-col items-center">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#00FF85]/10 border border-[#00FF85]/30 text-[#00FF85] text-xs font-mono font-bold uppercase tracking-[0.2em] mb-4">
             <span className="w-2 h-2 rounded-full bg-[#00FF85] animate-ping" />
-            <span>DIAGNÓSTICO EN TIEMPO REAL</span>
+            <span>DEMOSTRACIÓN INTERACTIVA</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight uppercase leading-[0.98] font-display">
-            CONSOLA DE TELEMETRÍA <br />
-            <span className="text-gradient-cyan">ONVIVO STREAM CORE</span>
+            SIMULADOR DE EXPERIENCIA <br />
+            <span className="text-gradient-cyan">ONVIVO STREAMING</span>
           </h2>
           <p className="mt-4 text-sm sm:text-base text-white/60 leading-relaxed font-grotesk">
-            Observa cómo opera el motor de streaming: telemetría continua a 1080p60, metadatos enriquecidos y gestión inteligente de buffers sin cortes.
+            Comprueba cómo queda organizada y optimizada la interfaz de tu reproductor en cualquier pantalla.
           </p>
         </div>
 
@@ -52,24 +51,21 @@ export const ConsoleShowcase: React.FC = () => {
                 <span className="text-[#00F0FF] font-bold">ONVIVO_STREAM_CORE</span>
                 <span className="px-2 py-0.5 rounded bg-[#00FF85]/15 text-[#00FF85] text-[10px] font-bold flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#00FF85] animate-pulse" />
-                  STREAMING LIVE
+                  SISTEMA LISTO
                 </span>
               </div>
             </div>
 
-            {/* Live Telemetry Quick Pills */}
+            {/* Quick Status Pills */}
             <div className="flex flex-wrap items-center gap-2 text-[11px] font-mono">
               <span className="px-2.5 py-1 rounded-lg bg-white/[0.04] border border-white/[0.06] text-[#00F0FF]">
-                RES: <strong className="text-white">1080p Full HD</strong>
+                CALIDAD: <strong className="text-white">1080p Full HD</strong>
               </span>
               <span className="px-2.5 py-1 rounded-lg bg-white/[0.04] border border-white/[0.06] text-[#A855F7]">
-                FPS: <strong className="text-white">60.0 FPS</strong>
+                TASA: <strong className="text-white">60.0 FPS</strong>
               </span>
               <span className="px-2.5 py-1 rounded-lg bg-white/[0.04] border border-white/[0.06] text-[#00FF85]">
-                BITRATE: <strong className="text-white">14.2 Mbps</strong>
-              </span>
-              <span className="px-2.5 py-1 rounded-lg bg-white/[0.04] border border-white/[0.06] text-[#EC4899]">
-                PING: <strong className="text-white">18 ms</strong>
+                AUDIO: <strong className="text-white">Español 5.1</strong>
               </span>
             </div>
           </div>
@@ -102,15 +98,15 @@ export const ConsoleShowcase: React.FC = () => {
             </button>
             <button
               type="button"
-              onClick={() => setActiveTab('telemetry')}
+              onClick={() => setActiveTab('ecosystem')}
               className={`px-4 py-2.5 rounded-t-xl text-xs sm:text-sm font-bold font-mono border-b-2 transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer uppercase tracking-wider ${
-                activeTab === 'telemetry'
+                activeTab === 'ecosystem'
                   ? 'border-[#00F0FF] text-[#00F0FF] bg-white/[0.04]'
                   : 'border-transparent text-white/50 hover:text-white'
               }`}
             >
-              <span>📡</span>
-              <span>Monitor de Red & Addons (7)</span>
+              <span>⚙️</span>
+              <span>Pilares de Configuración</span>
             </button>
           </div>
 
@@ -133,10 +129,10 @@ export const ConsoleShowcase: React.FC = () => {
                   {/* Top Overlay Info */}
                   <div className="relative z-10 flex items-center justify-between text-xs font-mono">
                     <span className="px-2.5 py-1 rounded-lg bg-black/70 backdrop-blur-md border border-white/10 text-white font-bold">
-                      STREAMING: Dune Part Two (2026) · 1080p
+                      REPRODUCCIÓN: Dune Part Two · 1080p Full HD
                     </span>
                     <span className="px-2.5 py-1 rounded-lg bg-[#00FF85]/20 text-[#00FF85] font-bold border border-[#00FF85]/40">
-                      ● LIVE BUFFER: +45.0s
+                      ● FLUIDEZ ÓPTIMA
                     </span>
                   </div>
 
@@ -149,7 +145,7 @@ export const ConsoleShowcase: React.FC = () => {
                       </div>
                       <div className="flex justify-between items-center text-[10px] font-mono text-white/50">
                         <span>01:14:22</span>
-                        <span className="text-[#00F0FF]">Buffer precargado: +45.0s</span>
+                        <span className="text-[#00F0FF]">Flujo continuo sin cortes</span>
                         <span>02:49:00</span>
                       </div>
                     </div>
@@ -157,7 +153,7 @@ export const ConsoleShowcase: React.FC = () => {
                     <div className="flex items-center justify-between text-xs text-white">
                       <div className="flex items-center gap-3 font-mono">
                         <span className="hover:text-[#00F0FF] transition-colors cursor-pointer">▶ Play/Pausa</span>
-                        <span className="hover:text-[#00F0FF] transition-colors cursor-pointer">🔊 100% (Dolby 5.1)</span>
+                        <span className="hover:text-[#00F0FF] transition-colors cursor-pointer">🔊 Dolby 5.1</span>
                       </div>
                       <div className="flex items-center gap-2 font-mono text-[11px]">
                         <span className="px-2 py-0.5 rounded bg-white/10 text-[#00F0FF] border border-white/10">Audio: ES 5.1</span>
@@ -167,42 +163,42 @@ export const ConsoleShowcase: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Side Stream Telemetry Diagnostics */}
+                {/* Side Parameters */}
                 <div className="lg:col-span-4 rounded-2xl bg-white/[0.02] border border-white/[0.08] p-5 flex flex-col justify-between space-y-4">
                   <div>
                     <div className="text-xs font-mono font-bold text-[#00F0FF] uppercase tracking-[0.2em] mb-3">
-                      Parámetros de Reproducción
+                      Ajustes Aplicados en tu Perfil
                     </div>
                     <div className="space-y-3 font-mono text-xs">
                       <div className="flex items-center justify-between py-1.5 border-b border-white/[0.05]">
-                        <span className="text-white/50">Resolución Activa</span>
-                        <span className="text-white font-bold font-display">1920 x 1080p</span>
+                        <span className="text-white/50">Resolución Máxima</span>
+                        <span className="text-white font-bold font-display">1080p Full HD</span>
                       </div>
                       <div className="flex items-center justify-between py-1.5 border-b border-white/[0.05]">
-                        <span className="text-white/50">Tasa de Cuadros</span>
-                        <span className="text-[#00FF85] font-bold">60.00 FPS Estables</span>
+                        <span className="text-white/50">Fluidez de Cuadros</span>
+                        <span className="text-[#00FF85] font-bold">60 FPS Estables</span>
                       </div>
                       <div className="flex items-center justify-between py-1.5 border-b border-white/[0.05]">
-                        <span className="text-white/50">Pipeline Decodificación</span>
-                        <span className="text-white">Hardware HEVC/H.264</span>
+                        <span className="text-white/50">Prioridad de Idioma</span>
+                        <span className="text-white font-bold">Castellano / Latino</span>
                       </div>
                       <div className="flex items-center justify-between py-1.5 border-b border-white/[0.05]">
-                        <span className="text-white/50">Latencia CDN</span>
-                        <span className="text-[#00F0FF] font-bold">18 ms (Cluster ES)</span>
+                        <span className="text-white/50">Subtítulos</span>
+                        <span className="text-[#00F0FF] font-bold">Auto-Sincronizados</span>
                       </div>
                       <div className="flex items-center justify-between py-1.5 border-b border-white/[0.05]">
-                        <span className="text-white/50">Addons Sincronizados</span>
-                        <span className="text-[#A855F7] font-bold">7 / 7 Online</span>
+                        <span className="text-white/50">Entrega de Accesos</span>
+                        <span className="text-[#A855F7] font-bold">&lt; 2 minutos</span>
                       </div>
                     </div>
                   </div>
 
                   <div className="p-3.5 rounded-xl bg-[#00FF85]/10 border border-[#00FF85]/30 text-xs">
                     <div className="flex items-center gap-2 text-[#00FF85] font-bold font-mono mb-1">
-                      <span>🛡️ Cero Caídas Detectadas</span>
+                      <span>✓ Todo Preconfigurado</span>
                     </div>
                     <p className="text-[11px] text-white/60 leading-relaxed font-grotesk">
-                      El motor previene automáticamente cortes ajustando dinámicamente los buffers de red.
+                      Solo introduces tu usuario y contraseña para disfrutar directamente en tu pantalla.
                     </p>
                   </div>
                 </div>
@@ -215,10 +211,10 @@ export const ConsoleShowcase: React.FC = () => {
             <div className="p-6 sm:p-8">
               <div className="mb-4 flex items-center justify-between font-mono">
                 <span className="text-xs text-white/50">
-                  Catálogo Unificado Onvivo · Vista previa en Smart TV & PC
+                  Muro Unificado · Vista previa de títulos en tu Smart TV y PC
                 </span>
                 <span className="text-xs text-[#00F0FF] font-bold">
-                  +25.000 títulos indexados
+                  +25.000 títulos disponibles
                 </span>
               </div>
 
@@ -238,7 +234,7 @@ export const ConsoleShowcase: React.FC = () => {
                 {/* Card 2 */}
                 <div className="group rounded-2xl bg-white/[0.03] border border-white/[0.08] hover:border-purple-500/40 p-3 transition-all duration-300">
                   <div className="aspect-[2/3] rounded-xl bg-gradient-to-br from-[#2E1065] to-[#0F172A] relative overflow-hidden flex flex-col justify-between p-3">
-                    <span className="self-start px-2 py-0.5 rounded bg-purple-500/20 text-[#A855F7] text-[10px] font-mono font-bold">Temporada Completa</span>
+                    <span className="self-start px-2 py-0.5 rounded bg-purple-500/20 text-[#A855F7] text-[10px] font-mono font-bold">Serie Completa</span>
                     <div className="text-xs font-bold text-white font-grotesk">Fallout (S1)</div>
                   </div>
                   <div className="mt-2 text-[11px] text-white/50 flex items-center justify-between font-mono">
@@ -274,34 +270,33 @@ export const ConsoleShowcase: React.FC = () => {
             </div>
           )}
 
-          {/* Tab 3: Monitor de Red & Addons */}
-          {activeTab === 'telemetry' && (
+          {/* Tab 3: Pilares de Configuración */}
+          {activeTab === 'ecosystem' && (
             <div className="p-6 sm:p-8">
               <div className="mb-4 flex items-center justify-between font-mono">
                 <span className="text-xs text-white/50">
-                  Monitor en Vivo de Manifiestos y Conectividad
+                  Resumen de Ajustes Integrados en tu Cuenta
                 </span>
                 <span className="text-xs text-[#00FF85] font-bold">
-                  ● 7 / 7 Addons Operativos (0 errores)
+                  ● 6 Pilares Calibrados (100% Verificados)
                 </span>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {addonsList.map((addon) => (
+                {pillarsList.map((pillar) => (
                   <div
-                    key={addon.name}
+                    key={pillar.name}
                     className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-cyan-500/30 flex items-center justify-between transition-all"
                   >
                     <div>
                       <div className="text-sm font-bold text-white font-grotesk">
-                        {addon.name}
+                        {pillar.name}
                       </div>
-                      <div className="text-[11px] text-white/50 font-mono mt-0.5">{addon.type}</div>
+                      <div className="text-[11px] text-white/50 font-mono mt-0.5">{pillar.desc}</div>
                     </div>
                     <div className="flex items-center gap-3 font-mono text-xs">
-                      <span className="text-[#00F0FF]">{addon.latency}</span>
                       <span className="px-2 py-0.5 rounded bg-[#00FF85]/15 text-[#00FF85] text-[10px] font-bold">
-                        {addon.status}
+                        {pillar.status}
                       </span>
                     </div>
                   </div>

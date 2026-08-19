@@ -80,7 +80,7 @@ export const Testimonials: React.FC = () => {
                 </span>
               </div>
               <p className="text-sm text-white/80 leading-relaxed italic mb-6">
-                «Intenté configurar Stremio por mi cuenta pero perdía horas buscando addons fiables que no se cayeran a los dos días. La guía en PDF y el perfil preconfigurado de Onvivo me ahorraron todo el dolor de cabeza. Vale cada céntimo.»
+                «Intenté configurar el sistema por mi cuenta pero perdía horas entre tutoriales y enlaces caídos. La guía en PDF y el perfil preconfigurado de Onvivo me ahorraron todo el dolor de cabeza. Vale cada céntimo.»
               </p>
             </div>
             <div className="pt-4 border-t border-white/[0.06] flex items-center gap-3">

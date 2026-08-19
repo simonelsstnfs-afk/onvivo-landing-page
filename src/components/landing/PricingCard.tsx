@@ -35,7 +35,7 @@ export const PricingCard: React.FC = () => {
             <div>
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/15 text-[#00F0FF] text-xs font-mono font-bold uppercase tracking-wider border border-cyan-500/30">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#00F0FF] animate-pulse" />
-                ACCESO LIFETIME · OFERTA 2026
+                ACCESO LIFETIME · PAGO ÚNICO
               </span>
               <h3 className="text-2xl sm:text-3xl font-black text-white mt-2 uppercase tracking-tight font-display">
                 Licencia Setup Perpetua
@@ -68,24 +68,24 @@ export const PricingCard: React.FC = () => {
               <div className="flex items-start gap-3 p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.04]">
                 <CheckCircle className="w-5 h-5 text-[#00FF85] shrink-0 mt-0.5" />
                 <div>
-                  <strong className="text-white block font-bold">7 Addons Premium Sincronizados</strong>
-                  <span className="text-white/60 text-xs">Indexación ultrarrápida, metadatos enriquecidos y fuentes automáticas.</span>
+                  <strong className="text-white block font-bold">Entorno Multimedia 100% Configurado</strong>
+                  <span className="text-white/60 text-xs">Todo organizado y calibrado antes de la entrega de tus accesos.</span>
                 </div>
               </div>
 
               <div className="flex items-start gap-3 p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.04]">
                 <CheckCircle className="w-5 h-5 text-[#00FF85] shrink-0 mt-0.5" />
                 <div>
-                  <strong className="text-white block font-bold">Optimización Anti-Buffering 1080p</strong>
-                  <span className="text-white/60 text-xs">Buffer precargado para streaming fluido a 60 FPS sin cortes.</span>
+                  <strong className="text-white block font-bold">Filtro de Resolución 1080p Full HD</strong>
+                  <span className="text-white/60 text-xs">Priorización de video en alta definición para un streaming ágil y fluido.</span>
                 </div>
               </div>
 
               <div className="flex items-start gap-3 p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.04]">
                 <CheckCircle className="w-5 h-5 text-[#00FF85] shrink-0 mt-0.5" />
                 <div>
-                  <strong className="text-white block font-bold">Sync de Audio y Subtítulos en tu Idioma</strong>
-                  <span className="text-white/60 text-xs">Inyección directa en Torrentio, Subsense y OpenSubtitles Pro.</span>
+                  <strong className="text-white block font-bold">Prioridad de Idiomas y Subtítulos</strong>
+                  <span className="text-white/60 text-xs">Audio en Español (Castellano/Latino) y subtítulos automáticos listos.</span>
                 </div>
               </div>
 
@@ -93,7 +93,7 @@ export const PricingCard: React.FC = () => {
                 <CheckCircle className="w-5 h-5 text-[#00FF85] shrink-0 mt-0.5" />
                 <div>
                   <strong className="text-white block font-bold">Guía Visual Interactiva en PDF</strong>
-                  <span className="text-white/60 text-xs">Instrucciones ilustradas paso a paso para todas las pantallas de tu hogar.</span>
+                  <span className="text-white/60 text-xs">Instrucciones ilustradas paso a paso para configurar tu TV, Stick, PC o móvil.</span>
                 </div>
               </div>
 
@@ -101,7 +101,7 @@ export const PricingCard: React.FC = () => {
                 <CheckCircle className="w-5 h-5 text-[#00FF85] shrink-0 mt-0.5" />
                 <div>
                   <strong className="text-white block font-bold">Entrega Inmediata por Email (&lt; 2 min)</strong>
-                  <span className="text-white/60 text-xs">Despacho automatizado tras confirmar tu compra en la pasarela.</span>
+                  <span className="text-white/60 text-xs">Despacho automatizado tras confirmar tu compra en la pasarela segura.</span>
                 </div>
               </div>
 
@@ -109,7 +109,7 @@ export const PricingCard: React.FC = () => {
                 <CheckCircle className="w-5 h-5 text-[#00FF85] shrink-0 mt-0.5" />
                 <div>
                   <strong className="text-white block font-bold">Compatibilidad Multidispositivo</strong>
-                  <span className="text-white/60 text-xs">Usa tu perfil en Smart TV, Fire Stick, PC, Mac y móvil.</span>
+                  <span className="text-white/60 text-xs">Usa tu perfil en Smart TV, Amazon Fire Stick, Google TV, PC, Mac y móvil.</span>
                 </div>
               </div>
             </div>

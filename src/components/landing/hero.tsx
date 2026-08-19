@@ -1,6 +1,6 @@
 import React from 'react';
 import { HeroScene3D } from './three/HeroScene3D';
-import { ArrowRight, Play, Shield, Zap, Sparkles } from 'lucide-react';
+import { ArrowRight, Play, Zap } from 'lucide-react';
 
 export const Hero: React.FC = () => {
   const scrollTo = (id: string) => {
@@ -24,7 +24,7 @@ export const Hero: React.FC = () => {
             <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00F0FF]" />
           </span>
           <span className="text-xs sm:text-sm font-bold font-mono tracking-widest text-[#00F0FF] uppercase">
-            ● ONVIVO SETUP PREMIUM 100% AUTÓNOMO
+            ● CONFIGURACIÓN INTEGRAL DE STREAMING · PAGO ÚNICO
           </span>
         </div>
 
@@ -40,7 +40,7 @@ export const Hero: React.FC = () => {
 
         {/* Subheadline with Space Grotesk */}
         <p className="mt-6 text-base sm:text-lg lg:text-xl text-white/70 max-w-2xl leading-relaxed font-grotesk">
-          Configuramos tu entorno Stremio de manera profesional en segundos. Accede a los estrenos mundiales en Full HD nativo 1080p60, audio sincronizado en tu idioma y sin pagar cuotas mensuales jamás.
+          Preparamos y optimizamos tu entorno de entretenimiento digital en menos de 2 minutos. Disfruta de una cartelera mundial unificada en resolución 1080p Full HD, con audio y subtítulos en tu idioma, sin pagar mensualidades recurrentes.
         </p>
 
         {/* Dual CTAs */}
@@ -73,7 +73,7 @@ export const Hero: React.FC = () => {
               <span className="text-xs text-[#00F0FF] font-mono">● LIVE</span>
             </span>
             <span className="text-[11px] text-white/50 font-mono mt-0.5">
-              Telemetría en tiempo real
+              Demostración interactiva
             </span>
           </button>
         </div>
@@ -84,28 +84,28 @@ export const Hero: React.FC = () => {
           <div className="p-4 rounded-2xl bg-white/[0.02] backdrop-blur-md border border-cyan-500/20 hover:border-cyan-500/40 transition-all duration-300 text-left">
             <div className="text-2xl sm:text-3xl font-black text-[#00F0FF] font-display">&gt; 650€</div>
             <div className="text-xs sm:text-sm font-bold uppercase tracking-wider text-white mt-1 font-grotesk">Ahorro Anual</div>
-            <div className="text-[11px] text-white/50 mt-0.5 font-mono">Vs suscripciones clásicas</div>
+            <div className="text-[11px] text-white/50 mt-0.5 font-mono">Vs múltiples suscripciones</div>
           </div>
 
           {/* Metric 2 */}
           <div className="p-4 rounded-2xl bg-white/[0.02] backdrop-blur-md border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300 text-left">
             <div className="text-2xl sm:text-3xl font-black text-[#A855F7] font-display">1080p60</div>
-            <div className="text-xs sm:text-sm font-bold uppercase tracking-wider text-white mt-1 font-grotesk">Streaming HD</div>
-            <div className="text-[11px] text-white/50 mt-0.5 font-mono">Cero buffering</div>
+            <div className="text-xs sm:text-sm font-bold uppercase tracking-wider text-white mt-1 font-grotesk">Calidad Full HD</div>
+            <div className="text-[11px] text-white/50 mt-0.5 font-mono">Streaming optimizado</div>
           </div>
 
           {/* Metric 3 */}
           <div className="p-4 rounded-2xl bg-white/[0.02] backdrop-blur-md border border-pink-500/20 hover:border-pink-500/40 transition-all duration-300 text-left">
             <div className="text-2xl sm:text-3xl font-black text-[#EC4899] font-display">&lt; 2 min</div>
             <div className="text-xs sm:text-sm font-bold uppercase tracking-wider text-white mt-1 font-grotesk">Entrega Inmediata</div>
-            <div className="text-[11px] text-white/50 mt-0.5 font-mono">Despacho digital</div>
+            <div className="text-[11px] text-white/50 mt-0.5 font-mono">Directo a tu correo</div>
           </div>
 
           {/* Metric 4 */}
           <div className="p-4 rounded-2xl bg-white/[0.02] backdrop-blur-md border border-emerald-500/20 hover:border-emerald-500/40 transition-all duration-300 text-left">
             <div className="text-2xl sm:text-3xl font-black text-[#00FF85] font-display">100%</div>
-            <div className="text-xs sm:text-sm font-bold uppercase tracking-wider text-white mt-1 font-grotesk">Automatizado</div>
-            <div className="text-[11px] text-white/50 mt-0.5 font-mono">Smart TV, PC y Móvil</div>
+            <div className="text-xs sm:text-sm font-bold uppercase tracking-wider text-white mt-1 font-grotesk">Listo para Usar</div>
+            <div className="text-[11px] text-white/50 mt-0.5 font-mono">Sin complejidad técnica</div>
           </div>
         </div>
       </div>

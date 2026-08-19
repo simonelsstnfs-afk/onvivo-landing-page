@@ -3,11 +3,11 @@ import {
   Tv, Smartphone, Monitor, Laptop, Globe, Film, Mail, 
   CheckCircle, ArrowRight, ArrowLeft, Shield, AlertCircle, Sparkles, Loader2, Zap
 } from 'lucide-react';
-import { SUPPORTED_LANGUAGES, findLanguage } from '../../utils/languages';
+import { findLanguage } from '../../utils/languages';
 
 const STEP_CONFIG = [
   { number: 1, label: 'Paso 1 de 5: Dispositivos', percent: 20 },
-  { number: 2, label: 'Paso 2 de 5: Idiomas de Addons', percent: 40 },
+  { number: 2, label: 'Paso 2 de 5: Idiomas de Reproducción', percent: 40 },
   { number: 3, label: 'Paso 3 de 5: Catálogo & Contenido', percent: 60 },
   { number: 4, label: 'Paso 4 de 5: Email de Entrega', percent: 80 },
   { number: 5, label: 'Paso 5 de 5: Resumen & Checkout', percent: 100 },
@@ -73,7 +73,7 @@ export const SetupWizard: React.FC = () => {
     if (!trimmed) return;
     const match = findLanguage(trimmed);
     if (!match) {
-      setCustomLangError(`Idioma "${trimmed}" no reconocido por los addons.`);
+      setCustomLangError(`Idioma "${trimmed}" no disponible.`);
       return;
     }
     if (!selectedLanguages.includes(match.name)) {
@@ -184,7 +184,7 @@ export const SetupWizard: React.FC = () => {
             <span className="text-gradient-neon">ONVIVO</span>
           </h2>
           <p className="mt-4 text-sm sm:text-base text-white/60 max-w-xl mx-auto font-grotesk">
-            Selecciona tus preferencias técnicas y generaremos tu perfil preconfigurado listo para despacho digital inmediato.
+            Selecciona tus preferencias y generaremos tu perfil preconfigurado listo para despacho digital inmediato.
           </p>
         </div>
 
@@ -241,10 +241,10 @@ export const SetupWizard: React.FC = () => {
             <div className="space-y-6">
               <div>
                 <h3 className="text-xl sm:text-2xl font-black text-white mb-2 uppercase tracking-tight font-display">
-                  ¿En qué dispositivos vas a disfrutar Onvivo?
+                  ¿En qué dispositivo vas a utilizar Onvivo?
                 </h3>
                 <p className="text-sm text-white/60 font-grotesk">
-                  Selecciona las pantallas donde deseas utilizar tu configuración (puedes elegir varias).
+                  Selecciona los tipos de dispositivos donde disfrutarás tu configuración (puedes elegir varios).
                 </p>
               </div>
 
@@ -290,15 +290,15 @@ export const SetupWizard: React.FC = () => {
             </div>
           )}
 
-          {/* STEP 2: Idiomas para Addons */}
+          {/* STEP 2: Idiomas de Reproducción */}
           {step === 2 && (
             <div className="space-y-6 font-grotesk">
               <div>
                 <h3 className="text-xl sm:text-2xl font-black text-white mb-2 uppercase tracking-tight font-display">
-                  Idiomas de Fuentes y Subtítulos para Addons
+                  Idiomas de Audio y Subtítulos Preferidos
                 </h3>
                 <p className="text-sm text-white/60">
-                  Inyectaremos estos idiomas directamente en los manifiestos de Torrentio, Subsense y OpenSubtitles Pro.
+                  Ajustaremos tu cuenta para que busque prioritariamente pistas y subtítulos en estos idiomas.
                 </p>
               </div>
 
@@ -366,7 +366,7 @@ export const SetupWizard: React.FC = () => {
 
               {/* Resumen de idiomas seleccionados */}
               <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.06] flex items-center justify-between text-xs font-mono">
-                <span className="text-white/50">Idiomas a inyectar:</span>
+                <span className="text-white/50">Idiomas priorizados:</span>
                 <span className="text-[#00F0FF] font-bold">{selectedLanguages.join(', ')}</span>
               </div>
             </div>
@@ -377,10 +377,10 @@ export const SetupWizard: React.FC = () => {
             <div className="space-y-6 font-grotesk">
               <div>
                 <h3 className="text-xl sm:text-2xl font-black text-white mb-2 uppercase tracking-tight font-display">
-                  Prioridad de Catálogo y Addons Especializados
+                  Preferencias de Catálogo y Categorías
                 </h3>
                 <p className="text-sm text-white/60">
-                  Selecciona los géneros que configuraremos en tu muro y los addons a inyectar.
+                  Selecciona los tipos de contenido que priorizaremos en tu muro de reproducción.
                 </p>
               </div>
 
@@ -388,7 +388,7 @@ export const SetupWizard: React.FC = () => {
                 {[
                   { id: 'cinema', title: 'Cine & Estrenos', tag: '1080p Full HD', desc: 'Estrenos recientes, grandes producciones de cartelera y cine independiente.' },
                   { id: 'series', title: 'Series Completas', tag: 'Binge-Watching', desc: 'Temporadas completas, series en emisión y seguimiento de capítulos.' },
-                  { id: 'anime', title: 'Anime & Animación (Kitsu)', tag: 'Simulcasts HD', desc: 'Addons Anime Kitsu y Anime Catalogs con estrenos y metadata japonesa.' },
+                  { id: 'anime', title: 'Anime & Animación', tag: 'Simulcasts HD', desc: 'Catálogos de animación japonesa, estrenos y series en emisión.' },
                   { id: 'docu_events', title: 'Documentales & Ciencia', tag: 'Alta Fidelidad', desc: 'Producciones documentales de ciencia, historia, naturaleza y tecnología.' },
                 ].map((item) => {
                   const isChecked = genres.includes(item.id);
@@ -484,7 +484,7 @@ export const SetupWizard: React.FC = () => {
                   ✓ CONFIGURACIÓN LISTA PARA ACTIVAR
                 </div>
                 <h3 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight font-display">
-                  Tu Arquitectura Onvivo está Lista
+                  Tu Perfil Onvivo está Listo
                 </h3>
                 <p className="text-sm text-white/60 mt-1 font-grotesk">
                   Revisa tu resumen y confirma el pago seguro mediante Polar.sh para recibir tu entrega digital inmediata.
@@ -518,13 +518,13 @@ export const SetupWizard: React.FC = () => {
                 {/* Dynamic Preferences Badges */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 py-2 text-xs font-mono">
                   <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.05]">
-                    <span className="text-white/40 block text-[10px] uppercase">Pantallas</span>
+                    <span className="text-white/40 block text-[10px] uppercase">Dispositivos</span>
                     <span className="text-white font-bold">
                       {devices.map((d) => deviceLabels[d] || d).join(', ')}
                     </span>
                   </div>
                   <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.05]">
-                    <span className="text-white/40 block text-[10px] uppercase">Idiomas Addons</span>
+                    <span className="text-white/40 block text-[10px] uppercase">Idiomas Preferidos</span>
                     <span className="text-white font-bold">{selectedLanguages.join(', ')}</span>
                   </div>
                   <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.05]">
@@ -537,11 +537,11 @@ export const SetupWizard: React.FC = () => {
                 <div className="space-y-2 pt-2 border-t border-white/[0.06] text-xs text-white/60">
                   <div className="flex items-center gap-2 text-white/90">
                     <span className="text-[#00FF85] font-bold">✓</span>
-                    <span>7 Addons sincronizados con inyección de tus idiomas seleccionados</span>
+                    <span>Entorno multimedia 100% configurado con tus idiomas seleccionados</span>
                   </div>
                   <div className="flex items-center gap-2 text-white/90">
                     <span className="text-[#00FF85] font-bold">✓</span>
-                    <span>Optimización Anti-Buffering 1080p Full HD garantizada</span>
+                    <span>Optimización de resolución 1080p Full HD garantizada</span>
                   </div>
                   <div className="flex items-center gap-2 text-white/90">
                     <span className="text-[#00FF85] font-bold">✓</span>
