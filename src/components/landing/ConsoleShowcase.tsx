@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Play, Sparkles, CheckCircle2, ShieldCheck, Film, Tv } from 'lucide-react';
+import { Play } from 'lucide-react';
 
 export const ConsoleShowcase: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'player' | 'catalog' | 'ecosystem'>('player');
+  const [activeTab, setActiveTab] = useState<'player' | 'ecosystem'>('player');
 
   const pillarsList = [
-    { name: 'Biblioteca Global Unificada', desc: 'Catálogo mundial clasificado con sinopsis y carátulas.', status: 'LISTO' },
+    { name: 'Biblioteca Global Unificada', desc: 'Catálogo clasificado con sinopsis y carátulas.', status: 'LISTO' },
     { name: 'Filtro Inteligente 1080p', desc: 'Priorización automática de fuentes en alta definición.', status: 'ACTIVO' },
     { name: 'Prioridad de Audio en Español', desc: 'Preselección de pistas en Castellano y Latino.', status: 'CONFIGURADO' },
     { name: 'Subtítulos Automáticos', desc: 'Sincronización directa en múltiples idiomas.', status: 'ACTIVO' },
@@ -86,18 +86,6 @@ export const ConsoleShowcase: React.FC = () => {
             </button>
             <button
               type="button"
-              onClick={() => setActiveTab('catalog')}
-              className={`px-4 py-2.5 rounded-t-xl text-xs sm:text-sm font-bold font-mono border-b-2 transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer uppercase tracking-wider ${
-                activeTab === 'catalog'
-                  ? 'border-[#00F0FF] text-[#00F0FF] bg-white/[0.04]'
-                  : 'border-transparent text-white/50 hover:text-white'
-              }`}
-            >
-              <span>📑</span>
-              <span>Muro Unificado</span>
-            </button>
-            <button
-              type="button"
               onClick={() => setActiveTab('ecosystem')}
               className={`px-4 py-2.5 rounded-t-xl text-xs sm:text-sm font-bold font-mono border-b-2 transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer uppercase tracking-wider ${
                 activeTab === 'ecosystem'
@@ -129,7 +117,7 @@ export const ConsoleShowcase: React.FC = () => {
                   {/* Top Overlay Info */}
                   <div className="relative z-10 flex items-center justify-between text-xs font-mono">
                     <span className="px-2.5 py-1 rounded-lg bg-black/70 backdrop-blur-md border border-white/10 text-white font-bold">
-                      REPRODUCCIÓN: Dune Part Two · 1080p Full HD
+                      REPRODUCCIÓN: Cinemática de Muestra · 1080p Full HD
                     </span>
                     <span className="px-2.5 py-1 rounded-lg bg-[#00FF85]/20 text-[#00FF85] font-bold border border-[#00FF85]/40">
                       ● FLUIDEZ ÓPTIMA
@@ -206,71 +194,7 @@ export const ConsoleShowcase: React.FC = () => {
             </div>
           )}
 
-          {/* Tab 2: Muro Unificado */}
-          {activeTab === 'catalog' && (
-            <div className="p-6 sm:p-8">
-              <div className="mb-4 flex items-center justify-between font-mono">
-                <span className="text-xs text-white/50">
-                  Muro Unificado · Vista previa de títulos en tu Smart TV y PC
-                </span>
-                <span className="text-xs text-[#00F0FF] font-bold">
-                  +25.000 títulos disponibles
-                </span>
-              </div>
-
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                {/* Card 1 */}
-                <div className="group rounded-2xl bg-white/[0.03] border border-white/[0.08] hover:border-cyan-500/40 p-3 transition-all duration-300">
-                  <div className="aspect-[2/3] rounded-xl bg-gradient-to-br from-[#1E293B] to-[#0F172A] relative overflow-hidden flex flex-col justify-between p-3">
-                    <span className="self-start px-2 py-0.5 rounded bg-cyan-500/20 text-[#00F0FF] text-[10px] font-mono font-bold">1080p HD</span>
-                    <div className="text-xs font-bold text-white font-grotesk">Dune: Part Two</div>
-                  </div>
-                  <div className="mt-2 text-[11px] text-white/50 flex items-center justify-between font-mono">
-                    <span>★ 9.1</span>
-                    <span className="text-[#EC4899]">Audio: ES / LAT</span>
-                  </div>
-                </div>
-
-                {/* Card 2 */}
-                <div className="group rounded-2xl bg-white/[0.03] border border-white/[0.08] hover:border-purple-500/40 p-3 transition-all duration-300">
-                  <div className="aspect-[2/3] rounded-xl bg-gradient-to-br from-[#2E1065] to-[#0F172A] relative overflow-hidden flex flex-col justify-between p-3">
-                    <span className="self-start px-2 py-0.5 rounded bg-purple-500/20 text-[#A855F7] text-[10px] font-mono font-bold">Serie Completa</span>
-                    <div className="text-xs font-bold text-white font-grotesk">Fallout (S1)</div>
-                  </div>
-                  <div className="mt-2 text-[11px] text-white/50 flex items-center justify-between font-mono">
-                    <span>★ 8.9</span>
-                    <span className="text-[#EC4899]">Audio: VOSE + Subs</span>
-                  </div>
-                </div>
-
-                {/* Card 3 */}
-                <div className="group rounded-2xl bg-white/[0.03] border border-white/[0.08] hover:border-pink-500/40 p-3 transition-all duration-300">
-                  <div className="aspect-[2/3] rounded-xl bg-gradient-to-br from-[#831843] to-[#0F172A] relative overflow-hidden flex flex-col justify-between p-3">
-                    <span className="self-start px-2 py-0.5 rounded bg-pink-500/20 text-[#EC4899] text-[10px] font-mono font-bold">Estreno 2026</span>
-                    <div className="text-xs font-bold text-white font-grotesk">Project Hail Mary</div>
-                  </div>
-                  <div className="mt-2 text-[11px] text-white/50 flex items-center justify-between font-mono">
-                    <span>★ 9.4</span>
-                    <span className="text-[#EC4899]">Audio: ES 5.1</span>
-                  </div>
-                </div>
-
-                {/* Card 4 */}
-                <div className="group rounded-2xl bg-white/[0.03] border border-white/[0.08] hover:border-emerald-500/40 p-3 transition-all duration-300">
-                  <div className="aspect-[2/3] rounded-xl bg-gradient-to-br from-[#064E3B] to-[#0F172A] relative overflow-hidden flex flex-col justify-between p-3">
-                    <span className="self-start px-2 py-0.5 rounded bg-emerald-500/20 text-[#00FF85] text-[10px] font-mono font-bold">Serie Épica</span>
-                    <div className="text-xs font-bold text-white font-grotesk">Shōgun</div>
-                  </div>
-                  <div className="mt-2 text-[11px] text-white/50 flex items-center justify-between font-mono">
-                    <span>★ 9.2</span>
-                    <span className="text-[#EC4899]">Audio: JAP + Subs ES</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Tab 3: Pilares de Configuración */}
+          {/* Tab 2: Pilares de Configuración */}
           {activeTab === 'ecosystem' && (
             <div className="p-6 sm:p-8">
               <div className="mb-4 flex items-center justify-between font-mono">
