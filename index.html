@@ -1,135 +1,44 @@
 <!doctype html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    <!-- SEO Básico -->
-    <title>onvivo — Configuración Premium y Automatizada de Stremio | Pago Único 50€</title>
-    <meta name="description" content="Configura tu entorno de streaming Stremio de forma 100% automática y profesional en minutos. Sin suscripciones, pago único de 50€. Setup instantáneo con 7 addons premium, resolución 1080p Full HD." />
-    <meta name="keywords" content="stremio, configurar stremio, addons stremio, stremio premium, streaming sin limites, onvivo, torrentio, peliculas gratis, configurar addons, streaming 1080p" />
-    <meta name="author" content="onvivo" />
-    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
-    <link rel="canonical" href="https://onvivo.vercel.app/" />
-    
-    <!-- Preconnect para Performance -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="dns-prefetch" href="https://assets.lemonsqueezy.com" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
-    <!-- Open Graph / Facebook / Telegram (Esencial para previsualización rica) -->
+    <!-- Primary SEO Meta Tags -->
+    <title>Onvivo — Todo el cine y series del mundo en una sola app</title>
+    <meta name="title" content="Onvivo — Todo el cine y series del mundo en una sola app" />
+    <meta name="description" content="Elimina la fragmentación de suscripciones múltiples. Onvivo optimiza y preconfigura tu ecosistema de entretenimiento en cualquier pantalla con calidad Full HD 1080p garantizada." />
+    <meta name="keywords" content="streaming optimizado, setup entretenimiento, cine 1080p, series completas, software open source, reproductor multimedia, sincronizacion subtitulos, onvivo" />
+    <meta name="author" content="Onvivo" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#0B0F19" />
+    <link rel="canonical" href="https://onvivo.cloud/" />
+
+    <!-- Open Graph / Facebook / Telegram -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="onvivo — Tu Streaming Premium sin Complicaciones" />
-    <meta property="og:description" content="Configuración técnica profesional y autónoma de Stremio. Accede a todo el contenido global optimizado en un solo lugar. Pago único de 50€, acceso de por vida." />
-    <meta property="og:image" content="https://onvivo.vercel.app/og-image.png" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="onvivo — Configuración Premium de Streaming" />
-    <meta property="og:url" content="https://onvivo.vercel.app" />
-    <meta property="og:site_name" content="onvivo" />
+    <meta property="og:url" content="https://onvivo.cloud/" />
+    <meta property="og:title" content="Onvivo — Todo el cine y series del mundo en una sola app" />
+    <meta property="og:description" content="Elimina la fragmentación de suscripciones múltiples. Onvivo optimiza y preconfigura tu ecosistema de entretenimiento en cualquier pantalla con calidad Full HD 1080p garantizada." />
+    <meta property="og:image" content="https://onvivo.cloud/og-image.png" />
+    <meta property="og:site_name" content="Onvivo" />
     <meta property="og:locale" content="es_ES" />
-    
+
     <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="onvivo — Tu Streaming Premium sin Complicaciones" />
-    <meta name="twitter:description" content="Olvídate de configurar addons difíciles. Nuestro sistema automático lo hace por ti en minutos. Un único pago de 50€." />
-    <meta name="twitter:image" content="https://onvivo.vercel.app/og-image.png" />
-    <meta name="twitter:image:alt" content="onvivo — Configuración Premium de Streaming" />
-    
-    <!-- Iconografía y Tema -->
+    <meta name="twitter:title" content="Onvivo — Todo el cine y series del mundo en una sola app" />
+    <meta name="twitter:description" content="Elimina la fragmentación de suscripciones múltiples. Onvivo optimiza y preconfigura tu ecosistema de entretenimiento en cualquier pantalla." />
+    <meta name="twitter:image" content="https://onvivo.cloud/og-image.png" />
+
+    <!-- Favicon -->
     <link rel="icon" type="image/png" href="/logo.png" />
-    <meta name="theme-color" content="#00F0FF" />
-    <meta name="msapplication-TileColor" content="#050505" />
 
-    <!-- Structured Data JSON-LD (Schema.org) -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Service",
-      "name": "onvivo — Configuración Premium de Stremio",
-      "description": "Servicio de configuración técnica automatizada de Stremio. Setup completo con 7 addons premium, resolución 1080p Full HD y acceso multiplataforma. Pago único sin suscripciones.",
-      "url": "https://onvivo.vercel.app",
-      "logo": "https://onvivo.vercel.app/logo.png",
-      "image": "https://onvivo.vercel.app/og-image.png",
-      "offers": {
-        "@type": "Offer",
-        "price": "50.00",
-        "priceCurrency": "EUR",
-        "availability": "https://schema.org/InStock",
-        "priceValidUntil": "2027-12-31"
-      },
-      "provider": {
-        "@type": "Organization",
-        "name": "onvivo",
-        "url": "https://onvivo.vercel.app"
-      },
-      "areaServed": "Worldwide",
-      "serviceType": "Streaming Configuration",
-      "termsOfService": "https://onvivo.vercel.app/terminos.html",
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.9",
-        "reviewCount": "127",
-        "bestRating": "5"
-      }
-    }
-    </script>
-
-    <!-- FAQ Structured Data (para Google Rich Snippets) -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "¿Es legal este servicio?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Sí. onvivo ofrece un servicio de configuración técnica de software. No proporcionamos ni alojamos ningún tipo de contenido multimedia. Configuramos herramientas legítimas disponibles públicamente."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "¿Cuánto cuesta el servicio?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "El servicio tiene un coste de 50€ como pago único. No hay suscripciones mensuales ni cargos recurrentes. El acceso es de por vida."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "¿En qué dispositivos funciona?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "La configuración funciona en cualquier dispositivo compatible con Stremio: Smart TVs, PC, Mac, Android, Fire TV Stick, Chromecast, y más."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "¿Cuánto tarda la configuración?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "El proceso es 100% automatizado y se completa en menos de 5 minutos. Recibirás tus credenciales por email inmediatamente tras el pago."
-          }
-        }
-      ]
-    }
-    </script>
-
-    <!-- Lemon Squeezy SDK -->
-    <script src="https://assets.lemonsqueezy.com/lemon.js" defer></script>
+    <!-- Preconnect Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   </head>
-  <body>
+  <body class="bg-[#0B0F19] text-[#E2E8FF] font-sans antialiased selection:bg-[#00F0FF]/30 selection:text-white">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <script>
-      window.lemonSqueezyActive = true;
-      document.addEventListener("DOMContentLoaded", () => {
-        if (window.createLemonSqueezy) {
-          window.createLemonSqueezy();
-        }
-      });
-    </script>
   </body>
 </html>
