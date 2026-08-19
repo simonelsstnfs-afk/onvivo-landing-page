@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Tv, Smartphone, Monitor, Laptop, Globe, Film, Mail, 
-  CheckCircle, ArrowRight, ArrowLeft, Shield, AlertCircle, Sparkles, Loader2
+  CheckCircle, ArrowRight, ArrowLeft, Shield, AlertCircle, Sparkles, Loader2, Zap
 } from 'lucide-react';
 import { SUPPORTED_LANGUAGES, findLanguage } from '../../utils/languages';
 
@@ -167,35 +167,36 @@ export const SetupWizard: React.FC = () => {
   return (
     <section
       id="wizard"
-      className="relative py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-[#0B0F19] via-[#0F172A] to-[#0B0F19] overflow-hidden"
+      className="relative py-24 px-4 sm:px-6 lg:px-8 bg-[#050510] overflow-hidden border-t border-white/5"
     >
       {/* Background Glows */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-gradient-to-r from-[#00F0FF]/10 via-[#A855F7]/10 to-[#EC4899]/10 blur-[150px] pointer-events-none rounded-full" />
 
       <div className="relative z-10 max-w-4xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#A855F7]/10 border border-[#A855F7]/25 text-[#A855F7] text-xs font-mono font-semibold uppercase tracking-wider mb-4">
+        <div className="text-center mb-12 flex flex-col items-center">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/30 text-[#A855F7] text-xs font-mono font-bold uppercase tracking-[0.2em] mb-4">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Configurador Interactivo</span>
+            <span>CONFIGURADOR INTERACTIVO</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
-            Configura tu Ecosistema Onvivo
+          <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight uppercase leading-[0.98] font-display">
+            CONFIGURA TU ECOSISTEMA <br />
+            <span className="text-gradient-neon">ONVIVO</span>
           </h2>
-          <p className="mt-4 text-base sm:text-lg text-[#8B8BA7] max-w-xl mx-auto">
+          <p className="mt-4 text-sm sm:text-base text-white/60 max-w-xl mx-auto font-grotesk">
             Selecciona tus preferencias técnicas y generaremos tu perfil preconfigurado listo para despacho digital inmediato.
           </p>
         </div>
 
         {/* Wizard Card Container */}
-        <div className="relative rounded-3xl bg-[#0B0F19]/90 backdrop-blur-2xl border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.6)] p-6 sm:p-10">
+        <div className="relative rounded-3xl bg-[#070714]/95 backdrop-blur-2xl border border-cyan-500/20 shadow-[0_20px_60px_rgba(0,0,0,0.8)] p-6 sm:p-10">
           {/* Progress Bar & Step Indicators */}
           <div className="mb-10">
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-xs font-mono font-semibold text-[#00F0FF] uppercase tracking-wider">
+            <div className="flex items-center justify-between mb-4 font-mono">
+              <span className="text-xs font-bold text-[#00F0FF] uppercase tracking-wider">
                 {currentCfg.label}
               </span>
-              <span className="text-xs font-mono text-[#8B8BA7]">
+              <span className="text-xs text-white/50">
                 {currentCfg.percent}% Completado
               </span>
             </div>
@@ -203,7 +204,7 @@ export const SetupWizard: React.FC = () => {
             {/* Bar Tracks */}
             <div className="w-full h-2 rounded-full bg-white/[0.08] overflow-hidden p-[1px]">
               <div
-                className="h-full bg-gradient-to-r from-[#00F0FF] via-[#A855F7] to-[#10B981] rounded-full transition-all duration-500 ease-out"
+                className="h-full bg-gradient-to-r from-[#00F0FF] via-[#A855F7] to-[#00FF85] rounded-full transition-all duration-500 ease-out"
                 style={{ width: `${currentCfg.percent}%` }}
               />
             </div>
@@ -220,12 +221,12 @@ export const SetupWizard: React.FC = () => {
                       if (cfg.number < step) setStep(cfg.number);
                     }}
                     disabled={cfg.number > step}
-                    className={`text-[10px] sm:text-[11px] font-mono font-semibold py-1.5 rounded-lg border transition-all duration-300 ${
+                    className={`text-[10px] sm:text-[11px] font-mono font-bold py-1.5 rounded-lg border transition-all duration-300 ${
                       isActive
-                        ? 'bg-[#00F0FF]/15 text-[#00F0FF] border-[#00F0FF]/40 shadow-sm'
+                        ? 'bg-cyan-500/20 text-[#00F0FF] border-cyan-500/50 shadow-sm'
                         : isPassed
-                        ? 'bg-white/5 text-[#10B981] border-[#10B981]/30 cursor-pointer hover:bg-white/10'
-                        : 'text-[#8B8BA7] border-white/5 opacity-50 cursor-not-allowed'
+                        ? 'bg-white/5 text-[#00FF85] border-[#00FF85]/30 cursor-pointer hover:bg-white/10'
+                        : 'text-white/30 border-white/5 opacity-50 cursor-not-allowed'
                     }`}
                   >
                     {cfg.number}. {cfg.label.split(':')[1]?.trim() || ''}
@@ -239,15 +240,15 @@ export const SetupWizard: React.FC = () => {
           {step === 1 && (
             <div className="space-y-6">
               <div>
-                <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">
+                <h3 className="text-xl sm:text-2xl font-black text-white mb-2 uppercase tracking-tight font-display">
                   ¿En qué dispositivos vas a disfrutar Onvivo?
                 </h3>
-                <p className="text-sm text-[#8B8BA7]">
+                <p className="text-sm text-white/60 font-grotesk">
                   Selecciona las pantallas donde deseas utilizar tu configuración (puedes elegir varias).
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 font-grotesk">
                 {[
                   { id: 'smart_tv', title: 'Smart TV', tag: 'Recomendado Salón', desc: 'Android TV, Google TV, Xiaomi TV, Sony, Philips y TV Box.' },
                   { id: 'fire_stick', title: 'Fire TV & TV Sticks', tag: 'Máxima Fluidez', desc: 'Amazon Fire TV Stick (todos los modelos), Chromecast con Google TV.' },
@@ -261,7 +262,7 @@ export const SetupWizard: React.FC = () => {
                       onClick={() => toggleDevice(item.id)}
                       className={`group cursor-pointer relative p-5 rounded-2xl border transition-all duration-200 flex items-start gap-4 ${
                         isChecked
-                          ? 'bg-[#00F0FF]/[0.06] border-[#00F0FF]/50 shadow-[0_0_20px_rgba(0,240,255,0.15)]'
+                          ? 'bg-cyan-500/[0.08] border-cyan-500/60 shadow-[0_0_20px_rgba(0,240,255,0.15)]'
                           : 'bg-white/[0.03] hover:bg-white/[0.06] border-white/[0.08]'
                       }`}
                     >
@@ -269,18 +270,18 @@ export const SetupWizard: React.FC = () => {
                         type="checkbox"
                         checked={isChecked}
                         onChange={() => {}}
-                        className="mt-1 w-5 h-5 rounded border-white/20 text-[#00F0FF] focus:ring-[#00F0FF] bg-[#070A11] cursor-pointer"
+                        className="mt-1 w-5 h-5 rounded border-white/20 text-[#00F0FF] focus:ring-[#00F0FF] bg-[#050510] cursor-pointer"
                       />
                       <div className="flex-1">
                         <div className="flex items-center justify-between">
                           <span className={`text-base font-bold ${isChecked ? 'text-white' : 'text-white/80'}`}>
                             {item.title}
                           </span>
-                          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#00F0FF]/15 text-[#00F0FF]">
+                          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-500/15 text-[#00F0FF] font-bold">
                             {item.tag}
                           </span>
                         </div>
-                        <p className="text-xs text-[#8B8BA7] mt-1">{item.desc}</p>
+                        <p className="text-xs text-white/60 mt-1">{item.desc}</p>
                       </div>
                     </div>
                   );
@@ -291,12 +292,12 @@ export const SetupWizard: React.FC = () => {
 
           {/* STEP 2: Idiomas para Addons */}
           {step === 2 && (
-            <div className="space-y-6">
+            <div className="space-y-6 font-grotesk">
               <div>
-                <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">
+                <h3 className="text-xl sm:text-2xl font-black text-white mb-2 uppercase tracking-tight font-display">
                   Idiomas de Fuentes y Subtítulos para Addons
                 </h3>
-                <p className="text-sm text-[#8B8BA7]">
+                <p className="text-sm text-white/60">
                   Inyectaremos estos idiomas directamente en los manifiestos de Torrentio, Subsense y OpenSubtitles Pro.
                 </p>
               </div>
@@ -312,13 +313,13 @@ export const SetupWizard: React.FC = () => {
                       onClick={() => toggleLanguage(lang.value)}
                       className={`p-3.5 rounded-xl border text-left flex items-center justify-between transition-all cursor-pointer ${
                         isSelected
-                          ? 'bg-[#A855F7]/15 border-[#A855F7]/60 text-white shadow-[0_0_20px_rgba(168,85,247,0.2)]'
-                          : 'bg-white/[0.03] border-white/[0.08] text-[#8B8BA7] hover:text-white hover:bg-white/[0.06]'
+                          ? 'bg-purple-500/15 border-purple-500/60 text-white shadow-[0_0_20px_rgba(168,85,247,0.25)]'
+                          : 'bg-white/[0.03] border-white/[0.08] text-white/60 hover:text-white hover:bg-white/[0.06]'
                       }`}
                     >
                       <div className="flex items-center gap-2">
                         <span className="text-lg">{lang.flag}</span>
-                        <span className="text-xs sm:text-sm font-semibold">{lang.label}</span>
+                        <span className="text-xs sm:text-sm font-bold">{lang.label}</span>
                       </div>
                       <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${isSelected ? 'border-[#A855F7] bg-[#A855F7]' : 'border-white/20'}`}>
                         {isSelected && <CheckCircle className="w-3.5 h-3.5 text-white" />}
@@ -330,7 +331,7 @@ export const SetupWizard: React.FC = () => {
 
               {/* Entrada de idioma personalizado */}
               <div className="pt-4 border-t border-white/[0.06] space-y-3">
-                <label className="block text-xs font-mono text-[#8B8BA7]">
+                <label className="block text-xs font-mono text-white/60">
                   ¿Deseas añadir otro idioma adicional? (Ej: Ruso, Japonés, Chino, Polaco, etc.)
                 </label>
                 <div className="flex gap-2">
@@ -365,7 +366,7 @@ export const SetupWizard: React.FC = () => {
 
               {/* Resumen de idiomas seleccionados */}
               <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.06] flex items-center justify-between text-xs font-mono">
-                <span className="text-[#8B8BA7]">Idiomas a inyectar:</span>
+                <span className="text-white/50">Idiomas a inyectar:</span>
                 <span className="text-[#00F0FF] font-bold">{selectedLanguages.join(', ')}</span>
               </div>
             </div>
@@ -373,12 +374,12 @@ export const SetupWizard: React.FC = () => {
 
           {/* STEP 3: Catálogo & Contenido */}
           {step === 3 && (
-            <div className="space-y-6">
+            <div className="space-y-6 font-grotesk">
               <div>
-                <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">
+                <h3 className="text-xl sm:text-2xl font-black text-white mb-2 uppercase tracking-tight font-display">
                   Prioridad de Catálogo y Addons Especializados
                 </h3>
-                <p className="text-sm text-[#8B8BA7]">
+                <p className="text-sm text-white/60">
                   Selecciona los géneros que configuraremos en tu muro y los addons a inyectar.
                 </p>
               </div>
@@ -397,7 +398,7 @@ export const SetupWizard: React.FC = () => {
                       onClick={() => toggleGenre(item.id)}
                       className={`group cursor-pointer relative p-5 rounded-2xl border transition-all duration-200 flex items-start gap-4 ${
                         isChecked
-                          ? 'bg-[#10B981]/[0.06] border-[#10B981]/50 shadow-[0_0_20px_rgba(16,185,129,0.15)]'
+                          ? 'bg-emerald-500/[0.08] border-emerald-500/60 shadow-[0_0_20px_rgba(0,255,133,0.15)]'
                           : 'bg-white/[0.03] hover:bg-white/[0.06] border-white/[0.08]'
                       }`}
                     >
@@ -405,18 +406,18 @@ export const SetupWizard: React.FC = () => {
                         type="checkbox"
                         checked={isChecked}
                         onChange={() => {}}
-                        className="mt-1 w-5 h-5 rounded border-white/20 text-[#10B981] focus:ring-[#10B981] bg-[#070A11] cursor-pointer"
+                        className="mt-1 w-5 h-5 rounded border-white/20 text-[#00FF85] focus:ring-[#00FF85] bg-[#050510] cursor-pointer"
                       />
                       <div className="flex-1">
                         <div className="flex items-center justify-between">
                           <span className={`text-base font-bold ${isChecked ? 'text-white' : 'text-white/80'}`}>
                             {item.title}
                           </span>
-                          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#10B981]/15 text-[#10B981]">
+                          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/15 text-[#00FF85] font-bold">
                             {item.tag}
                           </span>
                         </div>
-                        <p className="text-xs text-[#8B8BA7] mt-1">{item.desc}</p>
+                        <p className="text-xs text-white/60 mt-1">{item.desc}</p>
                       </div>
                     </div>
                   );
@@ -427,12 +428,12 @@ export const SetupWizard: React.FC = () => {
 
           {/* STEP 4: Email de Entrega */}
           {step === 4 && (
-            <div className="space-y-6">
+            <div className="space-y-6 font-grotesk">
               <div>
-                <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">
+                <h3 className="text-xl sm:text-2xl font-black text-white mb-2 uppercase tracking-tight font-display">
                   ¿A qué email enviamos tu guía y credenciales?
                 </h3>
-                <p className="text-sm text-[#8B8BA7]">
+                <p className="text-sm text-white/60">
                   Tu cuenta preconfigurada y el manual en PDF se despacharán a este correo en menos de 2 minutos tras el pago.
                 </p>
               </div>
@@ -462,9 +463,9 @@ export const SetupWizard: React.FC = () => {
                   </p>
                 )}
 
-                <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06] text-xs text-[#8B8BA7] space-y-1.5">
-                  <div className="text-white font-semibold flex items-center gap-1.5">
-                    <Shield className="w-3.5 h-3.5 text-[#10B981]" />
+                <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06] text-xs text-white/60 space-y-1.5">
+                  <div className="text-white font-bold flex items-center gap-1.5">
+                    <Shield className="w-3.5 h-3.5 text-[#00FF85]" />
                     Privacidad y Entrega Segura
                   </div>
                   <p>
@@ -479,73 +480,75 @@ export const SetupWizard: React.FC = () => {
           {step === 5 && (
             <div className="space-y-6">
               <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#10B981]/15 text-[#10B981] text-xs font-mono font-bold uppercase tracking-wider mb-2">
-                  ✓ Configuración Lista para Activar
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00FF85]/15 text-[#00FF85] text-xs font-mono font-bold uppercase tracking-wider mb-2">
+                  ✓ CONFIGURACIÓN LISTA PARA ACTIVAR
                 </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-white">
+                <h3 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight font-display">
                   Tu Arquitectura Onvivo está Lista
                 </h3>
-                <p className="text-sm text-[#8B8BA7] mt-1">
+                <p className="text-sm text-white/60 mt-1 font-grotesk">
                   Revisa tu resumen y confirma el pago seguro mediante Polar.sh para recibir tu entrega digital inmediata.
                 </p>
               </div>
 
               {/* Custom Summary Card */}
-              <div className="rounded-2xl bg-[#070A11]/90 border border-white/10 p-6 space-y-4 shadow-xl">
+              <div className="rounded-2xl bg-[#030308]/90 border border-white/10 p-6 space-y-4 shadow-xl font-grotesk">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-white/[0.08] gap-2">
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-mono uppercase text-[#00F0FF] font-semibold">
+                      <span className="text-xs font-mono uppercase text-[#00F0FF] font-bold tracking-wider">
                         Producto Seleccionado
                       </span>
-                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#00F0FF]/10 text-[#00F0FF] border border-[#00F0FF]/30">
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-500/10 text-[#00F0FF] border border-cyan-500/30">
                         {orderId}
                       </span>
                     </div>
-                    <div className="text-lg font-extrabold text-white">Pack Setup Onvivo Lifetime</div>
+                    <div className="text-lg font-black text-white uppercase tracking-tight font-display">
+                      Pack Setup Onvivo Lifetime
+                    </div>
                   </div>
                   <div className="text-left sm:text-right">
-                    <div className="text-2xl font-black text-[#10B981] font-mono">
-                      65€ <span className="text-xs text-[#8B8BA7] font-normal">/ 75$</span>
+                    <div className="text-3xl font-black text-[#00FF85] font-display">
+                      65€ <span className="text-xs text-white/40 font-normal">/ 75$</span>
                     </div>
-                    <div className="text-[11px] text-[#8B8BA7]">Pago único perpetuo</div>
+                    <div className="text-[11px] text-white/50 font-mono">Pago único perpetuo</div>
                   </div>
                 </div>
 
                 {/* Dynamic Preferences Badges */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 py-2 text-xs font-mono">
                   <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.05]">
-                    <span className="text-[#8B8BA7] block text-[10px] uppercase">Pantallas</span>
-                    <span className="text-[#E2E8FF] font-bold">
+                    <span className="text-white/40 block text-[10px] uppercase">Pantallas</span>
+                    <span className="text-white font-bold">
                       {devices.map((d) => deviceLabels[d] || d).join(', ')}
                     </span>
                   </div>
                   <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.05]">
-                    <span className="text-[#8B8BA7] block text-[10px] uppercase">Idiomas Addons</span>
-                    <span className="text-[#E2E8FF] font-bold">{selectedLanguages.join(', ')}</span>
+                    <span className="text-white/40 block text-[10px] uppercase">Idiomas Addons</span>
+                    <span className="text-white font-bold">{selectedLanguages.join(', ')}</span>
                   </div>
                   <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.05]">
-                    <span className="text-[#8B8BA7] block text-[10px] uppercase">Email Entrega</span>
+                    <span className="text-white/40 block text-[10px] uppercase">Email Entrega</span>
                     <span className="text-[#00F0FF] font-bold truncate block">{email}</span>
                   </div>
                 </div>
 
                 {/* Checklist */}
-                <div className="space-y-2 pt-2 border-t border-white/[0.06] text-xs text-[#8B8BA7]">
-                  <div className="flex items-center gap-2 text-[#E2E8FF]">
-                    <span className="text-[#10B981] font-bold">✓</span>
+                <div className="space-y-2 pt-2 border-t border-white/[0.06] text-xs text-white/60">
+                  <div className="flex items-center gap-2 text-white/90">
+                    <span className="text-[#00FF85] font-bold">✓</span>
                     <span>7 Addons sincronizados con inyección de tus idiomas seleccionados</span>
                   </div>
-                  <div className="flex items-center gap-2 text-[#E2E8FF]">
-                    <span className="text-[#10B981] font-bold">✓</span>
+                  <div className="flex items-center gap-2 text-white/90">
+                    <span className="text-[#00FF85] font-bold">✓</span>
                     <span>Optimización Anti-Buffering 1080p Full HD garantizada</span>
                   </div>
-                  <div className="flex items-center gap-2 text-[#E2E8FF]">
-                    <span className="text-[#10B981] font-bold">✓</span>
+                  <div className="flex items-center gap-2 text-white/90">
+                    <span className="text-[#00FF85] font-bold">✓</span>
                     <span>Guía Visual Interactiva en PDF paso a paso</span>
                   </div>
-                  <div className="flex items-center gap-2 text-[#E2E8FF]">
-                    <span className="text-[#10B981] font-bold">✓</span>
+                  <div className="flex items-center gap-2 text-white/90">
+                    <span className="text-[#00FF85] font-bold">✓</span>
                     <span>Despacho automático por correo en menos de 60 segundos tras el pago</span>
                   </div>
                 </div>
@@ -557,7 +560,7 @@ export const SetupWizard: React.FC = () => {
                   type="button"
                   onClick={handlePolarCheckout}
                   disabled={isSubmitting}
-                  className="w-full py-4 px-8 rounded-2xl bg-gradient-to-r from-[#00F0FF] via-[#A855F7] to-[#EC4899] text-[#0B0F19] font-extrabold text-base sm:text-lg uppercase tracking-wider text-center shadow-[0_0_35px_rgba(0,240,255,0.4)] hover:shadow-[0_0_55px_rgba(0,240,255,0.7)] hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                  className="btn-neon w-full py-4 px-8 rounded-2xl text-[#050510] font-black text-base sm:text-lg uppercase tracking-wider text-center font-display shadow-[0_0_35px_rgba(0,240,255,0.4)] flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
                 >
                   {isSubmitting ? (
                     <>
@@ -571,8 +574,8 @@ export const SetupWizard: React.FC = () => {
                     </>
                   )}
                 </button>
-                <div className="flex flex-wrap items-center justify-center gap-4 text-[11px] text-[#8B8BA7]">
-                  <span className="flex items-center gap-1">🔒 Checkout Seguro Polar.sh</span>
+                <div className="flex flex-wrap items-center justify-center gap-4 text-[11px] text-white/50 font-mono">
+                  <span className="flex items-center gap-1 text-[#00FF85]">🔒 Checkout Seguro Polar.sh</span>
                   <span>•</span>
                   <span>💳 Apple Pay, Google Pay y Tarjeta</span>
                   <span>•</span>
@@ -583,12 +586,12 @@ export const SetupWizard: React.FC = () => {
           )}
 
           {/* Navigation Control Buttons */}
-          <div className="mt-8 pt-6 border-t border-white/10 flex items-center justify-between">
+          <div className="mt-8 pt-6 border-t border-white/10 flex items-center justify-between font-grotesk">
             {step > 1 ? (
               <button
                 type="button"
                 onClick={prevStep}
-                className="px-5 py-2.5 rounded-xl bg-white/[0.05] hover:bg-white/10 text-xs sm:text-sm font-semibold text-white border border-white/10 transition-colors flex items-center gap-1.5 cursor-pointer"
+                className="px-5 py-2.5 rounded-xl bg-white/[0.05] hover:bg-white/10 text-xs sm:text-sm font-bold uppercase tracking-wider text-white border border-white/10 transition-colors flex items-center gap-1.5 cursor-pointer font-mono"
               >
                 <ArrowLeft className="w-4 h-4" />
                 Paso Anterior
@@ -602,7 +605,7 @@ export const SetupWizard: React.FC = () => {
                 type="button"
                 onClick={nextStep}
                 disabled={step === 4 && !isValidEmail(email)}
-                className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#00F0FF] to-[#A855F7] text-[#0B0F19] text-xs sm:text-sm font-bold uppercase tracking-wider shadow-lg hover:shadow-[0_0_20px_rgba(0,240,255,0.4)] transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                className="btn-neon px-6 py-2.5 rounded-xl text-[#050510] text-xs sm:text-sm font-black uppercase tracking-wider font-mono shadow-lg flex items-center gap-1.5 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <span>Siguiente Paso</span>
                 <ArrowRight className="w-4 h-4" />

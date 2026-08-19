@@ -28,37 +28,38 @@ export const FAQ: React.FC = () => {
   return (
     <section
       id="faq"
-      className="relative py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-[#0B0F19] via-[#0D1220] to-[#0B0F19] overflow-hidden"
+      className="relative py-24 px-4 sm:px-6 lg:px-8 bg-[#050510] overflow-hidden border-t border-white/5"
     >
       <div className="max-w-4xl mx-auto">
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#A855F7]/10 border border-[#A855F7]/25 text-[#A855F7] text-xs font-mono font-semibold uppercase tracking-wider mb-4">
+        <div className="text-center max-w-2xl mx-auto mb-16 flex flex-col items-center">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/30 text-[#A855F7] text-xs font-mono font-bold uppercase tracking-[0.2em] mb-4">
             <HelpCircle className="w-3.5 h-3.5" />
-            <span>Preguntas Frecuentes</span>
+            <span>PREGUNTAS FRECUENTES</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
-            Todo lo que necesitas saber sobre Onvivo
+          <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight uppercase leading-[0.98] font-display">
+            TODO LO QUE NECESITAS <br />
+            <span className="text-gradient-cyan">SABER SOBRE ONVIVO</span>
           </h2>
-          <p className="mt-4 text-base sm:text-lg text-[#8B8BA7] leading-relaxed">
+          <p className="mt-4 text-sm sm:text-base text-white/60 leading-relaxed font-grotesk max-w-xl">
             Transparencia absoluta sobre compatibilidad, legalidad, velocidad de entrega y soporte.
           </p>
         </div>
 
         {/* FAQ Accordion List */}
-        <div className="space-y-4">
+        <div className="space-y-4 font-grotesk">
           {faqItems.map((item, index) => (
             <details
               key={index}
-              className="group rounded-2xl bg-white/[0.03] border border-white/[0.08] hover:border-[#00F0FF]/30 p-6 transition-all duration-300 open:bg-[#070A11]/90 open:border-[#00F0FF]/40 open:shadow-[0_10px_30px_rgba(0,240,255,0.1)]"
+              className="group rounded-2xl bg-white/[0.02] border border-white/[0.08] hover:border-cyan-500/30 p-6 transition-all duration-300 open:bg-[#070714]/90 open:border-cyan-500/40 open:shadow-[0_10px_30px_rgba(0,240,255,0.1)]"
             >
-              <summary className="flex items-center justify-between cursor-pointer font-bold text-white text-base sm:text-lg select-none list-none">
+              <summary className="flex items-center justify-between cursor-pointer font-bold text-white text-base sm:text-lg select-none list-none uppercase tracking-tight">
                 <span>{item.q}</span>
-                <span className="ml-4 w-7 h-7 rounded-full bg-white/5 group-open:bg-[#00F0FF]/20 flex items-center justify-center text-[#00F0FF] transition-transform duration-300 group-open:rotate-180 shrink-0">
+                <span className="ml-4 w-7 h-7 rounded-full bg-white/5 group-open:bg-cyan-500/20 flex items-center justify-center text-[#00F0FF] transition-transform duration-300 group-open:rotate-180 shrink-0">
                   <ChevronDown className="w-4 h-4" />
                 </span>
               </summary>
-              <div className="mt-4 pt-4 border-t border-white/[0.06] text-sm text-[#8B8BA7] leading-relaxed">
+              <div className="mt-4 pt-4 border-t border-white/[0.06] text-sm text-white/70 leading-relaxed">
                 {item.a}
               </div>
             </details>
