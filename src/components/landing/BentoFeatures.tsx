@@ -31,8 +31,8 @@ export const BentoFeatures: React.FC<BentoFeaturesProps> = ({ onOpenWizard }) =>
               SIN COMPLEJIDAD TÉCNICA
             </span>
           </h2>
-          <p className="mt-4 text-sm sm:text-base text-white/60 leading-relaxed font-grotesk max-w-2xl">
-            Convertimos una arquitectura de software libre en una experiencia inmediata, cómoda y profesional adaptada a tus pantallas.
+          <p className="mt-4 text-sm sm:text-base text-white/70 leading-relaxed font-grotesk max-w-2xl">
+            Centraliza y organiza la gestión de tu centro multimedia en todos tus dispositivos con asistencia técnica profesional.
           </p>
         </div>
 
@@ -166,7 +166,7 @@ export const BentoFeatures: React.FC<BentoFeaturesProps> = ({ onOpenWizard }) =>
             </div>
           </div>
 
-          {/* Card 4: Cero Cuotas Mensuales de por Vida */}
+          {/* Card 4: Servicio de Configuración Técnica y Soporte */}
           <div className="col-span-12 lg:col-span-7 relative group rounded-3xl p-8 sm:p-10 bg-gradient-to-b from-[#0F1123]/90 to-[#070714]/80 border border-white/[0.08] hover:border-emerald-500/40 shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-all duration-300 overflow-hidden flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between gap-4 mb-6">
@@ -179,10 +179,10 @@ export const BentoFeatures: React.FC<BentoFeaturesProps> = ({ onOpenWizard }) =>
               </div>
 
               <h3 className="text-2xl sm:text-3xl font-black text-white mb-3 uppercase tracking-tight font-display">
-                Cero Cuotas Mensuales de por Vida
+                Puesta a Punto Llave en Mano
               </h3>
               <p className="text-sm sm:text-base text-white/60 leading-relaxed mb-6 font-grotesk">
-                Un único pago de 65€. Aprovechas toda la potencia del software libre optimizado por profesionales, eliminando para siempre las facturas recurrentes mes a mes.
+                Servicio de configuración técnica y soporte personalizado (pago único por instalación y puesta a punto de 65€). Centraliza y organiza la gestión de tu centro multimedia en todos tus dispositivos.
               </p>
             </div>
 
@@ -191,7 +191,7 @@ export const BentoFeatures: React.FC<BentoFeaturesProps> = ({ onOpenWizard }) =>
               <div className="flex items-center gap-4">
                 <div className="text-3xl sm:text-4xl font-black text-[#00FF85] font-display">&gt; 650€</div>
                 <div>
-                  <div className="text-xs font-bold uppercase text-white font-grotesk">Ahorro Anual Medio</div>
+                  <div className="text-xs font-bold uppercase text-white font-grotesk">Ahorro Anual Estimado</div>
                   <div className="text-[11px] text-white/50 font-mono">720€ tradicional vs 65€ pago único</div>
                 </div>
               </div>
@@ -206,8 +206,8 @@ export const BentoFeatures: React.FC<BentoFeaturesProps> = ({ onOpenWizard }) =>
 
             {/* Tech Badge Footer */}
             <div className="mt-6 pt-4 border-t border-white/[0.05] flex items-center justify-between text-xs text-white/50 font-mono">
-              <span className="text-[#00FF85]">Servicio de Setup Perpetuo</span>
-              <span className="text-[#00FF85] font-bold">Ahorra +650€ / año</span>
+              <span className="text-[#00FF85]">Servicio de Setup Profesional</span>
+              <span className="text-[#00FF85] font-bold">Pago Único por Instalación</span>
             </div>
           </div>
         </div>

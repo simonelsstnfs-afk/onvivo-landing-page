@@ -16,12 +16,12 @@ export const FAQ: React.FC = () => {
       a: 'La entrega es 100% digital e inmediata. En menos de 2 minutos tras completar tu pago seguro a través de Polar.sh, recibirás en tu correo electrónico tus credenciales maestras preconfiguradas y la Guía Visual Interactiva en PDF con instrucciones paso a paso adaptadas a tus dispositivos seleccionados.',
     },
     {
-      q: '¿Realmente es un pago único de 65€ o hay cuotas ocultas?',
-      a: 'Es un pago único de 65€ (o 75$). No hay suscripciones mensuales, ni renovaciones automáticas, ni costes ocultos por parte de Onvivo. Una vez adquirido, dispones de tu configuración y de las guías de optimización de forma permanente.',
+      q: '¿Qué incluye exactamente el servicio y qué estoy pagando?',
+      a: 'Estás contratando un servicio de configuración técnica y soporte personalizado (pago único por instalación y puesta a punto de 65€ / 75$). No hay suscripciones mensuales, ni renovaciones automáticas, ni costes ocultos por parte de Onvivo. Recibes tu entorno multimedia verificado y optimizado con la Guía Visual Interactiva en PDF.',
     },
     {
       q: '¿Qué ocurre si necesito ayuda durante la puesta en marcha?',
-      a: 'El pack incluye una Guía Visual Interactiva exhaustiva en PDF con capturas reales y explicaciones detalladas botón por botón para cada tipo de dispositivo (Smart TV, PC, Fire TV, móvil). La puesta en marcha está diseñada para completarse en menos de 60 segundos con solo iniciar sesión.',
+      a: 'El pack incluye una Guía Visual Interactiva exhaustiva en PDF con capturas reales y explicaciones detalladas botón por botón para cada tipo de dispositivo (Smart TV, PC, Fire TV, móvil). La puesta en marcha está diseñada para completarse en menos de 60 segundos con solo iniciar sesión, y dispones de nuestro soporte técnico si requieres asistencia.',
     },
   ];
 

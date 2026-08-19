@@ -215,11 +215,11 @@ export const SetupWizard: React.FC<SetupWizardProps> = ({ isOpen, onClose }) => 
               <span>CONFIGURADOR INTERACTIVO</span>
             </div>
             <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight uppercase leading-[0.98] font-display">
-              CONFIGURA TU ECOSISTEMA <br />
-              <span className="text-gradient-neon">ONVIVO</span>
+              CONFIGURA TU CENTRO <br />
+              <span className="text-gradient-neon">MULTIMEDIA ONVIVO</span>
             </h2>
-            <p className="mt-2 text-xs sm:text-sm text-white/60 max-w-lg mx-auto font-grotesk">
-              Selecciona tus preferencias y generaremos tu perfil preconfigurado listo para despacho digital inmediato.
+            <p className="mt-2 text-xs sm:text-sm text-white/70 max-w-lg mx-auto font-grotesk">
+              Centraliza y organiza la gestión de tu centro multimedia en todos tus dispositivos.
             </p>
           </div>
 
@@ -530,21 +530,21 @@ export const SetupWizard: React.FC<SetupWizardProps> = ({ isOpen, onClose }) => 
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="text-xs font-mono uppercase text-[#00F0FF] font-bold tracking-wider">
-                        Producto Seleccionado
+                        Servicio Seleccionado
                       </span>
                       <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-500/10 text-[#00F0FF] border border-cyan-500/30">
                         {orderId}
                       </span>
                     </div>
                     <div className="text-base font-black text-white uppercase tracking-tight font-display">
-                      Pack Setup Onvivo Lifetime
+                      Pack Setup Onvivo · Puesta a Punto
                     </div>
                   </div>
                   <div className="text-left sm:text-right">
                     <div className="text-2xl font-black text-[#00FF85] font-display">
                       65€ <span className="text-xs text-white/40 font-normal">/ 75$</span>
                     </div>
-                    <div className="text-[10px] text-white/50 font-mono">Pago único perpetuo</div>
+                    <div className="text-[10px] text-white/50 font-mono">Pago único por instalación</div>
                   </div>
                 </div>
 
@@ -570,7 +570,7 @@ export const SetupWizard: React.FC<SetupWizardProps> = ({ isOpen, onClose }) => 
                 <div className="space-y-1.5 pt-2 border-t border-white/[0.06] text-xs text-white/60">
                   <div className="flex items-center gap-2 text-white/90">
                     <span className="text-[#00FF85] font-bold">✓</span>
-                    <span>Entorno multimedia 100% configurado con tus idiomas seleccionados</span>
+                    <span>Servicio de configuración técnica completa con tus idiomas seleccionados</span>
                   </div>
                   <div className="flex items-center gap-2 text-white/90">
                     <span className="text-[#00FF85] font-bold">✓</span>

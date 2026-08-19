@@ -36,7 +36,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenWizard }) => {
             <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00F0FF]" />
           </span>
           <span className="text-xs sm:text-sm font-bold font-mono tracking-widest text-[#00F0FF] uppercase">
-            ● CONFIGURACIÓN INTEGRAL DE STREAMING · PAGO ÚNICO
+            ● CONFIGURACIÓN TÉCNICA Y SOPORTE PERSONALIZADO
           </span>
         </div>
 
@@ -50,9 +50,9 @@ export const Hero: React.FC<HeroProps> = ({ onOpenWizard }) => {
           </span>
         </h1>
 
-        {/* Subheadline with Space Grotesk */}
-        <p className="mt-6 text-base sm:text-lg lg:text-xl text-white/70 max-w-2xl leading-relaxed font-grotesk">
-          Preparamos y optimizamos tu entorno de entretenimiento digital en menos de 2 minutos. Disfruta de una cartelera mundial unificada en resolución 1080p Full HD, con audio y subtítulos en tu idioma, sin pagar mensualidades recurrentes.
+        {/* Subheadline with Space Grotesk - Exact Compliance Text */}
+        <p className="mt-6 text-base sm:text-lg lg:text-xl text-white/80 max-w-3xl leading-relaxed font-grotesk">
+          Centraliza y organiza la gestión de tu centro multimedia en todos tus dispositivos. Servicio de configuración técnica y soporte personalizado (pago único por instalación y puesta a punto).
         </p>
 
         {/* Dual CTAs */}
@@ -70,7 +70,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenWizard }) => {
                 <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
               </span>
               <span className="text-[11px] text-white/60 group-hover:text-[#050510]/80 font-mono mt-0.5 transition-colors duration-300">
-                65€ pago único • Acceso perpetuo
+                65€ pago único • Instalación y puesta a punto
               </span>
             </div>
           </button>

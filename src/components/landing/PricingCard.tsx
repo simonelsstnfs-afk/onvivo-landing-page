@@ -26,10 +26,10 @@ export const PricingCard: React.FC<PricingCardProps> = ({ onOpenWizard }) => {
           </div>
           <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight uppercase leading-[0.98] font-display">
             PACK SETUP ONVIVO <br />
-            <span className="text-gradient-neon">ACCESO PERPETUO</span>
+            <span className="text-gradient-neon">INSTALACIÓN Y PUESTA A PUNTO</span>
           </h2>
-          <p className="mt-4 text-sm sm:text-base text-white/60 leading-relaxed font-grotesk max-w-xl">
-            La configuración definitiva para convertir tu Smart TV, ordenador o móvil en el centro multimedia perfecto sin suscripciones.
+          <p className="mt-4 text-sm sm:text-base text-white/70 leading-relaxed font-grotesk max-w-xl">
+            Servicio de configuración técnica y soporte personalizado (pago único por instalación y puesta a punto). Centraliza y organiza la gestión de tu centro multimedia en todos tus dispositivos.
           </p>
         </div>
 
@@ -40,10 +40,10 @@ export const PricingCard: React.FC<PricingCardProps> = ({ onOpenWizard }) => {
             <div>
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/15 text-[#00F0FF] text-xs font-mono font-bold uppercase tracking-wider border border-cyan-500/30">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#00F0FF] animate-pulse" />
-                ACCESO LIFETIME · PAGO ÚNICO
+                SERVICIO TÉCNICO · PAGO ÚNICO
               </span>
               <h3 className="text-2xl sm:text-3xl font-black text-white mt-2 uppercase tracking-tight font-display">
-                Licencia Setup Perpetua
+                Setup Profesional Llave en Mano
               </h3>
               <p className="text-xs sm:text-sm text-white/60 mt-1 font-grotesk">
                 Entrega digital inmediata por email (&lt; 2 minutos)
@@ -58,7 +58,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ onOpenWizard }) => {
                 <span className="text-sm font-mono text-white/60">/ 75$</span>
               </div>
               <div className="text-xs font-mono text-[#00FF85] font-bold mt-1 uppercase tracking-wider">
-                Pago único de por vida • Cero mensualidades
+                Pago único por instalación y puesta a punto
               </div>
             </div>
           </div>
@@ -66,15 +66,15 @@ export const PricingCard: React.FC<PricingCardProps> = ({ onOpenWizard }) => {
           {/* Features Checklist */}
           <div className="py-8 space-y-4">
             <div className="text-xs font-mono font-bold uppercase tracking-[0.2em] text-[#00F0FF]">
-              Entregables Incluidos en el Pack:
+              Entregables Incluidos en el Servicio:
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm font-grotesk">
               <div className="flex items-start gap-3 p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.04]">
                 <CheckCircle className="w-5 h-5 text-[#00FF85] shrink-0 mt-0.5" />
                 <div>
-                  <strong className="text-white block font-bold">Entorno Multimedia 100% Configurado</strong>
-                  <span className="text-white/60 text-xs">Todo organizado y calibrado antes de la entrega de tus accesos.</span>
+                  <strong className="text-white block font-bold">Configuración Técnica Completa</strong>
+                  <span className="text-white/60 text-xs">Instalación, optimización y calibración personalizada antes de la entrega.</span>
                 </div>
               </div>
 
@@ -113,8 +113,8 @@ export const PricingCard: React.FC<PricingCardProps> = ({ onOpenWizard }) => {
               <div className="flex items-start gap-3 p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.04]">
                 <CheckCircle className="w-5 h-5 text-[#00FF85] shrink-0 mt-0.5" />
                 <div>
-                  <strong className="text-white block font-bold">Compatibilidad Multidispositivo</strong>
-                  <span className="text-white/60 text-xs">Usa tu perfil en Smart TV, Amazon Fire Stick, Google TV, PC, Mac y móvil.</span>
+                  <strong className="text-white block font-bold">Soporte Técnico Posventa</strong>
+                  <span className="text-white/60 text-xs">Asistencia personalizada para resolver cualquier duda en tus pantallas.</span>
                 </div>
               </div>
             </div>
@@ -127,7 +127,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ onOpenWizard }) => {
               onClick={handleAction}
               className="btn-neon w-full py-4 px-8 rounded-2xl text-[#050510] font-black text-base sm:text-lg uppercase tracking-wider text-center font-display cursor-pointer"
             >
-              Configurar y Comprar Pack — 65€
+              Configurar y Contratar Setup — 65€
             </button>
 
             <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-white/50 font-mono">

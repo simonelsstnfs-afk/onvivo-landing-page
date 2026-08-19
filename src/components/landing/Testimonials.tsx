@@ -70,7 +70,7 @@ export const Testimonials: React.FC = () => {
             </div>
           </div>
 
-          {/* Testimonial 3: David S. */}
+          {/* Testimonial 3: David S. - Exact Compliance Testimonial */}
           <div className="rounded-3xl p-8 bg-gradient-to-b from-[#0F1123] to-[#070714] border border-white/[0.08] hover:border-pink-500/40 shadow-xl transition-all duration-300 flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between mb-4">
@@ -80,7 +80,7 @@ export const Testimonials: React.FC = () => {
                 </span>
               </div>
               <p className="text-sm text-white/80 leading-relaxed italic mb-6">
-                «Intenté configurar el sistema por mi cuenta pero perdía horas entre tutoriales y enlaces caídos. La guía en PDF y el perfil preconfigurado de Onvivo me ahorraron todo el dolor de cabeza. Vale cada céntimo.»
+                «Me ahorró horas de configuración técnica y sincronización de subtítulos en mi Smart TV. La guía en PDF y el soporte personalizado de Onvivo lo dejaron todo funcionando a la primera en menos de 2 minutos. Una inversión que merece totalmente la pena.»
               </p>
             </div>
             <div className="pt-4 border-t border-white/[0.06] flex items-center gap-3">

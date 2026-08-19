@@ -35,12 +35,12 @@ export const Footer: React.FC<FooterProps> = ({ onOpenWizard }) => {
             </div>
 
             <p className="text-xs sm:text-sm text-white/60 leading-relaxed max-w-sm font-grotesk">
-              Tu centro de entretenimiento inteligente, optimizado y sin ataduras. Democratizando el acceso al entretenimiento digital a través de software open-source optimizado y accesible para todos.
+              Servicio de consultoría técnica y soporte personalizado para centros multimedia de código abierto. Centraliza y organiza la gestión de tu centro multimedia en todos tus dispositivos.
             </p>
 
             <div className="pt-2 flex items-center gap-3 text-xs font-mono text-[#00FF85]">
               <span className="w-2 h-2 rounded-full bg-[#00FF85] animate-pulse" />
-              <span>Sistema Operativo 100% Online</span>
+              <span>Servicio de Soporte y Setup 100% Online</span>
             </div>
           </div>
 
@@ -102,26 +102,36 @@ export const Footer: React.FC<FooterProps> = ({ onOpenWizard }) => {
             </ul>
           </div>
 
-          {/* Column 3: Legal & Socios */}
+          {/* Column 3: Legal & Políticas */}
           <div className="space-y-3">
             <div className="text-xs font-mono font-bold uppercase tracking-[0.2em] text-[#EC4899]">
-              Legal & Socios
+              Legal & Políticas
             </div>
             <ul className="space-y-2 text-xs sm:text-sm text-white/60 font-grotesk">
               <li>
-                <button onClick={() => scrollTo('faq')} className="hover:text-white transition-colors cursor-pointer text-left">
-                  Preguntas Frecuentes
-                </button>
+                <a href="/terminos.html" className="hover:text-[#00F0FF] transition-colors block">
+                  Términos de Servicio
+                </a>
               </li>
               <li>
-                <a
-                  href="https://polar.sh/onvivo/setup-pack"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-white transition-colors flex items-center gap-1 font-mono text-xs"
-                >
-                  Pasarela Segura (Polar.sh) ↗
+                <a href="/privacidad.html" className="hover:text-[#00F0FF] transition-colors block">
+                  Política de Privacidad
                 </a>
+              </li>
+              <li>
+                <a href="/reembolso.html" className="hover:text-[#00F0FF] transition-colors block">
+                  Política de Reembolso
+                </a>
+              </li>
+              <li>
+                <a href="/aviso-legal.html" className="hover:text-[#00F0FF] transition-colors block">
+                  Aviso Legal
+                </a>
+              </li>
+              <li>
+                <button onClick={() => scrollTo('faq')} className="hover:text-white transition-colors cursor-pointer text-left block">
+                  Preguntas Frecuentes
+                </button>
               </li>
               <li className="pt-2">
                 <Link
@@ -136,15 +146,26 @@ export const Footer: React.FC<FooterProps> = ({ onOpenWizard }) => {
           </div>
         </div>
 
-        {/* Bottom Legal Disclaimer */}
+        {/* Bottom Legal Links Strip & Disclaimer */}
         <div className="pt-8 space-y-4">
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-white/50 font-grotesk border-b border-white/[0.04] pb-4">
+            <span className="text-white/70 font-bold uppercase font-mono text-[10px] tracking-wider text-[#00F0FF]">Enlaces Legales:</span>
+            <a href="/terminos.html" className="hover:text-[#00F0FF] transition-colors">Términos de Servicio</a>
+            <span>•</span>
+            <a href="/privacidad.html" className="hover:text-[#00F0FF] transition-colors">Política de Privacidad</a>
+            <span>•</span>
+            <a href="/reembolso.html" className="hover:text-[#00FF85] transition-colors">Política de Reembolso</a>
+            <span>•</span>
+            <a href="/aviso-legal.html" className="hover:text-[#EC4899] transition-colors">Aviso Legal</a>
+          </div>
+
           <p className="text-[11px] text-white/40 leading-relaxed max-w-4xl font-grotesk">
-            <strong>Aviso Legal & Compliance:</strong> Onvivo es un servicio de consultoría técnica, configuración y entrega de guías de optimización para plataformas multimedia de código abierto. Onvivo no aloja, transmite, vende ni distribuye contenido multimedia protegido por derechos de autor. Stremio es una marca registrada de sus respectivos propietarios.
+            <strong>Aviso Legal & Compliance:</strong> Onvivo es un servicio de consultoría técnica, instalación y optimización de software de código abierto. Onvivo no comercializa, aloja, transmite ni distribuye contenido multimedia protegido por derechos de autor. Stremio es una marca registrada de sus respectivos propietarios.
           </p>
 
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[11px] text-white/40 font-mono border-t border-white/[0.04] pt-4">
             <span>© 2026 Onvivo. Todos los derechos reservados.</span>
-            <span>Diseñado para el entretenimiento sin límites.</span>
+            <span>Centraliza y organiza la gestión de tu centro multimedia.</span>
           </div>
         </div>
       </div>
