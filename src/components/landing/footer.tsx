@@ -17,7 +17,7 @@ export const Footer: React.FC = () => {
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center gap-2.5">
               <img
-                src="/logo.png"
+                src="/logo.png?v=4"
                 alt="onvivo logo"
                 className="w-8 h-8 sm:w-9 sm:h-9 object-contain drop-shadow-[0_0_15px_rgba(0,240,255,0.35)]"
               />

@@ -42,7 +42,7 @@ export const Navbar: React.FC = () => {
             className="group flex items-center gap-2.5 text-decoration-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00F0FF]"
           >
             <img
-              src="/logo.png"
+              src="/logo.png?v=4"
               alt="onvivo logo"
               className="w-9 h-9 sm:w-10 sm:h-10 object-contain transform group-hover:scale-105 transition-transform duration-300 drop-shadow-[0_0_15px_rgba(0,240,255,0.45)]"
             />
