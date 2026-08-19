@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Navbar } from './landing/navbar';
 import { Hero } from './landing/hero';
 import { BentoFeatures } from './landing/BentoFeatures';
@@ -11,20 +11,27 @@ import { FAQ } from './landing/faq';
 import { Footer } from './landing/footer';
 
 export default function LandingPage() {
+  const [isWizardOpen, setIsWizardOpen] = useState(false);
+
+  const openWizard = () => setIsWizardOpen(true);
+  const closeWizard = () => setIsWizardOpen(false);
+
   return (
     <div className="relative min-h-screen flex flex-col bg-[#0B0F19] text-[#E2E8FF] selection:bg-[#00F0FF]/30 selection:text-white">
-      <Navbar />
+      <Navbar onOpenWizard={openWizard} />
       <main className="flex-1">
-        <Hero />
-        <BentoFeatures />
+        <Hero onOpenWizard={openWizard} />
+        <BentoFeatures onOpenWizard={openWizard} />
         <ConsoleShowcase />
-        <ComparisonTable />
+        <ComparisonTable onOpenWizard={openWizard} />
         <Testimonials />
-        <PricingCard />
-        <SetupWizard />
+        <PricingCard onOpenWizard={openWizard} />
         <FAQ />
       </main>
-      <Footer />
+      <Footer onOpenWizard={openWizard} />
+
+      {/* Setup Wizard Modal Overlay */}
+      <SetupWizard isOpen={isWizardOpen} onClose={closeWizard} />
     </div>
   );
 }

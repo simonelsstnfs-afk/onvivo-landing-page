@@ -1,10 +1,15 @@
 import React from 'react';
-import { Zap, ShieldCheck, Languages, PiggyBank, Sparkles, CheckCircle } from 'lucide-react';
+import { Zap, ShieldCheck, Languages, PiggyBank, Sparkles } from 'lucide-react';
 
-export const BentoFeatures: React.FC = () => {
-  const scrollTo = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+interface BentoFeaturesProps {
+  onOpenWizard?: () => void;
+}
+
+export const BentoFeatures: React.FC<BentoFeaturesProps> = ({ onOpenWizard }) => {
+  const handleAction = () => {
+    if (onOpenWizard) {
+      onOpenWizard();
+    }
   };
 
   return (
@@ -191,7 +196,8 @@ export const BentoFeatures: React.FC = () => {
                 </div>
               </div>
               <button
-                onClick={() => scrollTo('wizard')}
+                type="button"
+                onClick={handleAction}
                 className="btn-neon inline-flex items-center justify-center px-4 py-2 rounded-xl text-[#050510] text-xs font-black font-mono uppercase cursor-pointer"
               >
                 Configurar Ahora →

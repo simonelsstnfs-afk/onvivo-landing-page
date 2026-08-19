@@ -2,10 +2,20 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Shield } from 'lucide-react';
 
-export const Footer: React.FC = () => {
+interface FooterProps {
+  onOpenWizard?: () => void;
+}
+
+export const Footer: React.FC<FooterProps> = ({ onOpenWizard }) => {
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleWizardClick = () => {
+    if (onOpenWizard) {
+      onOpenWizard();
+    }
   };
 
   return (
@@ -46,7 +56,7 @@ export const Footer: React.FC = () => {
                 </button>
               </li>
               <li>
-                <button onClick={() => scrollTo('wizard')} className="hover:text-[#00FF85] transition-colors cursor-pointer text-left font-mono">
+                <button onClick={handleWizardClick} className="hover:text-[#00FF85] transition-colors cursor-pointer text-left font-mono">
                   Setup Wizard
                 </button>
               </li>
@@ -70,22 +80,22 @@ export const Footer: React.FC = () => {
             </div>
             <ul className="space-y-2 text-xs sm:text-sm text-white/60 font-grotesk">
               <li>
-                <button onClick={() => scrollTo('wizard')} className="hover:text-white transition-colors cursor-pointer text-left">
+                <button onClick={handleWizardClick} className="hover:text-white transition-colors cursor-pointer text-left">
                   Smart TV & Google TV
                 </button>
               </li>
               <li>
-                <button onClick={() => scrollTo('wizard')} className="hover:text-white transition-colors cursor-pointer text-left">
+                <button onClick={handleWizardClick} className="hover:text-white transition-colors cursor-pointer text-left">
                   Amazon Fire TV Stick
                 </button>
               </li>
               <li>
-                <button onClick={() => scrollTo('wizard')} className="hover:text-white transition-colors cursor-pointer text-left">
+                <button onClick={handleWizardClick} className="hover:text-white transition-colors cursor-pointer text-left">
                   PC Windows & Mac
                 </button>
               </li>
               <li>
-                <button onClick={() => scrollTo('wizard')} className="hover:text-white transition-colors cursor-pointer text-left">
+                <button onClick={handleWizardClick} className="hover:text-white transition-colors cursor-pointer text-left">
                   Móviles Android & iOS
                 </button>
               </li>

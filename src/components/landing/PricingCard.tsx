@@ -1,10 +1,15 @@
 import React from 'react';
-import { Shield, ArrowRight, Zap, CheckCircle } from 'lucide-react';
+import { Shield, Zap, CheckCircle } from 'lucide-react';
 
-export const PricingCard: React.FC = () => {
-  const scrollTo = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+interface PricingCardProps {
+  onOpenWizard?: () => void;
+}
+
+export const PricingCard: React.FC<PricingCardProps> = ({ onOpenWizard }) => {
+  const handleAction = () => {
+    if (onOpenWizard) {
+      onOpenWizard();
+    }
   };
 
   return (
@@ -118,7 +123,8 @@ export const PricingCard: React.FC = () => {
           {/* Action Buttons */}
           <div className="pt-6 border-t border-white/10 flex flex-col items-center gap-4">
             <button
-              onClick={() => scrollTo('wizard')}
+              type="button"
+              onClick={handleAction}
               className="btn-neon w-full py-4 px-8 rounded-2xl text-[#050510] font-black text-base sm:text-lg uppercase tracking-wider text-center font-display cursor-pointer"
             >
               Configurar y Comprar Pack — 65€

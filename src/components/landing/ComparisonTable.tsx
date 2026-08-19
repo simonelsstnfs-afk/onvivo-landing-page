@@ -1,10 +1,15 @@
 import React from 'react';
 import { ArrowRight, Scale, Check, X } from 'lucide-react';
 
-export const ComparisonTable: React.FC = () => {
-  const scrollTo = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+interface ComparisonTableProps {
+  onOpenWizard?: () => void;
+}
+
+export const ComparisonTable: React.FC<ComparisonTableProps> = ({ onOpenWizard }) => {
+  const handleAction = () => {
+    if (onOpenWizard) {
+      onOpenWizard();
+    }
   };
 
   return (
@@ -196,7 +201,8 @@ export const ComparisonTable: React.FC = () => {
               * Estimación basada en el coste medio de 4 a 5 suscripciones mensuales tradicionales.
             </div>
             <button
-              onClick={() => scrollTo('wizard')}
+              type="button"
+              onClick={handleAction}
               className="btn-neon inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-[#050510] text-xs font-black uppercase tracking-wider font-mono shadow-lg cursor-pointer"
             >
               <span>Activar Mi Ahorro Ahora — 65€</span>

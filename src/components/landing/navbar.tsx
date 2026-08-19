@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X, Shield, ArrowRight, Zap } from 'lucide-react';
 
-export const Navbar: React.FC = () => {
+interface NavbarProps {
+  onOpenWizard?: () => void;
+}
+
+export const Navbar: React.FC<NavbarProps> = ({ onOpenWizard }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -19,6 +23,13 @@ export const Navbar: React.FC = () => {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleWizardClick = () => {
+    setMobileMenuOpen(false);
+    if (onOpenWizard) {
+      onOpenWizard();
     }
   };
 
@@ -78,8 +89,8 @@ export const Navbar: React.FC = () => {
               Tarifa
             </button>
             <button
-              onClick={() => scrollToSection('wizard')}
-              className="px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold uppercase tracking-wider text-white/60 hover:text-[#00FF85] hover:bg-emerald-500/5 transition-all duration-200 cursor-pointer"
+              onClick={handleWizardClick}
+              className="px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#00FF85] hover:bg-emerald-500/10 transition-all duration-200 cursor-pointer font-mono"
             >
               Setup Wizard
             </button>
@@ -95,7 +106,7 @@ export const Navbar: React.FC = () => {
           <div className="flex items-center gap-3">
             {/* Direct Neon CTA Button */}
             <button
-              onClick={() => scrollToSection('wizard')}
+              onClick={handleWizardClick}
               className="hidden sm:inline-flex items-center gap-2 px-4 py-2.5 rounded-xl btn-neon text-[#050510] font-black text-xs uppercase tracking-wider font-mono cursor-pointer transition-all duration-200"
             >
               <Zap className="w-3.5 h-3.5" />
@@ -146,7 +157,7 @@ export const Navbar: React.FC = () => {
                 Tarifa 65€
               </button>
               <button
-                onClick={() => scrollToSection('wizard')}
+                onClick={handleWizardClick}
                 className="text-left px-4 py-3 rounded-xl text-sm font-bold uppercase tracking-wider text-[#00FF85] hover:bg-white/5 transition-colors cursor-pointer font-mono"
               >
                 Setup Wizard
@@ -160,7 +171,7 @@ export const Navbar: React.FC = () => {
 
               <div className="pt-3 mt-2 border-t border-white/10 flex flex-col gap-2">
                 <button
-                  onClick={() => scrollToSection('wizard')}
+                  onClick={handleWizardClick}
                   className="w-full flex items-center justify-center gap-2 py-3 rounded-xl btn-neon text-[#050510] font-black text-xs uppercase tracking-wider font-mono shadow-lg cursor-pointer"
                 >
                   <Zap className="w-4 h-4" />

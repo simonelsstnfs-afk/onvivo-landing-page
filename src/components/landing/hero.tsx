@@ -2,10 +2,22 @@ import React from 'react';
 import { HeroScene3D } from './three/HeroScene3D';
 import { ArrowRight, Play, Zap } from 'lucide-react';
 
-export const Hero: React.FC = () => {
+interface HeroProps {
+  onOpenWizard?: () => void;
+}
+
+export const Hero: React.FC<HeroProps> = ({ onOpenWizard }) => {
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleStartSetup = () => {
+    if (onOpenWizard) {
+      onOpenWizard();
+    } else {
+      scrollTo('pricing');
+    }
   };
 
   return (
@@ -47,7 +59,8 @@ export const Hero: React.FC = () => {
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
           {/* Primary CTA */}
           <button
-            onClick={() => scrollTo('wizard')}
+            type="button"
+            onClick={handleStartSetup}
             className="group relative w-full sm:w-auto inline-flex flex-col items-center justify-center p-[2px] rounded-2xl bg-gradient-to-r from-[#00F0FF] via-[#A855F7] to-[#EC4899] shadow-[0_0_30px_rgba(0,240,255,0.4)] hover:shadow-[0_0_50px_rgba(0,240,255,0.7)] transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 cursor-pointer"
           >
             <div className="w-full h-full bg-[#050510] group-hover:bg-transparent rounded-[14px] px-8 py-3.5 flex flex-col items-center justify-center transition-colors duration-300">
@@ -64,6 +77,7 @@ export const Hero: React.FC = () => {
 
           {/* Secondary CTA */}
           <button
+            type="button"
             onClick={() => scrollTo('showcase')}
             className="btn-outline-neon w-full sm:w-auto inline-flex flex-col items-center justify-center px-7 py-3.5 rounded-2xl backdrop-blur-xl transform hover:-translate-y-0.5 transition-all duration-300 cursor-pointer font-grotesk"
           >
